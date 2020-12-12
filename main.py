@@ -6,11 +6,17 @@ from Card import Card
 from Hand import Hand
 from Deck import Deck
 from MainPile import MainPile
+from network import Network
 
 def main():
 
     # Clock
     clock = pygame.time.Clock()
+
+    # Set up connection to server
+    n = Network()
+    player = int(n.getP())
+    print("You are player", player)
 
     # Initialize screen
     pygame.init()
