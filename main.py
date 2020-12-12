@@ -1,12 +1,13 @@
 import pygame
 from pygame.locals import *
 import os
-import resources
+from resources import *
 from Card import Card
 from Hand import Hand
 from Deck import Deck
 from MainPile import MainPile
 from network import Network
+from ServerData import *
 
 def main():
 
@@ -17,6 +18,9 @@ def main():
     n = Network()
     player = int(n.getP())
     print("You are player", player)
+
+    # Test getting card from server
+    server_hand = n.send("get hand")
 
     # Initialize screen
     pygame.init()
@@ -33,7 +37,8 @@ def main():
     test_deck.shuffle()
 
     # Initialize test hand
-    test_hand = Hand(test_deck.deal_hand())
+    #test_hand = Hand(test_deck.deal_hand())
+    test_hand = get_hand(server_hand)
 
     # Initialize main pile to play cards into
     main_pile = MainPile()

@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *
 import os
+from Card import Card
+from Hand import Hand
 
 def load_png(name):
     """ Load image and return image object"""
@@ -15,4 +17,18 @@ def load_png(name):
         print("Cannot load image:" + fullname)
         raise SystemExit(message)
     return image, image.get_rect()
+
+def get_hand(server_hand):
+    """Convert server hand to hand of cards"""
+
+    # Create each card from the server cards
+    cards = []
+    for card in server_hand.cards:
+        print(card.value, card.suit)
+        cards.append(Card(card.value, card.suit))
+
+    # Make the new hand
+    hand = Hand(cards)
+
+    return hand
     
