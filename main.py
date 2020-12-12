@@ -9,6 +9,9 @@ from MainPile import MainPile
 
 def main():
 
+    # Clock
+    clock = pygame.time.Clock()
+
     # Initialize screen
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
@@ -35,6 +38,7 @@ def main():
 
     # Game loop
     while 1:
+        clock.tick(60)
         for event in pygame.event.get():
 
             # Check for quit event
