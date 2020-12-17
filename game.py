@@ -23,8 +23,9 @@ class Game:
         pass
 
     def resetWent(self):
-        self.p1Went = False
-        self.p2Went = False
+        # self.p1Went = False
+        # self.p2Went = False
+        pass
 
     def dealHand(self):
         return self.deck.deal_hand()
