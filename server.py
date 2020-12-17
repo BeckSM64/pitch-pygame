@@ -2,6 +2,7 @@ import socket
 from _thread import *
 import pickle
 from ServerData import *
+from game import Game
 
 server = "192.168.1.2"
 port = 5555
@@ -16,11 +17,11 @@ except socket.error as e:
 s.listen(4)
 print("Waiting for a connection, Server Started")
 
-# Setup game objects
-deck = SDeck()
-deck.shuffle()
+connected = set()
+games = {}
+idCount = 0
 
-def threaded_client(conn, p):
+def threaded_client(conn, p, gameId):
     global idCount
     conn.send(str.encode(str(p)))
 
@@ -28,15 +29,33 @@ def threaded_client(conn, p):
     while True:
         try:
             data = conn.recv(4096).decode()
+            
+            if gameId in games:
+                print("got here")
+                game = games[gameId]
 
-            if data == "get hand":
-                print("Got request for card")
-                test_hand = deck.deal_hand()
-                conn.send(pickle.dumps(test_hand))
+                if not data:
+                    break
+                else:
+                    if data == "reset":
+                        #game.resetWent()
+                        pass
+                    elif data != "get":
+                        #game.play(p, data)
+                        pass
+
+                    conn.sendall(pickle.dumps(game))
+            else:
+                break
         except:
             break
 
     print("Lost connection")
+    try:
+        del games[gameId]
+        print("Closing Game", gameId)
+    except:
+        pass
     idCount -= 1
     conn.close()
 
@@ -50,12 +69,15 @@ def main():
 
         idCount += 1
         p = 0
+        gameId = (idCount - 1)//2
         if idCount % 4 == 1:
+            games[gameId] = Game(gameId)
             print("Creating a new game...")
         else:
+            games[gameId].ready = True
             p = idCount - 1
 
-        start_new_thread(threaded_client, (conn, p))
+        start_new_thread(threaded_client, (conn, p, gameId))
 
 if __name__ == "__main__":
     main()

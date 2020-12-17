@@ -19,12 +19,12 @@ def main():
     player = int(n.getP())
     print("You are player", player)
 
-    # Test getting card from server
-    server_hand = n.send("get hand")
+    # Get game
+    game = n.send("get")
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((500, 500))
     pygame.display.set_caption('Pitch')
 
     # Fill background
@@ -32,13 +32,8 @@ def main():
     background = background.convert()
     background.fill((0, 250, 250))
 
-    # Initialize test deck
-    test_deck = Deck()
-    test_deck.shuffle()
-
     # Initialize test hand
-    #test_hand = Hand(test_deck.deal_hand())
-    test_hand = get_hand(server_hand)
+    test_hand = get_hand(game.getHand(player))
 
     # Initialize main pile to play cards into
     main_pile = MainPile()
