@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import os
 from resources import *
+from game import Game
 from Card import Card
 from Hand import Hand
 from Deck import Deck
@@ -37,14 +38,28 @@ def main():
 
     # Initialize main pile to play cards into
     main_pile = MainPile()
+    s_main_pile = SMainPile()
 
     # Blit everything to the screen
     screen.blit(background, (0, 0))
     pygame.display.flip()
 
+    run = True
     # Game loop
-    while 1:
+    while run:
         clock.tick(60)
+
+        # Attempt to get the game from the server
+        try:
+            game = n.send("get")
+
+            # Update main pile
+            main_pile = get_main_pile(game.mainPile)
+        except:
+            run = False
+            print("Couldn't get game")
+            break
+
         for event in pygame.event.get():
 
             # Check for quit event
@@ -56,8 +71,9 @@ def main():
                 if event.button == 1: # the right mouse button
                     for card in test_hand:
                         if card.rect.collidepoint(event.pos):
-                            main_pile.add_card(card)
+                            #main_pile.add_card(card)
                             test_hand.remove(card)
+                            n.send("card: " + str(card.value) + " " + card.suit)
 
         # Blit the background of the screen
         screen.blit(background, (0, 0))

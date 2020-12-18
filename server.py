@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '../')
 import socket
 from _thread import *
 import pickle
@@ -5,7 +7,7 @@ from ServerData import *
 from game import Game
 
 server = "192.168.1.2"
-port = 5555
+port = 54555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -21,6 +23,14 @@ connected = set()
 games = {}
 idCount = 0
 
+def get_card(data):
+
+    # split data to get value and suit
+    data = data.split(" ")
+
+    # return the server card
+    return SCard(int(data[1]), data[2])
+
 def threaded_client(conn, p, gameId):
     global idCount
     conn.send(str.encode(str(p)))
@@ -28,10 +38,9 @@ def threaded_client(conn, p, gameId):
     reply = ""
     while True:
         try:
-            data = conn.recv(4096).decode()
+            data = conn.recv(4096 * 2).decode()
             
             if gameId in games:
-                print("got here")
                 game = games[gameId]
 
                 if not data:
@@ -40,10 +49,15 @@ def threaded_client(conn, p, gameId):
                     if data == "reset":
                         #game.resetWent()
                         pass
-                    elif data != "get":
-                        #game.play(p, data)
-                        pass
+                    elif "card:" in data:
+                        
+                        # get card from data
+                        s_card = get_card(data)
 
+                        # add card to main pile
+                        game.mainPile.add_card(s_card)
+
+                    # send updated game back to all players
                     conn.sendall(pickle.dumps(game))
             else:
                 break

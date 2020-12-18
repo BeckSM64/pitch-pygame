@@ -6,6 +6,7 @@ class Game:
         # Setup game objects
         self.deck = SDeck()
         self.deck.shuffle()
+        self.mainPile = SMainPile()
 
         self.p1Went = False
         self.p2Went = False
@@ -25,6 +26,7 @@ class Game:
     def resetWent(self):
         # self.p1Went = False
         # self.p2Went = False
+        # self.p3Went = False
         pass
 
     def dealHand(self):

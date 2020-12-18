@@ -44,10 +44,15 @@ class SDeck:
 
         hand = []
         for i in range(6):
-            print(self.deck[i].value, self.deck[i].suit)
             hand.append(self.deck[i])
         
         del self.deck[:6]
 
         return SHand(hand)
 
+class SMainPile:
+    def __init__(self):
+        self.cards = []
+    
+    def add_card(self, card):
+        self.cards.append(card)
