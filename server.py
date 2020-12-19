@@ -63,14 +63,15 @@ def threaded_client(conn, p, gameId):
                             # reset deck and shuffle
                             game.deck = SDeck()
                             game.deck.shuffle()
-                            
+
                             # reset main pile
                             game.mainPile = SMainPile()
 
                             # deal new hands
-                            game.p1Hand = game.dealHand()
-                            game.p2Hand = game.dealHand()
-                            game.p3Hand = game.dealHand()
+                            # game.p1Hand = game.dealHand()
+                            # game.p2Hand = game.dealHand()
+                            # game.p3Hand = game.dealHand()
+                            game.dealHands()
 
                     # send updated game back to all players
                     conn.sendall(pickle.dumps(game))
@@ -107,6 +108,9 @@ def main():
             # TODO: Make this work for three or more players, not just two
             games[gameId].ready = True
             p = idCount - 1
+
+        # Add player to player list
+        games[gameId].newPlayer(p)
 
         # Increment number of players in game
         games[gameId].numPlayers += 1

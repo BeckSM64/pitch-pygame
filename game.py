@@ -3,17 +3,13 @@ from ServerData import *
 class Game:
     def __init__(self, id):
 
+        # list of player objects
+        self.players = []
+
         # Setup game objects
         self.deck = SDeck()
         self.deck.shuffle()
         self.mainPile = SMainPile()
-
-        self.p1Went = False
-        self.p2Went = False
-        self.p3Went = False
-        self.p1Hand = self.dealHand()
-        self.p2Hand = self.dealHand()
-        self.p3Hand = self.dealHand()
         self.ready = False
         self.numPlayers = 0
         self.id = id
@@ -25,18 +21,16 @@ class Game:
         pass
 
     def resetWent(self):
-        self.p1Went = False
-        self.p2Went = False
-        self.p3Went = False
+        for player in self.players:
+            player.playerWent = False
 
     def dealHand(self):
         return self.deck.deal_hand()
 
-    def getHand(self, player):
-        if player == 0:
-            return self.p1Hand
-        elif player == 1:
-            return self.p2Hand
-        else:
-            return self.p3Hand
+    def dealHands(self):
+        for player in self.players:
+            player.playerHand = self.deck.deal_hand()
+
+    def newPlayer(self, id):
+        self.players.append(Player(id, self.dealHand()))
             

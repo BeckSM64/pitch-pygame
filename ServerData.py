@@ -56,3 +56,10 @@ class SMainPile:
     
     def add_card(self, card):
         self.cards.append(card)
+
+class Player:
+    def __init__(self, id, hand):
+        self.playerHand = hand
+        self.playerWent = False
+        self.ready = False
+        self.id = id

@@ -34,7 +34,7 @@ def main():
     background.fill((0, 250, 250))
 
     # Initialize test hand
-    test_hand = get_hand(game.getHand(player))
+    test_hand = get_hand(game.players[player].playerHand)
 
     # Initialize main pile to play cards into
     main_pile = MainPile()
