@@ -15,6 +15,7 @@ class Game:
         self.p2Hand = self.dealHand()
         self.p3Hand = self.dealHand()
         self.ready = False
+        self.numPlayers = 0
         self.id = id
 
     def connected(self):
@@ -24,10 +25,9 @@ class Game:
         pass
 
     def resetWent(self):
-        # self.p1Went = False
-        # self.p2Went = False
-        # self.p3Went = False
-        pass
+        self.p1Went = False
+        self.p2Went = False
+        self.p3Went = False
 
     def dealHand(self):
         return self.deck.deal_hand()
@@ -39,3 +39,4 @@ class Game:
             return self.p2Hand
         else:
             return self.p3Hand
+            

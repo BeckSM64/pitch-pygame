@@ -26,7 +26,7 @@ class SDeck:
                     suit = "spades"
                 elif i == 1:
                     suit = "clubs"
-                elif i == 3:
+                elif i == 2:
                     suit = "hearts"
                 else:
                     suit = "diamonds"

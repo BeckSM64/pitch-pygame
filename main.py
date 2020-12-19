@@ -55,6 +55,7 @@ def main():
 
             # Update main pile
             main_pile = get_main_pile(game.mainPile)
+
         except:
             run = False
             print("Couldn't get game")
@@ -71,7 +72,6 @@ def main():
                 if event.button == 1: # the right mouse button
                     for card in test_hand:
                         if card.rect.collidepoint(event.pos):
-                            #main_pile.add_card(card)
                             test_hand.remove(card)
                             n.send("card: " + str(card.value) + " " + card.suit)
 

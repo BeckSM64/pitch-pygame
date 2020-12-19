@@ -57,6 +57,21 @@ def threaded_client(conn, p, gameId):
                         # add card to main pile
                         game.mainPile.add_card(s_card)
 
+                        # check if everyone has played a card
+                        if len(game.mainPile.cards) == game.numPlayers * 6:
+
+                            # reset deck and shuffle
+                            game.deck = SDeck()
+                            game.deck.shuffle()
+                            
+                            # reset main pile
+                            game.mainPile = SMainPile()
+
+                            # deal new hands
+                            game.p1Hand = game.dealHand()
+                            game.p2Hand = game.dealHand()
+                            game.p3Hand = game.dealHand()
+
                     # send updated game back to all players
                     conn.sendall(pickle.dumps(game))
             else:
@@ -89,8 +104,12 @@ def main():
             print("GAME ID", gameId)
             print("Creating a new game...")
         else:
+            # TODO: Make this work for three or more players, not just two
             games[gameId].ready = True
             p = idCount - 1
+
+        # Increment number of players in game
+        games[gameId].numPlayers += 1
 
         start_new_thread(threaded_client, (conn, p, gameId))
 
