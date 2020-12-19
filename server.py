@@ -99,8 +99,8 @@ def main():
 
         idCount += 1
         p = 0
-        gameId = (idCount - 1)//3
-        if idCount % 3 == 1:
+        gameId = (idCount - 1)//4
+        if idCount % 4 == 1:
             games[gameId] = Game(gameId)
             print("GAME ID", gameId)
             print("Creating a new game...")
