@@ -14,6 +14,9 @@ class Game:
         self.numPlayers = 0
         self.id = id
 
+        # Setup game logic
+        self.trump = None
+
     def connected(self):
         return self.ready
 

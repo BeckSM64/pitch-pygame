@@ -28,7 +28,7 @@ class Card(pygame.sprite.Sprite):
             card_value_name = "ace"
 
         # Load card image and create sprite
-        filename = f"{card_value_name}_of_{suit}.png"
+        filename = f"cards/{card_value_name}_of_{suit}.png"
         self.image, self.rect = resources.load_png(filename)
         self.screen = pygame.display.get_surface()
         self.image = pygame.transform.smoothscale(self.image, (Card.width, Card.height))

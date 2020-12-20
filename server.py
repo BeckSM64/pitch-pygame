@@ -55,19 +55,26 @@ def threaded_client(conn, p, gameId):
                         s_card = get_card(data)
 
                         for playerCard in game.players[p].playerHand.cards:
-                                if playerCard.value == s_card.value and playerCard.suit == s_card.suit:
-                                    game.players[p].playerHand.cards.remove(playerCard)
+                            if playerCard.value == s_card.value and playerCard.suit == s_card.suit:
+                                game.players[p].playerHand.cards.remove(playerCard)
 
                         # add card to main pile
                         game.mainPile.add_card(s_card)
+
+                        # update trump
+                        if game.mainPile.size() == 1 and game.trump is None:
+                            game.trump = s_card.suit
                     
                     elif "ready" == data:
                         game.players[p].ready = True
                     elif "not ready" == data:
                         game.players[p].ready = False
 
-                    # if all player hands are empty
+                    # if all player hands are empty, reset hand
                     if game.isHandsEmpty() and game.isPlayersReady():
+
+                        # reset trump
+                        game.trump = None
 
                         # reset deck and shuffle
                         game.deck = SDeck()
@@ -101,6 +108,7 @@ def main():
     idCount = 0
 
     while True:
+        
         conn, addr = s.accept()
         print("Connected to:", addr)
 
