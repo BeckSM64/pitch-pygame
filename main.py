@@ -9,6 +9,7 @@ from Deck import Deck
 from MainPile import MainPile
 from network import Network
 from ServerData import *
+from Trump import Trump
 
 def main():
 
@@ -40,6 +41,9 @@ def main():
     main_pile = MainPile()
     s_main_pile = SMainPile()
 
+    # Initialize trump image
+    trump_image = None
+
     # Blit everything to the screen
     screen.blit(background, (0, 0))
     pygame.display.flip()
@@ -56,6 +60,12 @@ def main():
 
             # Update main pile
             main_pile = get_main_pile(game.mainPile)
+
+            # Set trump image
+            if game.trump is not None and trump_image != game.trump:
+                trump_image = Trump(game.trump)
+            else:
+                trump_image = None
 
             # Update hand
             if game.players[player].ready:
@@ -94,6 +104,10 @@ def main():
 
         # Draw the main pile to the screen
         main_pile.draw(screen)
+
+        # Draw the trump image to the screen
+        if trump_image is not None:
+            trump_image.draw(screen)
 
         pygame.display.flip()
 
