@@ -10,6 +10,8 @@ class SCard:
 class SHand:
     def __init__(self, cards):
         self.cards = cards
+    def size(self):
+        return len(self.cards)
 
 class SDeck:
     def __init__(self):
@@ -56,6 +58,9 @@ class SMainPile:
     
     def add_card(self, card):
         self.cards.append(card)
+
+    def size(self):
+        return len(self.cards)
 
 class Player:
     def __init__(self, id, hand):

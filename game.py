@@ -33,4 +33,16 @@ class Game:
 
     def newPlayer(self, id):
         self.players.append(Player(id, self.dealHand()))
+
+    def isHandsEmpty(self):
+        for player in self.players:
+            if player.playerHand.size() != 0:
+                return False
+        return True
+
+    def isPlayersReady(self):
+        for player in self.players:
+            if player.ready:
+                return True
+        return False
             

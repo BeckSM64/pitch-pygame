@@ -51,10 +51,16 @@ def main():
 
         # Attempt to get the game from the server
         try:
+                
             game = n.send("get")
 
             # Update main pile
             main_pile = get_main_pile(game.mainPile)
+
+            # Update hand
+            if game.players[player].ready:
+                test_hand = get_hand(game.players[player].playerHand)
+                n.send("not ready")
 
         except:
             run = False
@@ -73,6 +79,11 @@ def main():
                     for card in test_hand:
                         if card.rect.collidepoint(event.pos):
                             test_hand.remove(card)
+
+                            # Set not ready
+                            if len(test_hand) == 0:
+                                n.send("not ready")
+
                             n.send("card: " + str(card.value) + " " + card.suit)
 
         # Blit the background of the screen
@@ -85,6 +96,10 @@ def main():
         main_pile.draw(screen)
 
         pygame.display.flip()
+
+        if game.isHandsEmpty() and not game.isPlayersReady():
+            pygame.time.delay(2000)
+            n.send("ready")
 
 if __name__ == '__main__':
     main()

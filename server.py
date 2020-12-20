@@ -54,27 +54,34 @@ def threaded_client(conn, p, gameId):
                         # get card from data
                         s_card = get_card(data)
 
+                        for playerCard in game.players[p].playerHand.cards:
+                                if playerCard.value == s_card.value and playerCard.suit == s_card.suit:
+                                    game.players[p].playerHand.cards.remove(playerCard)
+
                         # add card to main pile
                         game.mainPile.add_card(s_card)
+                    
+                    elif "ready" == data:
+                        game.players[p].ready = True
+                    elif "not ready" == data:
+                        game.players[p].ready = False
 
-                        # check if everyone has played a card
-                        if len(game.mainPile.cards) == game.numPlayers * 6:
+                    # if all player hands are empty
+                    if game.isHandsEmpty() and game.isPlayersReady():
 
-                            # reset deck and shuffle
-                            game.deck = SDeck()
-                            game.deck.shuffle()
+                        # reset deck and shuffle
+                        game.deck = SDeck()
+                        game.deck.shuffle()
 
-                            # reset main pile
-                            game.mainPile = SMainPile()
+                        # reset main pile
+                        game.mainPile = SMainPile()
 
-                            # deal new hands
-                            # game.p1Hand = game.dealHand()
-                            # game.p2Hand = game.dealHand()
-                            # game.p3Hand = game.dealHand()
-                            game.dealHands()
+                        # deal new hands
+                        game.dealHands()
 
                     # send updated game back to all players
                     conn.sendall(pickle.dumps(game))
+
             else:
                 break
         except:
