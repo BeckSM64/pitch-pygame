@@ -2,8 +2,8 @@ import pygame
 from pygame.locals import *
 import resources
 
-class Trump(pygame.sprite.Sprite):
-    def __init__(self, suit):
+class Arrow(pygame.sprite.Sprite):
+    def __init__(self):
 
         # Super class constructor
         pygame.sprite.Sprite.__init__(self)
@@ -13,7 +13,7 @@ class Trump(pygame.sprite.Sprite):
         self.height = 50
 
         # Load card image and create sprite
-        filename = f"suits/{suit}_hdpi.png"
+        filename = f"arrow.png"
         self.image, self.rect = resources.load_png(filename)
         self.screen = pygame.display.get_surface()
         self.image = pygame.transform.smoothscale(self.image, (self.width, self.height))
@@ -22,7 +22,8 @@ class Trump(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         # Set position of trump image
-        self.rect.x = 0
+        w, h = pygame.display.get_surface().get_size()
+        self.rect.x = (w / 2) - (self.width / 2) # middle of the screen
         self.rect.y = 0
 
     def draw(self, screen):

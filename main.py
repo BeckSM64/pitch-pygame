@@ -10,6 +10,7 @@ from MainPile import MainPile
 from network import Network
 from ServerData import *
 from Trump import Trump
+from Arrow import Arrow
 
 def main():
 
@@ -26,7 +27,7 @@ def main():
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((500, 500))
+    screen = pygame.display.set_mode((450, 500))
     pygame.display.set_caption('Pitch')
 
     # Fill background
@@ -39,10 +40,12 @@ def main():
 
     # Initialize main pile to play cards into
     main_pile = MainPile()
-    s_main_pile = SMainPile()
 
     # Initialize trump image
     trump_image = None
+
+    # Initialize arrow image
+    arrow_image = Arrow()
 
     # Blit everything to the screen
     screen.blit(background, (0, 0))
@@ -111,6 +114,10 @@ def main():
         # Draw the trump image to the screen
         if trump_image is not None:
             trump_image.draw(screen)
+
+        # Draw arrow image when it is player's turn
+        if game.players[player].playerTurn:
+            arrow_image.draw(screen)
 
         pygame.display.flip()
 
