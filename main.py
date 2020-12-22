@@ -87,13 +87,16 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1: # the right mouse button
                     for card in test_hand:
-                        if card.rect.collidepoint(event.pos):
+
+                        # Only play card if it is this player's turn
+                        if card.rect.collidepoint(event.pos) and game.players[player].playerTurn:
                             test_hand.remove(card)
 
                             # Set not ready
                             if len(test_hand) == 0:
                                 n.send("not ready")
 
+                            # Send card to server
                             n.send("card: " + str(card.value) + " " + card.suit)
 
         # Blit the background of the screen

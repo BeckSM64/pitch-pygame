@@ -48,4 +48,15 @@ class Game:
             if player.ready:
                 return True
         return False
+
+    def determinePlayerTurn(self):
+        for i in range(len(self.players)):
+            if self.players[i].playerTurn == True:
+                self.players[i].playerTurn = False
+                if (i + 1) == len(self.players):
+                    self.players[0].playerTurn = True
+                else:
+                    self.players[i + 1].playerTurn = True
+                break
+                
             

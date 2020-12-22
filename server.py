@@ -64,6 +64,9 @@ def threaded_client(conn, p, gameId):
                         # update trump
                         if game.mainPile.size() == 1 and game.trump is None:
                             game.trump = s_card.suit
+
+                        # update player turn
+                        game.determinePlayerTurn()
                     
                     elif "ready" == data:
                         game.players[p].ready = True

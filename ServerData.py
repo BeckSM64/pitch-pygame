@@ -64,7 +64,14 @@ class SMainPile:
 
 class Player:
     def __init__(self, id, hand):
+
         self.playerHand = hand
         self.playerWent = False
         self.ready = False
         self.id = id
+
+        # Make player 1 go first by default
+        if self.id == 0:
+            self.playerTurn = True
+        else:
+            self.playerTurn = False
