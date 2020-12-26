@@ -11,6 +11,8 @@ from network import Network
 from ServerData import *
 from Trump import Trump
 from Arrow import Arrow
+from Button import Button
+from BidScreen import BidScreen
 
 def main():
 
@@ -46,6 +48,9 @@ def main():
 
     # Initialize arrow image
     arrow_image = Arrow()
+
+    # Initialize bid screen
+    bid_screen = BidScreen()
 
     # Blit everything to the screen
     screen.blit(background, (0, 0))
@@ -118,6 +123,9 @@ def main():
         # Draw arrow image when it is player's turn
         if game.players[player].playerTurn:
             arrow_image.draw(screen)
+
+        # Draw the bid screen
+        #bid_screen.draw(screen)
 
         pygame.display.flip()
 

@@ -67,6 +67,7 @@ class Player:
 
         self.playerHand = hand
         self.playerWent = False
+        self.playerBid = None
         self.ready = False
         self.id = id
 
