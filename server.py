@@ -32,6 +32,20 @@ def get_card(data):
     # return the server card
     return SCard(int(data[1]), data[2])
 
+def get_bid(data):
+
+    # Bid value located at position 1
+    data = data.split(" ")
+    bid = data[1]
+
+    # Convert string bid to int
+    if bid == "PASS":
+        bid = 0
+    else:
+        bid = int(bid)
+
+    return bid
+
 def threaded_client(conn, p, gameId):
     global idCount
     conn.send(str.encode(str(p)))
@@ -71,8 +85,22 @@ def threaded_client(conn, p, gameId):
                     
                     elif "ready" == data:
                         game.players[p].ready = True
+                        game.players[p].playerBid = None
+                        game.biddingStage = True
+                        game.players[p].playerTurn = False
+
+                        # TODO: Fix this
+                        game.players[0].playerBidTurn = True
                     elif "not ready" == data:
                         game.players[p].ready = False
+
+                    elif "bid:" in data:
+
+                        # Get bid from player
+                        game.players[p].playerBid = get_bid(data)
+
+                        # Update whose turn it is to bid
+                        game.determineBidTurn()
 
                     # if all player hands are empty, reset hand
                     if game.isHandsEmpty() and game.isPlayersReady():

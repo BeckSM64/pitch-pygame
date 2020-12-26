@@ -97,7 +97,7 @@ def main():
                     for card in test_hand:
 
                         # Only play card if it is this player's turn
-                        if card.rect.collidepoint(event.pos) and game.players[player].playerTurn:
+                        if card.rect.collidepoint(event.pos) and game.players[player].playerTurn and game.players[player].playerBid is not None and game.didPlayersBid() == True:
                             test_hand.remove(card)
 
                             # Set not ready
@@ -106,6 +106,11 @@ def main():
 
                             # Send card to server
                             n.send("card: " + str(card.value) + " " + card.suit)
+                        
+                    # Check if a bid button was clicked
+                    for button in bid_screen.buttonList:
+                        if button.isClicked(event.pos):
+                            n.send("bid: " + button.text)
 
         # Blit the background of the screen
         screen.blit(background, (0, 0))
@@ -125,10 +130,12 @@ def main():
             arrow_image.draw(screen)
 
         # Draw the bid screen
-        #bid_screen.draw(screen)
+        if game.biddingStage and game.players[player].playerBidTurn:
+            bid_screen.draw(screen)
 
         pygame.display.flip()
 
+        # Time delay to keep the last card on screen in trick
         if game.isHandsEmpty() and not game.isPlayersReady():
             pygame.time.delay(2000)
             n.send("ready")

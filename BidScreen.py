@@ -17,6 +17,9 @@ class BidScreen:
         self.bidButton4    = Button(buttonWidth, buttonHeight, 230, (h / 2) - (buttonHeight / 2), color, "4")
         self.bidButtonPass = Button(buttonWidth, buttonHeight, 340, (h / 2) - (buttonHeight / 2), color, "PASS")
 
+        # List of bid buttons
+        self.buttonList = [self.bidButton2, self.bidButton3, self.bidButton4, self.bidButtonPass]
+
     def draw(self, screen):
 
         # Draw the buttons to the screen

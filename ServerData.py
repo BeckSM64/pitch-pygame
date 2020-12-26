@@ -68,11 +68,12 @@ class Player:
         self.playerHand = hand
         self.playerWent = False
         self.playerBid = None
+        self.playerTurn = False
         self.ready = False
         self.id = id
 
-        # Make player 1 go first by default
+        # Make player 0 bid first by default
         if self.id == 0:
-            self.playerTurn = True
+            self.playerBidTurn = True
         else:
-            self.playerTurn = False
+            self.playerBidTurn = False
