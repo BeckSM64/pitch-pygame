@@ -4,7 +4,7 @@ import socket
 from _thread import *
 import pickle
 from ServerData import *
-from game import Game
+from Game import Game
 
 #server = "192.168.1.2"
 server = "10.0.0.99"

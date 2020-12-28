@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import resources
+import Resources
 
 class Card(pygame.sprite.Sprite):
 
@@ -29,7 +29,7 @@ class Card(pygame.sprite.Sprite):
 
         # Load card image and create sprite
         filename = f"cards/{card_value_name}_of_{suit}.png"
-        self.image, self.rect = resources.load_png(filename)
+        self.image, self.rect = Resources.load_png(filename)
         self.screen = pygame.display.get_surface()
         self.image = pygame.transform.smoothscale(self.image, (Card.width, Card.height))
         self.area = self.screen.get_rect()

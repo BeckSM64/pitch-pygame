@@ -1,13 +1,13 @@
 import pygame
 from pygame.locals import *
 import os
-from resources import *
-from game import Game
+from Resources import *
+from Game import Game
 from Card import Card
 from Hand import Hand
 from Deck import Deck
 from MainPile import MainPile
-from network import Network
+from Network import Network
 from ServerData import *
 from Trump import Trump
 from Arrow import Arrow

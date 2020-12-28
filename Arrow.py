@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import resources
+import Resources
 
 class Arrow(pygame.sprite.Sprite):
     def __init__(self):
@@ -14,7 +14,7 @@ class Arrow(pygame.sprite.Sprite):
 
         # Load card image and create sprite
         filename = f"arrow.png"
-        self.image, self.rect = resources.load_png(filename)
+        self.image, self.rect = Resources.load_png(filename)
         self.screen = pygame.display.get_surface()
         self.image = pygame.transform.smoothscale(self.image, (self.width, self.height))
         self.area = self.screen.get_rect()
