@@ -12,10 +12,11 @@ class BidScreen:
         buttonWidth = 100
         buttonHeight = 100
         color = (255, 255, 255)
-        self.bidButton2    = Button(buttonWidth, buttonHeight, 10,  (h / 2) - (buttonHeight / 2), color, "2")
-        self.bidButton3    = Button(buttonWidth, buttonHeight, 120, (h / 2) - (buttonHeight / 2), color, "3")
-        self.bidButton4    = Button(buttonWidth, buttonHeight, 230, (h / 2) - (buttonHeight / 2), color, "4")
-        self.bidButtonPass = Button(buttonWidth, buttonHeight, 340, (h / 2) - (buttonHeight / 2), color, "PASS")
+        textColor = (0, 0, 0)
+        self.bidButton2    = Button(buttonWidth, buttonHeight, 10,  (h / 2) - (buttonHeight / 2), color, textColor, "2")
+        self.bidButton3    = Button(buttonWidth, buttonHeight, 120, (h / 2) - (buttonHeight / 2), color, textColor, "3")
+        self.bidButton4    = Button(buttonWidth, buttonHeight, 230, (h / 2) - (buttonHeight / 2), color, textColor, "4")
+        self.bidButtonPass = Button(buttonWidth, buttonHeight, 340, (h / 2) - (buttonHeight / 2), color, textColor, "PASS")
 
         # List of bid buttons
         self.buttonList = [self.bidButton2, self.bidButton3, self.bidButton4, self.bidButtonPass]
