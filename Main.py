@@ -100,7 +100,7 @@ def main():
                         if (
                                 card.rect.collidepoint(event.pos) and game.players[player].playerTurn and
                                 game.players[player].playerBid is not None and game.didPlayersBid() == True and
-                                card.isPlayable(game, test_hand.hasCurrentSuit(game.getCurrentSuit()))
+                                card.isPlayable(game, test_hand.hasCurrentSuit(game.currentSuit))
                             ):
                             test_hand.remove(card)
 
