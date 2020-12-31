@@ -112,9 +112,10 @@ def main():
                             n.send("card: " + str(card.value) + " " + card.suit)
                         
                     # Check if a bid button was clicked
-                    for button in bid_screen.buttonList:
-                        if button.isClicked(event.pos):
-                            n.send("bid: " + button.text)
+                    if game.players[player].playerBidTurn and game.biddingStage:
+                        for button in bid_screen.buttonList:
+                            if button.isClicked(event.pos):
+                                n.send("bid: " + button.text)
 
         # Blit the background of the screen
         screen.blit(background, (0, 0))
