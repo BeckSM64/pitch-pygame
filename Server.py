@@ -87,8 +87,6 @@ def threaded_client(conn, p, gameId):
 
                         # update player turn
                         game.determinePlayerTurn()
-
-                        print("CURRENT SUIT", game.currentSuit)
                     
                     elif "ready" == data:
                         game.players[p].ready = True
