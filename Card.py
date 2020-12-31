@@ -46,6 +46,13 @@ class Card(pygame.sprite.Sprite):
     def get_pos_y(self):
         return self.rect.y
 
+    def rot_center(self, angle):
+        """rotate an image while keeping its center"""
+        rot_image = pygame.transform.rotate(self.image, angle)
+        rot_rect = rot_image.get_rect(center=self.rect.center)
+        self.image = rot_image
+        self.rect = rot_rect
+
     def isPlayable(self, game, handHasCurrentSuit):
         
         # TODO: Remove game.mainPile.size() % len(game.players) == 0 condition when trick mechanics are implemented
