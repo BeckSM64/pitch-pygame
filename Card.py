@@ -51,10 +51,10 @@ class Card(pygame.sprite.Sprite):
         print("Current Suit", game.getCurrentSuit())
         print("This suit", self.suit)
         
-        # TODO: Remove game.mainPile.size() % 2 == 0 condition when trick mechanics are implemented
+        # TODO: Remove game.mainPile.size() % len(game.players) == 0 condition when trick mechanics are implemented
         if (
                 game.trump == self.suit or game.getCurrentSuit() == self.suit or
-                game.mainPile.size() == 0 or game.mainPile.size() % 2 == 0 or
+                game.mainPile.size() == 0 or game.mainPile.size() % len(game.players) == 0 or
                 not handHasCurrentSuit
             ):
             return True
