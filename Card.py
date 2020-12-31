@@ -47,13 +47,10 @@ class Card(pygame.sprite.Sprite):
         return self.rect.y
 
     def isPlayable(self, game, handHasCurrentSuit):
-
-        print("Current Suit", game.getCurrentSuit())
-        print("This suit", self.suit)
         
         # TODO: Remove game.mainPile.size() % len(game.players) == 0 condition when trick mechanics are implemented
         if (
-                game.trump == self.suit or game.getCurrentSuit() == self.suit or
+                game.trump == self.suit or game.currentSuit == self.suit or
                 game.mainPile.size() == 0 or game.mainPile.size() % len(game.players) == 0 or
                 not handHasCurrentSuit
             ):

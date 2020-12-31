@@ -80,8 +80,15 @@ def threaded_client(conn, p, gameId):
                         if game.mainPile.size() == 1 and game.trump is None:
                             game.trump = s_card.suit
 
+                        # update current suit
+                        # TODO: Fix this when full trick mechanics are implemented
+                        if game.mainPile.size() % len(game.players) == 1 and game.currentSuit == None:
+                            game.currentSuit = s_card.suit
+
                         # update player turn
                         game.determinePlayerTurn()
+
+                        print("CURRENT SUIT", game.currentSuit)
                     
                     elif "ready" == data:
                         game.players[p].ready = True
@@ -108,6 +115,9 @@ def threaded_client(conn, p, gameId):
                         # reset trump
                         game.trump = None
 
+                        # reset current suit
+                        game.currentSuit = None
+
                         # reset deck and shuffle
                         game.deck = SDeck()
                         game.deck.shuffle()
@@ -117,6 +127,12 @@ def threaded_client(conn, p, gameId):
 
                         # deal new hands
                         game.dealHands()
+
+                    # if all players have gone (trick is finished)
+                    if game.mainPile.size() % len(game.players) == 0:
+
+                        # TODO: Change this when full trick mechanics are implemented
+                        game.currentSuit = None
 
                     # send updated game back to all players
                     conn.sendall(pickle.dumps(game))
