@@ -10,6 +10,7 @@ class SCard:
 class SHand:
     def __init__(self, cards):
         self.cards = cards
+
     def size(self):
         return len(self.cards)
 

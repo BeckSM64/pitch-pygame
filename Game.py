@@ -113,4 +113,12 @@ class Game:
             if player.playerBid is None:
                 return False
         return True
+
+    def getCurrentSuit(self):
+
+        # Return the suit of the card on top of the main pile
+        if self.mainPile.size() > 0:
+            return self.mainPile.cards[self.mainPile.size() - 1].suit
+        else:
+            return None
             

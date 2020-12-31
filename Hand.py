@@ -15,3 +15,9 @@ class Hand(pygame.sprite.Group):
             w, h = pygame.display.get_surface().get_size()
             cards[i].set_pos((i * 75), (h - Card.height))
             self.add(cards[i])
+    
+    def hasCurrentSuit(self, currentSuit):
+        for card in self:
+            if card.suit == currentSuit:
+                return True
+        return False

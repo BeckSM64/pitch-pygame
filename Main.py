@@ -97,7 +97,11 @@ def main():
                     for card in test_hand:
 
                         # Only play card if it is this player's turn
-                        if card.rect.collidepoint(event.pos) and game.players[player].playerTurn and game.players[player].playerBid is not None and game.didPlayersBid() == True:
+                        if (
+                                card.rect.collidepoint(event.pos) and game.players[player].playerTurn and
+                                game.players[player].playerBid is not None and game.didPlayersBid() == True and
+                                card.isPlayable(game, test_hand.hasCurrentSuit(game.getCurrentSuit()))
+                            ):
                             test_hand.remove(card)
 
                             # Set not ready
