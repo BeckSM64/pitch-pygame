@@ -89,13 +89,41 @@ def threaded_client(conn, p, gameId):
                         game.determinePlayerTurn()
                     
                     elif "ready" == data:
-                        game.players[p].ready = True
-                        game.players[p].playerBid = None
-                        game.biddingStage = True
-                        game.players[p].playerTurn = False
 
-                        # TODO: Fix this
-                        game.players[0].playerBidTurn = True
+                        # TODO: Temporarily reset the manin pile, will
+                        # eventually award cards won to specific player
+                        game.mainPile = SMainPile()
+
+                        # if reached end of round, reset the table
+                        if game.isHandsEmpty():
+                            for player in game.players:
+
+                                player.ready = True
+                                player.playerBid = None
+                                player.playerBid = None
+                                player.playerTurn = False
+                                
+                            game.biddingStage = True
+
+                            # TODO: Fix this
+                            game.players[0].playerBidTurn = True
+
+                            # reset trump
+                            game.trump = None
+
+                            # reset current suit
+                            game.currentSuit = None
+
+                            # reset deck and shuffle
+                            game.deck = SDeck()
+                            game.deck.shuffle()
+
+                            # reset main pile
+                            game.mainPile = SMainPile()
+
+                            # deal new hands
+                            game.dealHands()
+
                     elif "not ready" == data:
                         game.players[p].ready = False
 
@@ -108,23 +136,30 @@ def threaded_client(conn, p, gameId):
                         game.determineBidTurn()
 
                     # if all player hands are empty, reset hand
-                    if game.isHandsEmpty() and game.isPlayersReady():
+                    #if game.isHandsEmpty() and game.isPlayersReady():
 
-                        # reset trump
-                        game.trump = None
+                        # game.players[p].playerBid = None
+                        # game.biddingStage = True
+                        # game.players[p].playerTurn = False
 
-                        # reset current suit
-                        game.currentSuit = None
+                        # # TODO: Fix this
+                        # game.players[0].playerBidTurn = True
 
-                        # reset deck and shuffle
-                        game.deck = SDeck()
-                        game.deck.shuffle()
+                        # # reset trump
+                        # game.trump = None
 
-                        # reset main pile
-                        game.mainPile = SMainPile()
+                        # # reset current suit
+                        # game.currentSuit = None
 
-                        # deal new hands
-                        game.dealHands()
+                        # # reset deck and shuffle
+                        # game.deck = SDeck()
+                        # game.deck.shuffle()
+
+                        # # reset main pile
+                        # game.mainPile = SMainPile()
+
+                        # # deal new hands
+                        # game.dealHands()
 
                     # if all players have gone (trick is finished)
                     if game.mainPile.size() % len(game.players) == 0:

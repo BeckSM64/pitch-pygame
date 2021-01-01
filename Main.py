@@ -141,7 +141,7 @@ def main():
         pygame.display.flip()
 
         # Time delay to keep the last card on screen in trick
-        if game.isHandsEmpty() and not game.isPlayersReady():
+        if game.mainPile.size() % len(game.players) == 0 and game.mainPile.size() != 0 and not game.isPlayersReady():
             pygame.time.delay(2000)
             n.send("ready")
 
