@@ -135,32 +135,6 @@ def threaded_client(conn, p, gameId):
                         # Update whose turn it is to bid
                         game.determineBidTurn()
 
-                    # if all player hands are empty, reset hand
-                    #if game.isHandsEmpty() and game.isPlayersReady():
-
-                        # game.players[p].playerBid = None
-                        # game.biddingStage = True
-                        # game.players[p].playerTurn = False
-
-                        # # TODO: Fix this
-                        # game.players[0].playerBidTurn = True
-
-                        # # reset trump
-                        # game.trump = None
-
-                        # # reset current suit
-                        # game.currentSuit = None
-
-                        # # reset deck and shuffle
-                        # game.deck = SDeck()
-                        # game.deck.shuffle()
-
-                        # # reset main pile
-                        # game.mainPile = SMainPile()
-
-                        # # deal new hands
-                        # game.dealHands()
-
                     # if all players have gone (trick is finished)
                     if game.mainPile.size() % len(game.players) == 0:
 
