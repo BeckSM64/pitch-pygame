@@ -116,11 +116,6 @@ def threaded_client(conn, p, gameId):
                         if game.isHandsEmpty():
                             for player in game.players:
 
-                                # TODO: Remove debug code to output cards won for each player
-                                # print("Player:", player.id)
-                                # for card in player.wonCards.cards:
-                                #     print(card.value, "of", card.suit)
-
                                 player.ready = True
                                 player.playerBid = None
                                 player.playerBid = None
