@@ -143,6 +143,9 @@ def threaded_client(conn, p, gameId):
                             # deal new hands
                             game.dealHands()
 
+                            # determine who bids first
+                            game.determineFirstBidder()
+
                     elif "not ready" == data:
                         game.players[p].ready = False
 
