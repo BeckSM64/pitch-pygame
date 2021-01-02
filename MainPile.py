@@ -14,10 +14,6 @@ class MainPile(pygame.sprite.Group):
         self.add(card)
 
         # rotate card
-        # TODO: Fix trick mechanics to empty main pile after each trick. Currently, there is
-        # a bug where the else is hit for every card played after the 3rd card in the main pile
-        # due to the main pile not being emptied. This will be resolved once the trick mechanics
-        # are complete.
         if len(self) == 1:
             card.set_pos((w / 2) - (Card.width / 2), (h / 2) - (Card.height / 2))
         elif len(self) == 2:

@@ -63,6 +63,49 @@ class SMainPile:
     def size(self):
         return len(self.cards)
 
+    def isBestCard(self, cardToCompare, trump):
+
+        # If the pile has a trump card in it
+        if self.hasTrump(trump):
+
+            # If card played was non trump, it's not the best card in the pile
+            if cardToCompare.suit != trump:
+                return False
+
+            else:
+                
+                # Check if there is a greater trump card in the pile
+                for card in self.cards:
+                    if ((card.value > cardToCompare.value) and (card.suit == trump)):
+                        return False
+                return True
+
+        else:
+
+            # Get the current suit for the pile
+            baseSuit = self.cards[0].suit
+
+            # If the card played isn't the current suit or trump,
+            # cannot be the best card
+            if cardToCompare.suit != baseSuit:
+                return False
+            
+            else:
+                for card in self.cards:
+
+                    # If card is same suit as player card and value is greater,
+                    # player did not play the best card
+                    if ((card.value > cardToCompare.value) and (card.suit == cardToCompare.suit)):
+                        return False
+                
+                return True
+
+    def hasTrump(self, trump):
+        for card in self.cards:
+            if card.suit == trump:
+                return True
+        return False
+
 class Player:
     def __init__(self, id, hand):
 
@@ -72,6 +115,7 @@ class Player:
         self.playerTurn = False
         self.ready = False
         self.id = id
+        self.wonCards = SMainPile()
 
         # Make player 0 bid first by default
         if self.id == 0:
