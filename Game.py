@@ -57,14 +57,23 @@ class Game:
         return False
 
     def determinePlayerTurn(self):
-        for i in range(len(self.players)):
-            if self.players[i].playerTurn == True:
-                self.players[i].playerTurn = False
-                if (i + 1) == len(self.players):
-                    self.players[0].playerTurn = True
-                else:
-                    self.players[i + 1].playerTurn = True
-                break
+
+        # If trick is over, reset player turns. Logic to determine
+        # the winner of the trick will assign the next player turn
+        if self.mainPile.size() % len(self.players) == 0:
+            for player in self.players:
+                player.playerTurn = False
+
+        # Else, determine the next player turn
+        else:
+            for i in range(len(self.players)):
+                if self.players[i].playerTurn == True:
+                    self.players[i].playerTurn = False
+                    if (i + 1) == len(self.players):
+                        self.players[0].playerTurn = True
+                    else:
+                        self.players[i + 1].playerTurn = True
+                    break
 
     def determineBidTurn(self):
 
