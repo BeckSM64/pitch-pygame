@@ -84,8 +84,7 @@ def threaded_client(conn, p, gameId):
                             game.winningTrick = game.players[p].id
 
                         # update current suit
-                        # TODO: Fix this when full trick mechanics are implemented
-                        if game.mainPile.size() % len(game.players) == 1 and game.currentSuit == None:
+                        if game.mainPile.size() == 1 and game.currentSuit == None:
                             game.currentSuit = s_card.suit
 
                         # update player turn
@@ -118,9 +117,9 @@ def threaded_client(conn, p, gameId):
                             for player in game.players:
 
                                 # TODO: Remove debug code to output cards won for each player
-                                print("Player:", player.id)
-                                for card in player.wonCards.cards:
-                                    print(card.value, "of", card.suit)
+                                # print("Player:", player.id)
+                                # for card in player.wonCards.cards:
+                                #     print(card.value, "of", card.suit)
 
                                 player.ready = True
                                 player.playerBid = None
@@ -194,7 +193,6 @@ def main():
             print("GAME ID", gameId)
             print("Creating a new game...")
         else:
-            # TODO: Make this work for three or more players, not just two
             games[gameId].ready = True
             p = idCount - 1
 
