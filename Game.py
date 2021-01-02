@@ -24,6 +24,10 @@ class Game:
         # Shows who is currently winning the trick
         self.winningTrick = None
 
+        # Keeps track of whose turn it is to bid at the start
+        # of each round (player 0 by default)
+        self.firstBidder = 0
+
     def connected(self):
         return self.ready
 
@@ -120,6 +124,19 @@ class Game:
             
             # Set starting player turn
             self.players[playerIndex].playerTurn = True
+
+    def determineFirstBidder(self):
+
+        if (self.firstBidder + 1) == len(self.players):
+            self.firstBidder = 0
+        else:
+            self.firstBidder += 1
+
+        for player in self.players:
+            if player.id == self.firstBidder:
+                player.playerBidTurn = True
+            else:
+                player.playerBidTurn = False
 
     def didPlayersBid(self):
         for player in self.players:
