@@ -110,8 +110,8 @@ def threaded_client(conn, p, gameId):
                                 else:
                                     player.playerTurn = False
 
-                        # Reset trick winner
                         game.winningTrick = None
+                        game.currentSuit = None
 
                         # if reached end of round, reset the table
                         if game.isHandsEmpty():
@@ -159,12 +159,6 @@ def threaded_client(conn, p, gameId):
 
                         # Update whose turn it is to bid
                         game.determineBidTurn()
-
-                    # if all players have gone (trick is finished)
-                    if game.mainPile.size() % len(game.players) == 0:
-
-                        # TODO: Change this when full trick mechanics are implemented
-                        game.currentSuit = None
 
                     # send updated game back to all players
                     conn.sendall(pickle.dumps(game))
