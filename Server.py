@@ -80,28 +80,53 @@ def threaded_client(conn, p, gameId):
                         if game.mainPile.size() == 1 and game.trump is None:
                             game.trump = s_card.suit
 
+                        if game.mainPile.isBestCard(s_card, game.trump):
+                            game.winningTrick = game.players[p].id
+
                         # update current suit
                         # TODO: Fix this when full trick mechanics are implemented
                         if game.mainPile.size() % len(game.players) == 1 and game.currentSuit == None:
                             game.currentSuit = s_card.suit
 
                         # update player turn
+                        # TODO: This may need to change after trick mechanics are implemented
                         game.determinePlayerTurn()
                     
                     elif "ready" == data:
 
-                        # TODO: Temporarily reset the manin pile, will
-                        # eventually award cards won to specific player
+                        # Award cards from trick to winning player
+                        for player in game.players:
+                            if player.id == game.winningTrick:
+                                player.wonCards.cards.extend(game.mainPile.cards)
+
+                        # Reset main pile
                         game.mainPile = SMainPile()
+
+                        # Make winner of the trick go next
+                        if game.winningTrick is not None:
+                            for player in game.players:
+                                if player.id == game.winningTrick:
+                                    player.playerTurn = True
+                                else:
+                                    player.playerTurn = False
+
+                        # Reset trick winner
+                        game.winningTrick = None
 
                         # if reached end of round, reset the table
                         if game.isHandsEmpty():
                             for player in game.players:
 
+                                # TODO: Remove debug code to output cards won for each player
+                                print("Player:", player.id)
+                                for card in player.wonCards.cards:
+                                    print(card.value, "of", card.suit)
+
                                 player.ready = True
                                 player.playerBid = None
                                 player.playerBid = None
                                 player.playerTurn = False
+                                player.wonCards = SMainPile()
                                 
                             game.biddingStage = True
 

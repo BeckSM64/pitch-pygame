@@ -21,6 +21,9 @@ class Game:
         self.trump = None
         self.currentSuit = None
 
+        # Shows who is currently winning the trick
+        self.winningTrick = None
+
     def connected(self):
         return self.ready
 
