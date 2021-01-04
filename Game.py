@@ -28,6 +28,8 @@ class Game:
         # of each round (player 0 by default)
         self.firstBidder = 0
 
+        self.bidWinner = None
+
     def connected(self):
         return self.ready
 
@@ -125,6 +127,9 @@ class Game:
             # Set starting player turn
             self.players[playerIndex].playerTurn = True
 
+            # Set bid winner
+            self.bidWinner = playerIndex
+
     def determineFirstBidder(self):
 
         if (self.firstBidder + 1) == len(self.players):
@@ -143,4 +148,74 @@ class Game:
             if player.playerBid is None:
                 return False
         return True
-            
+
+    def calculateScores(self):
+
+        highCard  = SCard(2, self.trump)
+        lowCard   = SCard(14, self.trump)
+        gameScore = 0
+        hasHigh   = None
+        hasLow    = None
+        hasGame   = None
+
+        for player in self.players:
+
+            # Determine jack point
+            if player.wonCards.hasJack(self.trump):
+                player.roundPoints += 1
+                print(player.id, "has jack")
+
+            # Determine high point
+            playerCard = player.wonCards.getHigh(self.trump)
+            if playerCard is not None:
+                if playerCard.value > highCard.value:
+                    highCard = playerCard
+                    hasHigh = player.id
+
+            # Determine low point
+            playerCard = player.wonCards.getLow(self.trump)
+            if playerCard is not None:
+                if playerCard.value < lowCard.value:
+                    lowCard = playerCard
+                    hasLow = player.id
+
+            # Determine game point
+            playerScore = player.wonCards.getGame()
+            if playerScore > gameScore:
+                gameScore = playerScore
+                hasGame = player.id
+
+        # Check if two players had the high game score
+        # If so, no game point
+        for player in self.players:
+            if player.wonCards.getGame() == gameScore and player.id != hasGame:
+                hasGame = None
+
+        # Award points
+        for player in self.players:
+
+            # Award high
+            if hasHigh == player.id:
+                player.roundPoints += 1
+                print(player.id, "has high", highCard.value, "of", highCard.suit)
+
+            # Award low
+            if hasLow == player.id:
+                player.roundPoints += 1
+                print(player.id, "has low", lowCard.value, "of", lowCard.suit)
+
+            # Award game point
+            if hasGame == player.id:
+                player.roundPoints += 1
+                print(player.id, "has game", gameScore)
+
+        # Print player scores
+        for player in self.players:
+            if player.id == self.bidWinner:
+                if player.roundPoints >= player.playerBid:
+                    player.score += player.roundPoints
+                else:
+                    player.score -= player.playerBid
+            else:
+                player.score += player.roundPoints
+            print("PLAYER", player.id, "SCORE:", player.score)

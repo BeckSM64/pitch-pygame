@@ -114,14 +114,20 @@ def threaded_client(conn, p, gameId):
 
                         # if reached end of round, reset the table
                         if game.isHandsEmpty():
+
+                            # calculate scores
+                            game.calculateScores()
+
                             for player in game.players:
 
                                 player.ready = True
                                 player.playerBid = None
                                 player.playerBid = None
                                 player.playerTurn = False
+                                player.roundPoints = 0
                                 player.wonCards = SMainPile()
-                                
+                            
+                            game.bidWinner = None
                             game.biddingStage = True
 
                             # TODO: Fix this

@@ -106,6 +106,54 @@ class SMainPile:
                 return True
         return False
 
+    def hasJack(self, trump):
+        for card in self.cards:
+            if card.value == 11 and card.suit == trump:
+                return True
+        return False
+
+    def getHigh(self, trump):
+
+        # If there is no trump card, can't have potential high
+        if not self.hasTrump(trump):
+            return None
+
+        highCard = SCard(2, trump) # High card will always be greater than this
+        for card in self.cards:
+            if card.value > highCard.value and card.suit == trump:
+                highCard = card
+        return highCard
+
+    def getLow(self, trump):
+
+        # If there is no trump card, can't have potential high
+        if not self.hasTrump(trump):
+            return None
+
+        lowCard = SCard(14, trump) # High card will always be greater than this
+        for card in self.cards:
+            if card.value < lowCard.value and card.suit == trump:
+                lowCard = card
+        return lowCard
+
+    def getGame(self):
+
+        gameScore = 0
+        for card in self.cards:
+
+            if card.value == 10:
+                gameScore += 10
+            elif card.value == 11:
+                gameScore += 1
+            elif card.value == 12:
+                gameScore += 2
+            elif card.value == 13:
+                gameScore += 3
+            elif card.value == 14:
+                gameScore += 4
+
+        return gameScore
+
 class Player:
     def __init__(self, id, hand):
 
@@ -116,6 +164,8 @@ class Player:
         self.ready = False
         self.id = id
         self.wonCards = SMainPile()
+        self.score = 0
+        self.roundPoints = 0
 
         # Make player 0 bid first by default
         if self.id == 0:
