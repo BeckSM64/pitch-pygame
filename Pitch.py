@@ -13,6 +13,7 @@ from Trump import Trump
 from Arrow import Arrow
 from Button import Button
 from BidScreen import BidScreen
+from ScoreScreen import ScoreScreen
 
 def main():
 
@@ -52,11 +53,20 @@ def main():
     # Initialize bid screen
     bid_screen = BidScreen()
 
+    # Score button
+    scoreButton = Button(50, 50 , 400, 0, (255, 255, 255), (0, 0, 0), "S")
+
+    # Score screen
+    scoreScreen = ScoreScreen()
+
     # Blit everything to the screen
     screen.blit(background, (0, 0))
     pygame.display.flip()
 
     run = True
+    showGameScreen = True
+    showScoreScreen = False
+
     # Game loop
     while run:
         clock.tick(60)
@@ -117,33 +127,58 @@ def main():
                             if button.isClicked(event.pos):
                                 n.send("bid: " + button.text)
 
-        # Blit the background of the screen
-        screen.blit(background, (0, 0))
+                    # Check if score button was clicked
+                    if scoreButton.isClicked(event.pos) and showGameScreen == True:
+                        showGameScreen = False
+                        showScoreScreen = True
+                    elif scoreButton.isClicked(event.pos) and showScoreScreen == True:
+                        showGameScreen = True
+                        showScoreScreen = False
 
-        # Draw the hand on the screen
-        test_hand.draw(screen)
+        if showGameScreen == True:
 
-        # Draw the main pile to the screen
-        main_pile.draw(screen)
+            # Blit the background of the screen
+            screen.blit(background, (0, 0))
 
-        # Draw the trump image to the screen
-        if trump_image is not None:
-            trump_image.draw(screen)
+            # Draw the hand on the screen
+            test_hand.draw(screen)
 
-        # Draw arrow image when it is player's turn
-        if game.players[player].playerTurn:
-            arrow_image.draw(screen)
+            # Draw the main pile to the screen
+            main_pile.draw(screen)
 
-        # Draw the bid screen
-        if game.biddingStage and game.players[player].playerBidTurn:
-            bid_screen.draw(screen)
+            # Draw the trump image to the screen
+            if trump_image is not None:
+                trump_image.draw(screen)
 
-        pygame.display.flip()
+            # Draw arrow image when it is player's turn
+            if game.players[player].playerTurn:
+                arrow_image.draw(screen)
 
-        # Time delay to keep the last card on screen in trick
-        if game.mainPile.size() % len(game.players) == 0 and game.mainPile.size() != 0 and not game.isPlayersReady():
-            pygame.time.delay(2000)
-            n.send("ready")
+            # Draw the bid screen
+            if game.biddingStage and game.players[player].playerBidTurn:
+                bid_screen.draw(screen)
+
+            # Draw score button
+            scoreButton.draw(screen)
+
+            pygame.display.flip()
+
+            # Time delay to keep the last card on screen in trick
+            if game.mainPile.size() % len(game.players) == 0 and game.mainPile.size() != 0 and not game.isPlayersReady():
+                pygame.time.delay(2000)
+                n.send("ready")
+
+        if showScoreScreen == True:
+
+            # Blit everything to the screen
+            screen.blit(background, (0, 0))
+
+            # Draw score button
+            scoreButton.draw(screen)
+
+            scoreScreen.draw(game, screen)
+
+            pygame.display.flip()
 
 if __name__ == '__main__':
     main()
