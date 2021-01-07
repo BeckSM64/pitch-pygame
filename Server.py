@@ -177,11 +177,12 @@ def threaded_client(conn, p, gameId):
         print("Closing Game", gameId)
     except:
         pass
+
     idCount -= 1
     conn.close()
 
 def main():
-
+    global idCount
     idCount = 0
 
     while True:
