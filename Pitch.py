@@ -91,9 +91,7 @@ def main():
                 n.send("not ready")
 
         except:
-            run = False
             print("Couldn't get game")
-            break
 
         for event in pygame.event.get():
 
