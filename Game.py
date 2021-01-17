@@ -83,12 +83,16 @@ class Game:
 
     def determineBidTurn(self):
 
+        # Keep track of last player to bid
+        lastBid = 0
+
         # Only update bid turn if currently in bidding stage
         if self.biddingStage:
 
             # Determine which player's turn it is to bid
             for i in range(len(self.players)):
                 if self.players[i].playerBidTurn == True:
+                    lastBid = i
                     self.players[i].playerBidTurn = False
                     if (i + 1) == len(self.players):
                         self.players[0].playerBidTurn = True
@@ -114,15 +118,10 @@ class Game:
             # Check if everyone passed and someone is stuck with 2 bid
             if highestBid == 0:
                 highestBid = 2
-                
-                # Person stuck with it is to left of first bidder
-                if playerIndex - 1 < 0:
-                    playerIndex = len(self.players) - 1
-                else:
-                    playerIndex = playerIndex - 1
-                
-                # Set player bid to two
-                self.players[playerIndex].playerBid = 2
+
+                # Stuck with it
+                self.players[lastBid].playerBid = 2
+                playerIndex = lastBid
             
             # Set starting player turn
             self.players[playerIndex].playerTurn = True
