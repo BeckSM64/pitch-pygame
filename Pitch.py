@@ -1,16 +1,17 @@
 from GameState import GameState
 from GameScreen import *
+from TitleScreen import *
 
 def main():
 
     # Default game state
-    game_state = GameState.NEWGAME
+    game_state = GameState.TITLE
 
     while True:
 
         # State for title screen
-        # if game_state == GameState.TITLE:
-        #     game_state = titleScreen()
+        if game_state == GameState.TITLE:
+            game_state = titleScreen()
 
         # State for new game green
         if game_state == GameState.NEWGAME:
