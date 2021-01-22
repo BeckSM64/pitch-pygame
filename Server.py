@@ -1,4 +1,7 @@
 import sys
+import hashlib
+import random
+import string
 sys.path.insert(0, '../')
 import socket
 from _thread import *
@@ -181,6 +184,16 @@ def threaded_client(conn, p, gameId):
     idCount -= 1
     conn.close()
 
+def generateHash():
+
+    # Generate random string
+    randString = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+
+    # Generate hash from string
+    hashId = hashlib.sha256(randString.encode()).hexdigest()[:10]
+
+    return hashId
+
 def main():
     global idCount
     idCount = 0
@@ -195,6 +208,11 @@ def main():
         gameId = (idCount - 1)//4
         if idCount % 4 == 1:
             games[gameId] = Game(gameId)
+
+            # Add hash for id
+            # TODO: check to make sure hash doesn't already exist before assigning to game
+            games[gameId].hashId = generateHash()
+
             print("GAME ID", gameId)
             print("Creating a new game...")
         else:
