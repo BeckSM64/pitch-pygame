@@ -1,6 +1,7 @@
 from GameState import GameState
 from GameScreen import *
 from TitleScreen import *
+from JoinScreen import *
 
 def main():
 
@@ -21,6 +22,10 @@ def main():
         if game_state == GameState.QUIT:
             pygame.quit()
             return
+
+        # State for joining an exisiting game
+        if game_state == GameState.JOIN:
+            game_state = joinScreen()
 
 if __name__ == '__main__':
     main()

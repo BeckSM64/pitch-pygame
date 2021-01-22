@@ -1,9 +1,10 @@
 import pygame
 from pygame.locals import *
 from Button import Button
+from TextBox import TextBox
 from GameState import GameState
 
-def titleScreen():
+def joinScreen():
 
     # Clock
     clock = pygame.time.Clock()
@@ -25,14 +26,10 @@ def titleScreen():
     # screen size for position calculations
     w, h = pygame.display.get_surface().get_size()
 
-    # Host game button
-    hostButton = Button(200, 50, (w / 2) - 100, (h / 2) - 25, (255, 255, 255), (0, 0, 0), "HOST")
-
     # Join button
-    joinButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "JOIN")
+    joinButton = Button(200, 50, (w / 2) - 100, (h / 2) -25, (255, 255, 255), (0, 0, 0), "JOIN")
 
-    # Quit button
-    quitButton = Button(200, 50, (w / 2) - 100, (h / 2) + 85, (255, 255, 255), (0, 0, 0), "QUIT")
+    textBox = TextBox((w / 2) - 100, (h / 2) -80, 200, 50)
 
     run = True
 
@@ -41,6 +38,9 @@ def titleScreen():
         clock.tick(60)
 
         for event in pygame.event.get():
+
+            # Check if text box was interacted with
+            textBox.handle_event(event)
 
             # Check for quit event
             if event.type == QUIT:
@@ -51,20 +51,11 @@ def titleScreen():
                 if event.button == 1: # the right mouse button
 
                     # Check if host button was clicked
-                    if hostButton.isClicked(event.pos):
-                        return GameState.NEWGAME
-
-                    # Check if join button was clicked
                     if joinButton.isClicked(event.pos):
-                        return GameState.JOIN
-
-                    # Check if quit button was clicked
-                    if quitButton.isClicked(event.pos):
-                        return GameState.QUIT
+                        return GameState.NEWGAME
     
         # Draw buttons and stuff
-        hostButton.draw(screen)
         joinButton.draw(screen)
-        quitButton.draw(screen)
+        textBox.draw(screen)
 
         pygame.display.flip()
