@@ -71,7 +71,7 @@ def threaded_client(conn, addr):
                 conn.send(str.encode(str(p)))
 
             if "host" in data:
-                p, gameId = joinGame(conn, addr)
+                p, gameId = hostGame(conn, addr)
             
             if gameId in games:
                 game = games[gameId]
