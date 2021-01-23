@@ -29,6 +29,7 @@ def joinScreen():
     # Join button
     joinButton = Button(200, 50, (w / 2) - 100, (h / 2) -25, (255, 255, 255), (0, 0, 0), "JOIN")
 
+    # Text box for game hash
     textBox = TextBox((w / 2) - 100, (h / 2) -80, 200, 50)
 
     run = True
@@ -52,7 +53,8 @@ def joinScreen():
 
                     # Check if host button was clicked
                     if joinButton.isClicked(event.pos):
-                        return GameState.NEWGAME
+                        print(textBox.text)
+                        return GameState.NEWGAME, textBox.text
     
         # Draw buttons and stuff
         joinButton.draw(screen)
