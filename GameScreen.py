@@ -16,18 +16,28 @@ from BidScreen import BidScreen
 from ScoreScreen import ScoreScreen
 from GameState import GameState
 
-def gameScreen():
+def gameScreen(gameKey):
 
     # Clock
     clock = pygame.time.Clock()
 
     # Set up connection to server
     n = Network()
-    player = int(n.getP())
-    print("You are player", player)
 
-    # Get game
-    game = n.send("get")
+    # Connect to server
+    n.connect()
+    
+    # Get game from server
+    if gameKey is not None:
+        try:
+            game = n.send(f"gameKey {gameKey}")
+        except:
+            return GameState.JOIN
+    else:
+        game = n.send("host")
+
+    player = n.getPlayer("getPlayer")
+    print("You are player", player)
 
     # Initialize screen
     pygame.init()

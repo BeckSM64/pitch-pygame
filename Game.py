@@ -13,6 +13,7 @@ class Game:
         self.ready = False
         self.numPlayers = 0
         self.id = id
+        self.hashId = None # Assigned by server after game is created
 
         # Flag to determine if in bidding stage or not
         self.biddingStage = True

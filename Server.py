@@ -1,4 +1,7 @@
 import sys
+import hashlib
+import random
+import string
 sys.path.insert(0, '../')
 import socket
 from _thread import *
@@ -6,7 +9,6 @@ import pickle
 from ServerData import *
 from Game import Game
 
-#server = "192.168.1.2"
 server = "10.0.0.99"
 port = 54555
 
@@ -46,14 +48,30 @@ def get_bid(data):
 
     return bid
 
-def threaded_client(conn, p, gameId):
+def getGameKey(data):
+
+    data = data.split(" ")
+
+    return data[1]
+
+def threaded_client(conn, addr):
     global idCount
-    conn.send(str.encode(str(p)))
+    p = None
 
     reply = ""
     while True:
         try:
             data = conn.recv(4096 * 2).decode()
+
+            if "gameKey" in data:
+                gameKey = getGameKey(data)
+                p, gameId = joinGameWithKey(conn, addr, gameKey)
+
+            if "getPlayer" in data:
+                conn.send(str.encode(str(p)))
+
+            if "host" in data:
+                p, gameId = hostGame(conn, addr)
             
             if gameId in games:
                 game = games[gameId]
@@ -181,6 +199,66 @@ def threaded_client(conn, p, gameId):
     idCount -= 1
     conn.close()
 
+def generateHash():
+
+    # Generate random string
+    randString = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+
+    # Generate hash from string
+    hashId = hashlib.sha256(randString.encode()).hexdigest()[:10]
+
+    return hashId
+
+def hostGame(conn, addr):
+
+    global idCount
+    idCount += 1
+    p = 0
+    gameId = idCount
+
+    games[gameId] = Game(gameId)
+
+    # Add hash for id
+    # TODO: check to make sure hash doesn't already exist before assigning to game
+    games[gameId].hashId = generateHash()
+
+    print("GAME ID", gameId)
+    print("Creating a new game...")
+    print("Game Key:", games[gameId].hashId)
+
+    # Add player to player list
+    games[gameId].newPlayer(p)
+
+    # Increment number of players in game
+    games[gameId].numPlayers += 1
+
+    return p, gameId
+
+def joinGameWithKey(conn, addr, gameKey):
+
+    global idCount
+    idCount += 1
+    p = 0
+    gameId = None
+
+    # find game with matching gamekey
+    for key, value in games.items():
+        if value.hashId == gameKey:
+            gameId = value.id
+
+    # TODO: Check to see if game with key doesn't exist
+
+    games[gameId].ready = True
+    p = len(games[gameId].players)
+
+    # Add player to player list
+    games[gameId].newPlayer(p)
+
+    # Increment number of players in game
+    games[gameId].numPlayers += 1
+
+    return p, gameId
+
 def main():
     global idCount
     idCount = 0
@@ -190,24 +268,7 @@ def main():
         conn, addr = s.accept()
         print("Connected to:", addr)
 
-        idCount += 1
-        p = 0
-        gameId = (idCount - 1)//4
-        if idCount % 4 == 1:
-            games[gameId] = Game(gameId)
-            print("GAME ID", gameId)
-            print("Creating a new game...")
-        else:
-            games[gameId].ready = True
-            p = idCount - 1
-
-        # Add player to player list
-        games[gameId].newPlayer(p)
-
-        # Increment number of players in game
-        games[gameId].numPlayers += 1
-
-        start_new_thread(threaded_client, (conn, p, gameId))
+        start_new_thread(threaded_client, (conn, addr))
 
 if __name__ == "__main__":
     main()
