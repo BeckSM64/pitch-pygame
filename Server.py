@@ -46,8 +46,9 @@ def get_bid(data):
 
     return bid
 
-def threaded_client(conn, p, gameId):
+def threaded_client(conn, addr):
     global idCount
+    p, gameId = joinGame(conn, addr)
     conn.send(str.encode(str(p)))
 
     reply = ""
@@ -181,6 +182,27 @@ def threaded_client(conn, p, gameId):
     idCount -= 1
     conn.close()
 
+def joinGame(conn, addr):
+    global idCount
+    idCount += 1
+    p = 0
+    gameId = (idCount - 1)//4
+    if idCount % 4 == 1:
+        games[gameId] = Game(gameId)
+        print("GAME ID", gameId)
+        print("Creating a new game...")
+    else:
+        games[gameId].ready = True
+        p = idCount - 1
+
+    # Add player to player list
+    games[gameId].newPlayer(p)
+
+    # Increment number of players in game
+    games[gameId].numPlayers += 1
+
+    return p, gameId
+
 def main():
     global idCount
     idCount = 0
@@ -190,24 +212,7 @@ def main():
         conn, addr = s.accept()
         print("Connected to:", addr)
 
-        idCount += 1
-        p = 0
-        gameId = (idCount - 1)//4
-        if idCount % 4 == 1:
-            games[gameId] = Game(gameId)
-            print("GAME ID", gameId)
-            print("Creating a new game...")
-        else:
-            games[gameId].ready = True
-            p = idCount - 1
-
-        # Add player to player list
-        games[gameId].newPlayer(p)
-
-        # Increment number of players in game
-        games[gameId].numPlayers += 1
-
-        start_new_thread(threaded_client, (conn, p, gameId))
+        start_new_thread(threaded_client, (conn, addr))
 
 if __name__ == "__main__":
     main()
