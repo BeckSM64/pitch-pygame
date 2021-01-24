@@ -48,12 +48,16 @@ def get_bid(data):
 
 def threaded_client(conn, addr):
     global idCount
-    p, gameId = joinGame(conn, addr)
-    conn.send(str.encode(str(p)))
+    p = None
+    gameId = None
 
     reply = ""
     while True:
         try:
+            if p is None and gameId is None:
+                p, gameId = joinGame(conn, addr)
+                conn.send(str.encode(str(p)))
+
             data = conn.recv(4096 * 2).decode()
             
             if gameId in games:
