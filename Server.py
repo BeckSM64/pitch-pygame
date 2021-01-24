@@ -46,6 +46,16 @@ def get_bid(data):
 
     return bid
 
+def generateHash():
+
+    # Generate random string
+    randString = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+
+    # Generate hash from string
+    hashId = hashlib.sha256(randString.encode()).hexdigest()[:10]
+
+    return hashId
+
 def threaded_client(conn, addr):
     global idCount
     p = None
