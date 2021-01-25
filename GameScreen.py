@@ -16,7 +16,9 @@ from BidScreen import BidScreen
 from ScoreScreen import ScoreScreen
 from GameState import GameState
 
-def gameScreen():
+def gameScreen(gameKey):
+
+    print("GAME KEY", gameKey)
 
     # Clock
     clock = pygame.time.Clock()

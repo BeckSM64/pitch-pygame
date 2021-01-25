@@ -8,6 +8,8 @@ def main():
     # Default game state
     game_state = GameState.TITLE
 
+    gameKey = None
+
     while True:
 
         # State for title screen
@@ -16,7 +18,7 @@ def main():
 
         # State for new game green
         if game_state == GameState.NEWGAME:
-            game_state = gameScreen()
+            game_state = gameScreen(gameKey)
 
         # State for quitting game
         if game_state == GameState.QUIT:
