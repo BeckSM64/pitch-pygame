@@ -56,11 +56,6 @@ def generateHash():
 
     return hashId
 
-def getGameKey(data):
-
-    data = data.split(" ")
-    return data[1]
-
 def threaded_client(conn, addr):
     global idCount
     p = None
@@ -69,15 +64,11 @@ def threaded_client(conn, addr):
     reply = ""
     while True:
         try:
+            if p is None and gameId is None:
+                p, gameId = joinGame(conn, addr)
+                conn.send(str.encode(str(p)))
 
             data = conn.recv(4096 * 2).decode()
-
-            if p is None and gameId is None and "gameKey" in data:
-                gameKey = getGameKey(data)
-                p, gameId = joinGame(conn, addr)
-
-            if "player" in data:
-                conn.send(str.encode(str(p)))
             
             if gameId in games:
                 game = games[gameId]
