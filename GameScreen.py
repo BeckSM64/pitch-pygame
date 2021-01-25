@@ -25,11 +25,13 @@ def gameScreen(gameKey):
 
     # Set up connection to server
     n = Network()
-    player = int(n.getP())
-    print("You are player", player)
+    n.connect()
 
     # Get game
-    game = n.send("get")
+    game = n.send("gameKey " + gameKey)
+
+    player = int(n.getP("player"))
+    print("You are player", player)
 
     # Initialize screen
     pygame.init()

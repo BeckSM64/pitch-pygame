@@ -8,15 +8,16 @@ class Network:
         self.server = "10.0.0.99"
         self.port = 54555
         self.addr = (self.server, self.port)
-        self.p = self.connect()
+        #self.p = self.connect()
 
-    def getP(self):
-        return self.p
+    def getP(self, data):
+        self.client.send(str.encode(data))
+        return self.client.recv(2048).decode()
 
     def connect(self):
         try:
             self.client.connect(self.addr)
-            return self.client.recv(2048).decode()
+            #return self.client.recv(2048).decode()
         except:
             pass
 
