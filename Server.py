@@ -5,9 +5,10 @@ from _thread import *
 import pickle
 from ServerData import *
 from Game import Game
+import struct
 
 #server = "192.168.1.2"
-server = "10.0.0.99"
+server = "0.0.0.0"
 port = 54555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -164,7 +165,10 @@ def threaded_client(conn, p, gameId):
                         game.determineBidTurn()
 
                     # send updated game back to all players
-                    conn.sendall(pickle.dumps(game))
+                    packet = pickle.dumps(game)
+                    length = struct.pack('!I', len(packet))
+                    packet = length + packet
+                    conn.sendall(packet)
 
             else:
                 break
