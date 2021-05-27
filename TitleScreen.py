@@ -10,7 +10,7 @@ def titleScreen():
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((450, 500))
+    screen = pygame.display.set_mode((1280, 720))
     pygame.display.set_caption('Pitch')
 
     # Fill background
