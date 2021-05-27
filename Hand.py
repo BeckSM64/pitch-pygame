@@ -8,13 +8,19 @@ class Hand(pygame.sprite.Group):
         # Super class constructor
         pygame.sprite.Group.__init__(self)
 
-        # Loop through cards in hand
-        for i in range(6):
+        # Set card positions
+        w, h = pygame.display.get_surface().get_size()
+        cards[0].set_pos((w / 2) - (Card.width * 3), (h - Card.height))
+        cards[1].set_pos((w / 2) - (Card.width * 2), (h - Card.height))
+        cards[2].set_pos((w / 2) - (Card.width), (h - Card.height))
+        cards[3].set_pos((w / 2), (h - Card.height))
+        cards[4].set_pos((w / 2) + (Card.width), (h - Card.height))
+        cards[5].set_pos((w / 2) + (Card.width * 2), (h - Card.height))
 
-            # Set position of cards in hand
-            w, h = pygame.display.get_surface().get_size()
-            cards[i].set_pos((i * 75), (h - Card.height))
+        # Add cards to hand
+        for i in range(6):
             self.add(cards[i])
+
     
     def hasCurrentSuit(self, currentSuit):
         for card in self:

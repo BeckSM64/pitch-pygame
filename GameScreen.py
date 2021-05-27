@@ -31,7 +31,7 @@ def gameScreen():
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((450, 500))
+    screen = pygame.display.set_mode((1280, 720))
     pygame.display.set_caption('Pitch')
 
     # Fill background
@@ -55,7 +55,14 @@ def gameScreen():
     bid_screen = BidScreen()
 
     # Score button
-    scoreButton = Button(50, 50 , 400, 0, (255, 255, 255), (0, 0, 0), "S")
+    SCORE_BUTTON_WIDTH      = 50
+    SCORE_BUTTON_HEIGHT     = 50
+    SCORE_BUTTON_X          = screen.get_width() - SCORE_BUTTON_WIDTH
+    SCORE_BUTTON_Y          = 0
+    SCORE_BUTTON_COLOR      = (255, 255, 255)
+    SCORE_BUTTON_TEXT_COLOR = (0, 0, 0)
+    SCORE_BUTTON_TEXT       = "S"
+    scoreButton = Button(SCORE_BUTTON_WIDTH, SCORE_BUTTON_HEIGHT , SCORE_BUTTON_X, SCORE_BUTTON_Y, SCORE_BUTTON_COLOR, SCORE_BUTTON_TEXT_COLOR, "S")
 
     # Score screen
     scoreScreen = ScoreScreen()
