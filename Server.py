@@ -49,7 +49,12 @@ def get_bid(data):
 
 def threaded_client(conn, p, gameId):
     global idCount
-    conn.send(str.encode(str(p)))
+
+    # Send message length with player id message
+    packet = str.encode(str(p))
+    length = struct.pack('!I', len(packet))
+    packet = length + packet
+    conn.send(packet)
 
     reply = ""
     while True:
