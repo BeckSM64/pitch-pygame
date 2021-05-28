@@ -15,13 +15,14 @@ class BidScreen:
         self.COLOR         = (255, 255, 255)
         self.TEXT_COLOR    = (0, 0, 0)
 
+        # Lists of different bid buttons. Different button lists will be used depending
+        # on which bid options are valid at the time each player makes their bid
         self.buttonList1    = self.setButtonList1()
         self.buttonList2    = self.setButtonList2()
         self.buttonList3    = self.setButtonList3()
         self.buttonList4    = self.setButtonList4()
         self.buttonListPass = self.setButtonListPass()
         self.buttonList     = self.buttonList4
-
 
     def draw(self, screen, game):
 
