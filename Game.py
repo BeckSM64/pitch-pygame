@@ -148,6 +148,21 @@ class Game:
                 return False
         return True
 
+    def getNumberOfBids(self):
+        numBidders = 0
+        for player in self.players:
+            if player.playerBid is not None:
+                numBidders += 1
+        return numBidders
+
+    def getHighestBid(self):
+        highestBid = 0
+
+        for player in self.players:
+            if player.playerBid is not None and player.playerBid > highestBid:
+                highestBid = player.playerBid
+        return highestBid
+
     def calculateScores(self):
 
         highCard  = SCard(2, self.trump)

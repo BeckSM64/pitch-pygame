@@ -62,7 +62,7 @@ def gameScreen():
     SCORE_BUTTON_COLOR      = (255, 255, 255)
     SCORE_BUTTON_TEXT_COLOR = (0, 0, 0)
     SCORE_BUTTON_TEXT       = "S"
-    scoreButton = Button(SCORE_BUTTON_WIDTH, SCORE_BUTTON_HEIGHT , SCORE_BUTTON_X, SCORE_BUTTON_Y, SCORE_BUTTON_COLOR, SCORE_BUTTON_TEXT_COLOR, "S")
+    scoreButton = Button(SCORE_BUTTON_WIDTH, SCORE_BUTTON_HEIGHT , SCORE_BUTTON_X, SCORE_BUTTON_Y, SCORE_BUTTON_COLOR, SCORE_BUTTON_TEXT_COLOR, SCORE_BUTTON_TEXT)
 
     # Score screen
     scoreScreen = ScoreScreen()
@@ -162,7 +162,7 @@ def gameScreen():
 
             # Draw the bid screen
             if game.biddingStage and game.players[player].playerBidTurn:
-                bid_screen.draw(screen)
+                bid_screen.draw(screen, game)
 
             # Draw score button
             scoreButton.draw(screen)
