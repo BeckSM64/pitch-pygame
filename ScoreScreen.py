@@ -10,12 +10,13 @@ class ScoreScreen:
 
     def draw(self, game, screen):
 
-        x = 100
+        x = 200
         for player in game.players:
 
-            text = "P" + str(player.id) + ": " + str(player.score)
+            text = player.username + ": " + str(player.score)
             
             # Draw text to screen
-            font = pygame.font.SysFont("arial", 15)
-            text = font.render(text, 1, (0, 0, 0))
+            font = pygame.font.SysFont("arial", 25)
+            textColor = (0, 0, 0)
+            text = font.render(text, 1, textColor)
             screen.blit(text, (x * player.id, 0))
