@@ -72,8 +72,6 @@ def threaded_client(conn, p, gameId):
             if gameId in games:
                 game = games[gameId]
 
-                print(game.players[p].username)
-
                 if not data:
                     break
                 else:
