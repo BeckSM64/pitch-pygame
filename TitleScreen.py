@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from Button import Button
 from GameState import GameState
+from TextBox import TextBox
 
 def titleScreen():
 
@@ -31,6 +32,8 @@ def titleScreen():
     # Quit button
     quitButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "QUIT")
 
+    textBox = TextBox((w / 2) - 100, (h / 2) - 80, 200, 50)
+
     run = True
 
     # Game loop
@@ -49,14 +52,16 @@ def titleScreen():
 
                     # Check if start button was clicked
                     if startButton.isClicked(event.pos):
-                        return GameState.NEWGAME
+                        return GameState.NEWGAME, textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
 
                     # Check if quit button was clicked
                     if quitButton.isClicked(event.pos):
                         return GameState.QUIT
+            textBox.handle_event(event)
     
         # Draw buttons and stuff
         startButton.draw(screen)
         quitButton.draw(screen)
+        textBox.draw(screen)
 
         pygame.display.flip()

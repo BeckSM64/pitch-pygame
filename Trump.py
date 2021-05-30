@@ -21,9 +21,12 @@ class Trump(pygame.sprite.Sprite):
         self.sprite = pygame.sprite.RenderPlain(self)
         self.rect = self.image.get_rect()
 
+        # Screen width and height
+        self.w, self.h = pygame.display.get_surface().get_size()
+
         # Set position of trump image
         self.rect.x = 0
-        self.rect.y = 0
+        self.rect.y = (self.h - self.rect.height)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

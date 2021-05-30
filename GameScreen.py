@@ -15,8 +15,9 @@ from Button import Button
 from BidScreen import BidScreen
 from ScoreScreen import ScoreScreen
 from GameState import GameState
+from UsernameList import UsernameList
 
-def gameScreen():
+def gameScreen(username):
 
     # Clock
     clock = pygame.time.Clock()
@@ -28,6 +29,10 @@ def gameScreen():
 
     # Get game
     game = n.send("get")
+
+    # Set player username
+    game.players[player].username = username
+    n.send("username: " + username)
 
     # Initialize screen
     pygame.init()
@@ -53,6 +58,9 @@ def gameScreen():
 
     # Initialize bid screen
     bid_screen = BidScreen()
+
+    # Initialize username list
+    username_list = UsernameList()
 
     # Score button
     SCORE_BUTTON_WIDTH      = 50
@@ -166,6 +174,9 @@ def gameScreen():
 
             # Draw score button
             scoreButton.draw(screen)
+
+            # Draw the username list
+            username_list.draw(game, screen)
 
             pygame.display.flip()
 

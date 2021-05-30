@@ -47,6 +47,14 @@ def get_bid(data):
 
     return bid
 
+def get_username(data):
+
+    # Get username located at position 1
+    data = data.split(" ")
+    username = data[1]
+
+    return username
+
 def threaded_client(conn, p, gameId):
     global idCount
 
@@ -63,6 +71,8 @@ def threaded_client(conn, p, gameId):
             
             if gameId in games:
                 game = games[gameId]
+
+                print(game.players[p].username)
 
                 if not data:
                     break
@@ -168,6 +178,11 @@ def threaded_client(conn, p, gameId):
 
                         # Update whose turn it is to bid
                         game.determineBidTurn()
+
+                    elif "username:" in data:
+
+                        # Get username from player
+                        game.players[p].username = get_username(data)
 
                     # send updated game back to all players
                     packet = pickle.dumps(game)

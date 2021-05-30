@@ -163,6 +163,7 @@ class Player:
         self.playerTurn = False
         self.ready = False
         self.id = id
+        self.username = None
         self.wonCards = SMainPile()
         self.score = 0
         self.roundPoints = 0
