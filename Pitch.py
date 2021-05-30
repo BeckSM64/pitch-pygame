@@ -11,11 +11,11 @@ def main():
 
         # State for title screen
         if game_state == GameState.TITLE:
-            game_state = titleScreen()
+            game_state, username = titleScreen()
 
         # State for new game green
         if game_state == GameState.NEWGAME:
-            game_state = gameScreen()
+            game_state = gameScreen(username)
 
         # State for quitting game
         if game_state == GameState.QUIT:
