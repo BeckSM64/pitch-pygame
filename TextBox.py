@@ -32,9 +32,12 @@ class TextBox:
             if self.active:
 
                 if event.key == pygame.K_RETURN:
-                    print(self.text)
-                    self.text = ''
+                    
+                    # Return true if enter is pressed
+                    return True
                 elif event.key == pygame.K_BACKSPACE:
+
+                    # Remove one character from text in textbox
                     self.text = self.text[:-1]
                 else:
                     # Don't exceed the length of the text box

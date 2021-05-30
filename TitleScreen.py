@@ -65,7 +65,12 @@ def titleScreen():
                     if quitButton.isClicked(event.pos):
                         return GameState.QUIT
 
-            textBox.handle_event(event)
+            # Proceed to game if enter is pressed in the textbox
+            isInputEntered = textBox.handle_event(event)
+            if isInputEntered and len(textBox.text) != 0:
+                return GameState.NEWGAME, textBox.text
+            elif isInputEntered and len(textBox.text) == 0:
+                showError = True
     
         # Blit the background of the screen
         screen.blit(background, (0, 0))
