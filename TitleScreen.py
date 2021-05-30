@@ -3,6 +3,7 @@ from pygame.locals import *
 from Button import Button
 from GameState import GameState
 from TextBox import TextBox
+pygame.font.init()
 
 def titleScreen():
 
@@ -32,9 +33,12 @@ def titleScreen():
     # Quit button
     quitButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "QUIT")
 
+    # Text botx to enter username
     textBox = TextBox((w / 2) - 100, (h / 2) - 80, 200, 50)
 
     run = True
+
+    showError = False
 
     # Game loop
     while run:
@@ -52,11 +56,15 @@ def titleScreen():
 
                     # Check if start button was clicked
                     if startButton.isClicked(event.pos):
-                        return GameState.NEWGAME, textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
+                        if len(textBox.text) == 0:
+                            showError = True
+                        else:
+                            return GameState.NEWGAME, textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
 
                     # Check if quit button was clicked
                     if quitButton.isClicked(event.pos):
                         return GameState.QUIT
+
             textBox.handle_event(event)
     
         # Draw buttons and stuff
@@ -64,4 +72,17 @@ def titleScreen():
         quitButton.draw(screen)
         textBox.draw(screen)
 
+        # Show error if username field is left blank
+        if showError:
+            displayInputError(screen, w, h)
+
         pygame.display.flip()
+
+def displayInputError(screen, w, h):
+
+    # Draw text to screen
+    font = pygame.font.SysFont("arial", 15)
+    textColor = (255, 0, 0)
+    text = "*Username must not be blank"
+    text = font.render(text, 1, textColor)
+    screen.blit(text, ((w / 2) - 100, (h / 2) - 100))
