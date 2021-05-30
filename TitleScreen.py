@@ -67,6 +67,9 @@ def titleScreen():
 
             textBox.handle_event(event)
     
+        # Blit the background of the screen
+        screen.blit(background, (0, 0))
+        
         # Draw buttons and stuff
         startButton.draw(screen)
         quitButton.draw(screen)
