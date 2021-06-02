@@ -195,11 +195,16 @@ def threaded_client(conn, p, gameId):
 
     print("Lost connection")
     try:
-        del games[gameId]
-        print("Closing Game", gameId)
+        # Decrease number of players in game
+        games[gameId].numPlayers -= 1
+        
+        # If all players have been disconnected, delete the game
+        if games[gameId].numPlayers == 0:
+            del games[gameId]
+            print("Closing Game", gameId)
     except:
         pass
-
+    
     idCount -= 1
     conn.close()
 
@@ -220,11 +225,12 @@ def main():
             print("GAME ID", gameId)
             print("Creating a new game...")
         else:
+            print(len(games))
             games[gameId].ready = True
             p = idCount - 1
 
         # Add player to player list
-        games[gameId].newPlayer(p)
+        games[gameId].newPlayer(p, conn)
 
         # Increment number of players in game
         games[gameId].numPlayers += 1

@@ -47,8 +47,8 @@ class Game:
         for player in self.players:
             player.playerHand = self.deck.deal_hand()
 
-    def newPlayer(self, id):
-        self.players.append(Player(id, self.dealHand()))
+    def newPlayer(self, id, conn):
+        self.players.append(Player(id, self.dealHand(), conn))
 
     def isHandsEmpty(self):
         for player in self.players:

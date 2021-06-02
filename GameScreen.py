@@ -91,6 +91,12 @@ def gameScreen(username):
         try:
                 
             game = n.send("get")
+            
+            # If a player left the game (numPlayers decreased),
+            # disconnect from server and return to the title screen
+            if game.numPlayers != len(game.players):
+                n.disconnect()
+                return GameState.TITLE
 
             # Update main pile
             main_pile = get_main_pile(game.mainPile)
