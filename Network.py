@@ -18,7 +18,7 @@ class Network:
         try:
             self.client.connect(self.addr)
 
-            self.client.setblocking(0)
+            #self.client.setblocking(0)
 
             ready = select.select([self.client], [], [], 3)
             if ready[0]:
@@ -49,7 +49,7 @@ class Network:
         try:
             self.client.send(str.encode(data))
 
-            self.client.setblocking(0)
+            #self.client.setblocking(0)
 
             ready = select.select([self.client], [], [], 3)
             if ready[0]:
