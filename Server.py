@@ -195,13 +195,32 @@ def threaded_client(conn, p, gameId):
 
     print("Lost connection")
     try:
-        del games[gameId]
-        print("Closing Game", gameId)
+        # Decrease number of players in game
+        games[gameId].numPlayers -= 1
+        
+        # If all players have been disconnected, delete the game
+        if games[gameId].numPlayers == 0:
+            del games[gameId]
+            print("Closing Game", gameId)
     except:
         pass
-
+    
     idCount -= 1
     conn.close()
+
+def createUniqueGameId():
+    maxGameId = -1
+
+    # Loop through games in games dictionary and get largest existing key
+    for key, value in games.items():
+        if key > maxGameId:
+            maxGameId = key
+    
+    # Increment largest id to get a new unique id
+    newGameId = maxGameId + 1
+
+    # Return new game id
+    return newGameId
 
 def main():
     global idCount
@@ -214,17 +233,24 @@ def main():
 
         idCount += 1
         p = 0
-        gameId = (idCount - 1)//4
+        gameId = createUniqueGameId()
         if idCount % 4 == 1:
             games[gameId] = Game(gameId)
             print("GAME ID", gameId)
             print("Creating a new game...")
         else:
+            for key, value in games.items():
+                if value.numPlayers < 4:
+                    # TODO: Should probably have a check here to make
+                    # sure a game isn't already in progress before joining
+                    gameId = key
+                    break
+
             games[gameId].ready = True
             p = idCount - 1
 
         # Add player to player list
-        games[gameId].newPlayer(p)
+        games[gameId].newPlayer(p, conn)
 
         # Increment number of players in game
         games[gameId].numPlayers += 1

@@ -1,6 +1,7 @@
 import socket
 import pickle
 import struct
+import select
 
 class Network:
     def __init__(self):
@@ -17,20 +18,30 @@ class Network:
         try:
             self.client.connect(self.addr)
 
-            # Keep receiving data until whole message is received
-            buf = b''
-            while len(buf) < 4:
-                buf += self.client.recv(4 - len(buf))
+            # Wait until data is available, timeout of 3 seconds
+            ready = select.select([self.client], [], [], 3)
 
-            length = struct.unpack('!I', buf)[0]
+            if ready[0]:
+                # Keep receiving data until whole message is received
+                buf = b''
+                while len(buf) < 4:
+                    buf += self.client.recv(4 - len(buf))
 
-            data = b''
-            while len(data) < length:
-                data += self.client.recv(4)
+                length = struct.unpack('!I', buf)[0]
 
-            # Return player id
-            return int(data.decode())
+                data = b''
+                while len(data) < length:
+                    data += self.client.recv(4)
 
+                # Return player id
+                return int(data.decode())
+
+        except socket.error as e:
+            print(e)
+
+    def disconnect(self):
+        try:
+            self.client.close()
         except socket.error as e:
             print(e)
 
@@ -38,17 +49,21 @@ class Network:
         try:
             self.client.send(str.encode(data))
 
-            # Keep receiving data until whole message is received
-            buf = b''
-            while len(buf) < 4:
-                buf += self.client.recv(4 - len(buf))
+            # Wait until data is available, timeout of 3 seconds
+            ready = select.select([self.client], [], [], 3)
 
-            length = struct.unpack('!I', buf)[0]
+            if ready[0]:
+                # Keep receiving data until whole message is received
+                buf = b''
+                while len(buf) < 4:
+                    buf += self.client.recv(4 - len(buf))
 
-            data = b''
-            while len(data) < length:
-                data += self.client.recv(4)
-            return pickle.loads(data)
+                length = struct.unpack('!I', buf)[0]
+
+                data = b''
+                while len(data) < length:
+                    data += self.client.recv(4)
+                return pickle.loads(data)
 
         except socket.error as e:
             print(e)

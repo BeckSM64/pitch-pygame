@@ -155,7 +155,7 @@ class SMainPile:
         return gameScore
 
 class Player:
-    def __init__(self, id, hand):
+    def __init__(self, id, hand, conn):
 
         self.playerHand = hand
         self.playerWent = False
@@ -163,6 +163,7 @@ class Player:
         self.playerTurn = False
         self.ready = False
         self.id = id
+        self.conn = None
         self.username = None
         self.wonCards = SMainPile()
         self.score = 0
