@@ -208,6 +208,20 @@ def threaded_client(conn, p, gameId):
     idCount -= 1
     conn.close()
 
+def createUniqueGameId():
+    maxGameId = -1
+
+    # Loop through games in games dictionary and get largest existing key
+    for key, value in games.items():
+        if key > maxGameId:
+            maxGameId = key
+    
+    # Increment largest id to get a new unique id
+    newGameId = maxGameId + 1
+
+    # Return new game id
+    return newGameId
+
 def main():
     global idCount
     idCount = 0
@@ -219,13 +233,19 @@ def main():
 
         idCount += 1
         p = 0
-        gameId = (idCount - 1)//4
+        gameId = createUniqueGameId()
         if idCount % 4 == 1:
             games[gameId] = Game(gameId)
             print("GAME ID", gameId)
             print("Creating a new game...")
         else:
-            print(len(games))
+            for key, value in games.items():
+                if value.numPlayers < 4:
+                    # TODO: Should probably have a check here to make
+                    # sure a game isn't already in progress before joining
+                    gameId = key
+                    break
+
             games[gameId].ready = True
             p = idCount - 1
 
