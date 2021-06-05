@@ -18,9 +18,9 @@ class Network:
         try:
             self.client.connect(self.addr)
 
-            #self.client.setblocking(0)
-
+            # Wait until data is available, timeout of 3 seconds
             ready = select.select([self.client], [], [], 3)
+
             if ready[0]:
                 # Keep receiving data until whole message is received
                 buf = b''
@@ -49,11 +49,11 @@ class Network:
         try:
             self.client.send(str.encode(data))
 
-            #self.client.setblocking(0)
-
+            # Wait until data is available, timeout of 3 seconds
             ready = select.select([self.client], [], [], 3)
+
             if ready[0]:
-            # Keep receiving data until whole message is received
+                # Keep receiving data until whole message is received
                 buf = b''
                 while len(buf) < 4:
                     buf += self.client.recv(4 - len(buf))
