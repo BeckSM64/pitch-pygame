@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import os
-from Resources import *
+from resources.Resources import *
 from game.logic.Game import Game
 from game.objects.Card import Card
 from game.objects.Hand import Hand

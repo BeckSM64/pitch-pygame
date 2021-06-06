@@ -6,7 +6,7 @@ import select
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "127.0.0.1"
+        self.server = "tomhanks.servebeer.com"
         self.port = 54555
         self.addr = (self.server, self.port)
         self.p = self.connect()
