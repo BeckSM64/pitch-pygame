@@ -7,8 +7,8 @@ from Card import Card
 from Hand import Hand
 from Deck import Deck
 from MainPile import MainPile
-from Network import Network
-from ServerData import *
+from network.Network import Network
+from network.ServerData import *
 from Trump import Trump
 from Arrow import Arrow
 from ui.widgets.Button import Button

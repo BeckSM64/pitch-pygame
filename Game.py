@@ -1,4 +1,4 @@
-from ServerData import *
+from network.ServerData import *
 
 class Game:
     def __init__(self, id):
