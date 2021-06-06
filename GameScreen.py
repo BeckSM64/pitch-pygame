@@ -39,6 +39,9 @@ def gameScreen(username):
     screen = pygame.display.set_mode((1280, 720))
     pygame.display.set_caption('Pitch')
 
+    # screen size for position calculations
+    w, h = pygame.display.get_surface().get_size()
+
     # Fill background
     background = pygame.Surface(screen.get_size())
     background = background.convert()
@@ -80,8 +83,9 @@ def gameScreen(username):
     pygame.display.flip()
 
     run = True
-    showGameScreen = True
+    showGameScreen = False
     showScoreScreen = False
+    gameReady = False
 
     # Game loop
     while run:
@@ -97,6 +101,11 @@ def gameScreen(username):
             if game.numPlayers != len(game.players):
                 n.disconnect()
                 return GameState.DISCONNECT
+
+            # Check to see if game is ready to start
+            if game.numPlayers >= 3 and showScoreScreen == False:
+                gameReady = True
+                showGameScreen = True
 
             # Update main pile
             main_pile = get_main_pile(game.mainPile)
@@ -122,7 +131,7 @@ def gameScreen(username):
                 return GameState.QUIT
 
             # Check for click event
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONUP and gameReady:
                 if event.button == 1: # the right mouse button
                     for card in test_hand:
 
@@ -202,3 +211,22 @@ def gameScreen(username):
             scoreScreen.draw(game, screen)
 
             pygame.display.flip()
+
+        if gameReady == False:
+
+            # Blit everything to the screen
+            screen.blit(background, (0, 0))
+
+            displayWaitMessage(screen, w, h)
+
+            pygame.display.flip()
+
+def displayWaitMessage(screen, w, h):
+
+    # Draw text to screen
+    font = pygame.font.SysFont("arial", 30)
+    textColor = (0, 0, 0)
+    text = "Waiting For More Players..."
+    textWidth, textHeight = font.size(text)
+    text = font.render(text, 1, textColor)
+    screen.blit(text, ((w / 2) - (textWidth / 2), (h / 2) - (textHeight / 2)))
