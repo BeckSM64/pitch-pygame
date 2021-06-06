@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import os
 from Resources import *
-from Game import Game
+from game.logic.Game import Game
 from game.objects.Card import Card
 from game.objects.Hand import Hand
 from game.objects.Deck import Deck
@@ -14,7 +14,7 @@ from game.objects.Arrow import Arrow
 from ui.widgets.Button import Button
 from ui.screens.BidScreen import BidScreen
 from ui.screens.ScoreScreen import ScoreScreen
-from GameState import GameState
+from game.logic.GameState import GameState
 from ui.widgets.UsernameList import UsernameList
 
 def gameScreen(username):

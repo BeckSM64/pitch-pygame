@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from ui.widgets.Button import Button
-from GameState import GameState
+from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 pygame.font.init()
 

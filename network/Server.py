@@ -4,7 +4,7 @@ import socket
 from _thread import *
 import pickle
 from network.ServerData import *
-from Game import Game
+from game.logic.Game import Game
 import struct
 
 #server = "192.168.1.2"

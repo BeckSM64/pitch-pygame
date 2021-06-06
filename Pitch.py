@@ -1,4 +1,4 @@
-from GameState import GameState
+from game.logic.GameState import GameState
 from ui.screens.GameScreen import *
 from ui.screens.TitleScreen import *
 from ui.screens.DisconnectScreen import *
