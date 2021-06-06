@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
 import os
-from Card import Card
-from Hand import Hand
-from MainPile import MainPile
+from game.objects.Card import Card
+from game.objects.Hand import Hand
+from game.objects.MainPile import MainPile
 
 def load_png(name):
     """ Load image and return image object"""
