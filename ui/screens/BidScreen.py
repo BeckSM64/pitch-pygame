@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from Button import Button
+from ui.widgets.Button import Button
 
 class BidScreen:
     def __init__(self):

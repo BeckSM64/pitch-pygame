@@ -1,7 +1,7 @@
-from GameState import GameState
-from GameScreen import *
-from TitleScreen import *
-from DisconnectScreen import *
+from game.logic.GameState import GameState
+from ui.screens.GameScreen import *
+from ui.screens.TitleScreen import *
+from ui.screens.DisconnectScreen import *
 
 def main():
 

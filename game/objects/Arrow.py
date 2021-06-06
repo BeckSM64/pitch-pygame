@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import Resources
+import resources.Resources as Resources
 
 class Arrow(pygame.sprite.Sprite):
     def __init__(self):

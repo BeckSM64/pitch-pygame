@@ -1,21 +1,21 @@
 import pygame
 from pygame.locals import *
 import os
-from Resources import *
-from Game import Game
-from Card import Card
-from Hand import Hand
-from Deck import Deck
-from MainPile import MainPile
-from Network import Network
-from ServerData import *
-from Trump import Trump
-from Arrow import Arrow
-from Button import Button
-from BidScreen import BidScreen
-from ScoreScreen import ScoreScreen
-from GameState import GameState
-from UsernameList import UsernameList
+from resources.Resources import *
+from game.logic.Game import Game
+from game.objects.Card import Card
+from game.objects.Hand import Hand
+from game.objects.Deck import Deck
+from game.objects.MainPile import MainPile
+from network.Network import Network
+from network.ServerData import *
+from game.objects.Trump import Trump
+from game.objects.Arrow import Arrow
+from ui.widgets.Button import Button
+from ui.screens.BidScreen import BidScreen
+from ui.screens.ScoreScreen import ScoreScreen
+from game.logic.GameState import GameState
+from ui.widgets.UsernameList import UsernameList
 
 def gameScreen(username):
 
