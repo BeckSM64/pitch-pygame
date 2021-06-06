@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
-from Button import Button
+from ui.widgets.Button import Button
 from GameState import GameState
-from TextBox import TextBox
+from ui.widgets.TextBox import TextBox
 pygame.font.init()
 
 def titleScreen():

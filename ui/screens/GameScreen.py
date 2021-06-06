@@ -11,7 +11,7 @@ from Network import Network
 from ServerData import *
 from Trump import Trump
 from Arrow import Arrow
-from Button import Button
+from ui.widgets.Button import Button
 from ui.screens.BidScreen import BidScreen
 from ui.screens.ScoreScreen import ScoreScreen
 from GameState import GameState
