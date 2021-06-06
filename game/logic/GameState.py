@@ -5,3 +5,4 @@ class GameState(Enum):
     TITLE = 0
     NEWGAME = 1
     DISCONNECT = 2
+    SERVER_ERROR = 3
