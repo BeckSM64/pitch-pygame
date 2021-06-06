@@ -2,6 +2,7 @@ from game.logic.GameState import GameState
 from ui.screens.GameScreen import *
 from ui.screens.TitleScreen import *
 from ui.screens.DisconnectScreen import *
+from ui.screens.ServerErrorScreen import *
 
 def main():
 
@@ -21,6 +22,10 @@ def main():
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
             game_state = disconnectScreen()
+
+        # State for server connection error screen
+        if game_state == GameState.SERVER_ERROR:
+            game_state = serverErrorScreen()
 
         # State for quitting game
         if game_state == GameState.QUIT:

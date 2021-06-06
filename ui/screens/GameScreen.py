@@ -24,7 +24,13 @@ def gameScreen(username):
 
     # Set up connection to server
     n = Network()
-    player = int(n.getP())
+    player = n.getP()
+
+    # Handle error connecting to server
+    if player is None:
+        return GameState.SERVER_ERROR
+    
+    # For debugging
     print("You are player", player)
 
     # Get game
