@@ -12,8 +12,8 @@ from ServerData import *
 from Trump import Trump
 from Arrow import Arrow
 from Button import Button
-from BidScreen import BidScreen
-from ScoreScreen import ScoreScreen
+from ui.screens.BidScreen import BidScreen
+from ui.screens.ScoreScreen import ScoreScreen
 from GameState import GameState
 from UsernameList import UsernameList
 
