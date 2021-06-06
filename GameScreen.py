@@ -202,6 +202,9 @@ def gameScreen(username):
 
         if showScoreScreen == True:
 
+            # Blit everything to the screen
+            screen.blit(background, (0, 0))
+
             # Draw score button
             scoreButton.draw(screen)
 
