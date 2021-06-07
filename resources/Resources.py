@@ -4,6 +4,7 @@ import os
 from game.objects.Card import Card
 from game.objects.Hand import Hand
 from game.objects.MainPile import MainPile
+from game.objects.CardCollection import CardCollection
 
 def load_png(name):
     """ Load image and return image object"""
@@ -41,4 +42,14 @@ def get_main_pile(server_main_pile):
         main_pile.add_card(card_for_pile)
 
     return main_pile
+
+def get_card_collection(server_main_pile):
+    """Convert server pile into card collection"""
+
+    card_collection = CardCollection()
+    for card in server_main_pile.cards:
+        card_for_collection = Card(card.value, card.suit)
+        card_collection.add_card(card_for_collection)
+
+    return card_collection
     
