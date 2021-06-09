@@ -26,12 +26,8 @@ class ScoreScreen:
             # Calculate x position of username text and cards
             posX = self.calculateXPosition(game.numPlayers, player.id, textWidth)
 
-            posString = str(posX)
-            posString = font.render(posString, 1, textColor)
-
             # Draw text to screen
             screen.blit(text, (posX, 0))
-            #screen.blit(posString, (posX, 25))
 
             # Get the cards the player one as a card collection
             wonCards = Resources.get_card_collection(player.wonCards)
