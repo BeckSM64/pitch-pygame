@@ -24,19 +24,14 @@ class ScoreScreen:
             text = font.render(text, 1, textColor)
 
             # Calculate x position of username text and cards
-            posX = 0
-            if game.numPlayers == 3:
-                if player.id == 0:
-                    posX = ((((self.w / 2) - (textWidth / 2)) / 2))
-                elif player.id == 1:
-                    posX = ((self.w / 2) - (textWidth / 2))
-                else:
-                    posX = (((((self.w / 2) - (textWidth / 2)) + self.w) / 2))
-            else:
-                pass
+            posX = self.calculateXPosition(game.numPlayers, player.id, textWidth)
+
+            posString = str(posX)
+            posString = font.render(posString, 1, textColor)
 
             # Draw text to screen
             screen.blit(text, (posX, 0))
+            #screen.blit(posString, (posX, 25))
 
             # Get the cards the player one as a card collection
             wonCards = Resources.get_card_collection(player.wonCards)
@@ -44,8 +39,12 @@ class ScoreScreen:
             # Set the position of the cards to be drawn on the screen
             i = 0
             for card in wonCards:
-                card.set_pos((posX), 25 + ((Card.width * i) / 2))
+                card.set_pos(posX + ((textWidth / 2) - (Card.width / 2)), 25 + ((Card.width * i) / 2))
                 i += 1
 
             # Draw the cards to the screen
             wonCards.draw(screen)
+
+    def calculateXPosition(self, numPlayers, playerId, textWidth):
+        posX = (((self.w / (numPlayers + 1)) * (playerId + 1)) - (textWidth / 2))
+        return posX
