@@ -93,8 +93,9 @@ def gameScreen(username):
     # Ten and Under Button
     TEN_AND_UNDER_BUTTON_WIDTH      = 100
     TEN_AND_UNDER_BUTTON_HEIGHT     = 100
-    TEN_AND_UNDER_BUTTON_X          = screen.get_width() - TEN_AND_UNDER_BUTTON_WIDTH
-    TEN_AND_UNDER_BUTTON_Y          = screen.get_height() - TEN_AND_UNDER_BUTTON_HEIGHT
+    TEN_AND_UNDER_BUTTON_PADDING    = 10
+    TEN_AND_UNDER_BUTTON_X          = ((screen.get_width() / 2) - (TEN_AND_UNDER_BUTTON_WIDTH / 2))
+    TEN_AND_UNDER_BUTTON_Y          = ((screen.get_height() / 2) - (TEN_AND_UNDER_BUTTON_HEIGHT / 2)) - (TEN_AND_UNDER_BUTTON_HEIGHT + TEN_AND_UNDER_BUTTON_PADDING)
     TEN_AND_UNDER_BUTTON_COLOR      = (255, 0, 0)
     TEN_AND_UNDER_BUTTON_TEXT_COLOR = (0, 0, 0)
     TEN_AND_UNDER_BUTTON_TEXT       = "TEN\nAND\nUNDER"
