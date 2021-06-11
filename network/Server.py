@@ -160,6 +160,9 @@ def threaded_client(conn, p, gameId):
                             # reset main pile
                             game.mainPile = SMainPile()
 
+                            # reset ten and under collection
+                            game.tenAndUnderCollection = SMainPile()
+
                             # deal new hands
                             game.dealHands()
 
@@ -183,6 +186,10 @@ def threaded_client(conn, p, gameId):
                         game.players[p].username = get_username(data)
 
                     elif "tenAndUnder" in data:
+                        
+                        # Add turned in hand to the ten and under collection
+                        for card in game.players[p].playerHand.cards:
+                            game.tenAndUnderCollection.add_card(card)
 
                         # Deal new hand to player
                         game.dealHandWithPlayerId(p)

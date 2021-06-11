@@ -10,6 +10,7 @@ class Game:
         self.deck = SDeck()
         self.deck.shuffle()
         self.mainPile = SMainPile()
+        self.tenAndUnderCollection = SMainPile()
         self.ready = False
         self.numPlayers = 0
         self.id = id
