@@ -199,17 +199,7 @@ def gameScreen(username):
                         showScoreScreen = False
 
                     # Check if ten and under button was clicked
-                    if (
-                        game.isBiddingStage() and # Players are actively bidding
-                        game.players[player].playerBidTurn and # Your turn to bid
-                        test_hand.hasTenAndUnder() and # Have a ten and under
-
-                        (
-                            (game.getNumberOfBids() < (game.numPlayers - 1)) # You're not the last bidder
-                            or
-                            ((game.getNumberOfBids() == (game.numPlayers - 1)) and (game.getHighestBid() > 0)) # You're the last bidder and someone has bid already
-                        )
-                    ):
+                    if hasTenAndUnder(game, test_hand, player):
                         if tenAndUnderButton.isClicked(event.pos) and showGameScreen == True:
 
                             # Alert the server that player is turning in ten and under
@@ -248,17 +238,7 @@ def gameScreen(username):
             scoreButton.draw(screen)
 
             # Draw the ten and under button
-            if (
-                game.isBiddingStage() and # Players are actively bidding
-                game.players[player].playerBidTurn and # Your turn to bid
-                test_hand.hasTenAndUnder() and # Have a ten and under
-
-                (
-                    (game.getNumberOfBids() < (game.numPlayers - 1)) # You're not the last bidder
-                    or
-                    ((game.getNumberOfBids() == (game.numPlayers - 1)) and (game.getHighestBid() > 0)) # You're the last bidder and someone has bid already
-                )
-            ):
+            if hasTenAndUnder(game, test_hand, player):
                 tenAndUnderButton.draw(screen)
 
             # Draw the username list
@@ -291,6 +271,30 @@ def gameScreen(username):
             displayWaitMessage(screen, w, h)
 
             pygame.display.flip()
+
+def hasTenAndUnder(game, hand, player):
+    """Player has a ten and under that meets the criteria to turn in"""
+
+    return (
+
+        # Players are actively bidding
+        game.isBiddingStage() and
+
+        # Player's turn to bid
+        game.players[player].playerBidTurn and
+
+        # Player has a ten and under
+        hand.hasTenAndUnder() and
+
+        (
+            # Player is not the last bidder
+            (game.getNumberOfBids() < (game.numPlayers - 1)) or
+
+             # Player is the last bidder and someone has bid already
+            ((game.getNumberOfBids() == (game.numPlayers - 1)) and (game.getHighestBid() > 0))
+        )
+    )
+
 
 def displayWaitMessage(screen, w, h):
 
