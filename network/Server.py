@@ -182,6 +182,17 @@ def threaded_client(conn, p, gameId):
                         # Get username from player
                         game.players[p].username = get_username(data)
 
+                    elif "tenAndUnder" in data:
+
+                        # Deal new hand to player
+                        game.dealHandWithPlayerId(p)
+                        
+                        # Set the player's bid to 0 (pass)
+                        game.players[p].playerBid = 0
+
+                        # Update whose turn it is to bid
+                        game.determineBidTurn()
+
                     # send updated game back to all players
                     packet = pickle.dumps(game)
                     length = struct.pack('!I', len(packet))

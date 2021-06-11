@@ -27,3 +27,9 @@ class Hand(pygame.sprite.Group):
             if card.suit == currentSuit:
                 return True
         return False
+
+    def hasTenAndUnder(self):
+        for card in self:
+            if card.value > 10:
+                return False
+        return True

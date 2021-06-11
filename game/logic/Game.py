@@ -43,6 +43,9 @@ class Game:
     def dealHand(self):
         return self.deck.deal_hand()
 
+    def dealHandWithPlayerId(self, playerId):
+        self.players[playerId].playerHand = self.deck.deal_hand()
+
     def dealHands(self):
         for player in self.players:
             player.playerHand = self.deck.deal_hand()
@@ -162,6 +165,9 @@ class Game:
             if player.playerBid is not None and player.playerBid > highestBid:
                 highestBid = player.playerBid
         return highestBid
+
+    def isBiddingStage(self):
+        return self.biddingStage
 
     def calculateScores(self):
 

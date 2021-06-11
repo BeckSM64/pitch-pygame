@@ -79,7 +79,35 @@ def gameScreen(username):
     SCORE_BUTTON_COLOR      = (255, 255, 255)
     SCORE_BUTTON_TEXT_COLOR = (0, 0, 0)
     SCORE_BUTTON_TEXT       = "S"
-    scoreButton = Button(SCORE_BUTTON_WIDTH, SCORE_BUTTON_HEIGHT , SCORE_BUTTON_X, SCORE_BUTTON_Y, SCORE_BUTTON_COLOR, SCORE_BUTTON_TEXT_COLOR, SCORE_BUTTON_TEXT)
+
+    scoreButton = Button(
+        SCORE_BUTTON_WIDTH,
+        SCORE_BUTTON_HEIGHT,
+        SCORE_BUTTON_X,
+        SCORE_BUTTON_Y,
+        SCORE_BUTTON_COLOR,
+        SCORE_BUTTON_TEXT_COLOR,
+        SCORE_BUTTON_TEXT
+    )
+
+    # Ten and Under Button
+    TEN_AND_UNDER_BUTTON_WIDTH      = 100
+    TEN_AND_UNDER_BUTTON_HEIGHT     = 100
+    TEN_AND_UNDER_BUTTON_X          = screen.get_width() - TEN_AND_UNDER_BUTTON_WIDTH
+    TEN_AND_UNDER_BUTTON_Y          = screen.get_height() - TEN_AND_UNDER_BUTTON_HEIGHT
+    TEN_AND_UNDER_BUTTON_COLOR      = (255, 0, 0)
+    TEN_AND_UNDER_BUTTON_TEXT_COLOR = (0, 0, 0)
+    TEN_AND_UNDER_BUTTON_TEXT       = "TEN AND UNDER"
+
+    tenAndUnderButton = Button(
+        TEN_AND_UNDER_BUTTON_WIDTH,
+        TEN_AND_UNDER_BUTTON_HEIGHT,
+        TEN_AND_UNDER_BUTTON_X,
+        TEN_AND_UNDER_BUTTON_Y,
+        TEN_AND_UNDER_BUTTON_COLOR,
+        TEN_AND_UNDER_BUTTON_TEXT_COLOR,
+        TEN_AND_UNDER_BUTTON_TEXT
+    )
 
     # Score screen
     scoreScreen = ScoreScreen()
@@ -170,6 +198,29 @@ def gameScreen(username):
                         showGameScreen = True
                         showScoreScreen = False
 
+                    # Check if ten and under button was clicked
+                    if (
+                        game.isBiddingStage() and # Players are actively bidding
+                        game.players[player].playerBidTurn and # Your turn to bid
+                        test_hand.hasTenAndUnder() and # Have a ten and under
+
+                        (
+                            (game.getNumberOfBids() < (game.numPlayers - 1)) # You're not the last bidder
+                            or
+                            ((game.getNumberOfBids() == (game.numPlayers - 1)) and (game.getHighestBid() > 0)) # You're the last bidder and someone has bid already
+                        )
+                    ):
+                        if tenAndUnderButton.isClicked(event.pos) and showGameScreen == True:
+
+                            # Alert the server that player is turning in ten and under
+                            n.send("tenAndUnder")
+
+                            # Update the game for the client
+                            game = n.send("get")
+
+                            # Get the new player hand from the updated game
+                            test_hand = get_hand(game.players[player].playerHand)
+
         if showGameScreen == True:
 
             # Blit the background of the screen
@@ -195,6 +246,20 @@ def gameScreen(username):
 
             # Draw score button
             scoreButton.draw(screen)
+
+            # Draw the ten and under button
+            if (
+                game.isBiddingStage() and # Players are actively bidding
+                game.players[player].playerBidTurn and # Your turn to bid
+                test_hand.hasTenAndUnder() and # Have a ten and under
+
+                (
+                    (game.getNumberOfBids() < (game.numPlayers - 1)) # You're not the last bidder
+                    or
+                    ((game.getNumberOfBids() == (game.numPlayers - 1)) and (game.getHighestBid() > 0)) # You're the last bidder and someone has bid already
+                )
+            ):
+                tenAndUnderButton.draw(screen)
 
             # Draw the username list
             username_list.draw(game, screen)
