@@ -81,7 +81,7 @@ class TitleScreen(Screen):
 
         # Show error if username field is left blank
         if self.showError:
-            self.displayInputError(self.screen, self.Resources.SCREEN_WIDTH, self.Resources.SCREEN_HEIGHT)
+            self.displayInputError()
 
         pygame.display.flip()
 

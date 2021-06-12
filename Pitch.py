@@ -27,7 +27,7 @@ def main():
 
         # State for server connection error screen
         if game_state == GameState.SERVER_ERROR:
-            game_state = serverErrorScreen()
+            game_state = ServerErrorScreen().run()
 
         # State for options screen
         if game_state == GameState.OPTIONS:
