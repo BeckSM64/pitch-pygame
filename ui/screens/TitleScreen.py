@@ -3,6 +3,7 @@ from pygame.locals import *
 from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
+import resources.Resources as Resources
 pygame.font.init()
 
 def titleScreen():
@@ -12,7 +13,7 @@ def titleScreen():
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
     pygame.display.set_caption('Pitch')
 
     # Fill background
@@ -30,8 +31,11 @@ def titleScreen():
     # Start button
     startButton = Button(200, 50, (w / 2) - 100, (h / 2) - 25, (255, 255, 255), (0, 0, 0), "START")
 
+    # Options button
+    optionsButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "OPTIONS")
+
     # Quit button
-    quitButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "QUIT")
+    quitButton = Button(200, 50, (w / 2) - 100, (h / 2) + 85, (255, 255, 255), (0, 0, 0), "QUIT")
 
     # Text botx to enter username
     textBox = TextBox((w / 2) - 100, (h / 2) - 80, 200, 50)
@@ -61,6 +65,10 @@ def titleScreen():
                         else:
                             return GameState.NEWGAME, textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
 
+                    # Check if options button was clicked
+                    if optionsButton.isClicked(event.pos):
+                        return GameState.OPTIONS, None
+
                     # Check if quit button was clicked
                     if quitButton.isClicked(event.pos):
                         return GameState.QUIT
@@ -77,6 +85,7 @@ def titleScreen():
         
         # Draw buttons and stuff
         startButton.draw(screen)
+        optionsButton.draw(screen)
         quitButton.draw(screen)
         textBox.draw(screen)
 

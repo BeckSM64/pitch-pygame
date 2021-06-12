@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import os
 from resources.Resources import *
+import resources.Resources as Resources
 from game.logic.Game import Game
 from game.objects.Card import Card
 from game.objects.Hand import Hand
@@ -42,7 +43,7 @@ def gameScreen(username):
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
     pygame.display.set_caption('Pitch')
 
     # screen size for position calculations
