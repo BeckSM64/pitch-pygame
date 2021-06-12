@@ -60,22 +60,16 @@ def videoSettingsScreen():
                     # Check if the 504p button was clicked
                     if fiveOFourButton.isClicked(event.pos):
                         screen, background = Resources.set_screen_size(896, 504)
-                        Resources.set_ui_font_size(15)
-                        Resources.set_scalable_card_size(50, 83)
                         fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton = updateUi(Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
 
                     # Check if the 648p button was clicked
                     if sixFourtyEightButton.isClicked(event.pos):
                         screen, background = Resources.set_screen_size(1152, 648)
-                        Resources.set_ui_font_size(20)
-                        Resources.set_scalable_card_size(63, 105)
                         fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton = updateUi(Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
 
                     # Check if the 720p button was clicked
                     if sevenTwentyButton.isClicked(event.pos):
                         screen, background = Resources.set_screen_size(1280, 720)
-                        Resources.set_ui_font_size(23)
-                        Resources.set_scalable_card_size(75, 125)
                         fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton = updateUi(Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
 
                     # Check if back button was clicked

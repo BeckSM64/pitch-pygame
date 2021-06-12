@@ -17,6 +17,13 @@ UI_TEXT_SIZE = 15
 SCALABLE_CARD_WIDTH  = 50
 SCALABLE_CARD_HEIGHT = 83
 
+# Video Settings
+videoSettings = {
+    504 : {"fontSize" : 15, "cardWidth" : 50, "cardHeight" : 83},
+    648 : {"fontSize" : 20, "cardWidth" : 63, "cardHeight" : 105},
+    720 : {"fontSize" : 23, "cardWidth" : 75, "cardHeight" : 125}
+}
+
 def load_png(name):
     """ Load image and return image object"""
     fullname = os.path.join('resources', 'images', name)
@@ -71,6 +78,15 @@ def set_screen_size(width = 1280, height = 720):
     global SCREEN_HEIGHT
     SCREEN_WIDTH  = width
     SCREEN_HEIGHT = height
+
+    # Get settings from the settings dictionary based on screen size
+    fontSize   = videoSettings[SCREEN_HEIGHT]["fontSize"]
+    cardWidth  = videoSettings[SCREEN_HEIGHT]["cardWidth"]
+    cardHeight = videoSettings[SCREEN_HEIGHT]["cardHeight"]
+
+    # Resize all other elements
+    set_ui_font_size(fontSize)
+    set_scalable_card_size(cardWidth, cardHeight)
 
     # Set screen size
     screen = pygame.display.set_mode((width, height))

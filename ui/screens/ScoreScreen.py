@@ -65,6 +65,7 @@ class ScoreScreen:
         # Set the position of the cards to be drawn on the screen
         i = 0
         for card in tenAndUnderCollection:
+            card.set_size(Resources.SCALABLE_CARD_WIDTH, Resources.SCALABLE_CARD_HEIGHT)
             card.set_pos(posX + ((textWidth / 2) - (Resources.SCALABLE_CARD_WIDTH / 2)), 25 + ((Resources.SCALABLE_CARD_WIDTH * i) / 2))
             i += 1
 
