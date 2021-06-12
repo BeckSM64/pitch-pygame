@@ -3,6 +3,8 @@ from ui.screens.GameScreen import *
 from ui.screens.TitleScreen import *
 from ui.screens.DisconnectScreen import *
 from ui.screens.ServerErrorScreen import *
+from ui.screens.OptionsScreen import *
+from ui.screens.VideoSettingsScreen import *
 
 def main():
 
@@ -26,6 +28,14 @@ def main():
         # State for server connection error screen
         if game_state == GameState.SERVER_ERROR:
             game_state = serverErrorScreen()
+
+        # State for options screen
+        if game_state == GameState.OPTIONS:
+            game_state = optionsScreen()
+
+        # State for video settings screen
+        if game_state == GameState.VIDEO_SETTINGS:
+            game_state = videoSettingsScreen()
 
         # State for quitting game
         if game_state == GameState.QUIT:

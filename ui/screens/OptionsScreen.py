@@ -6,7 +6,7 @@ from ui.widgets.TextBox import TextBox
 import resources.Resources as Resources
 pygame.font.init()
 
-def serverErrorScreen():
+def optionsScreen():
 
     # Clock
     clock = pygame.time.Clock()
@@ -28,8 +28,11 @@ def serverErrorScreen():
     # screen size for position calculations
     w, h = pygame.display.get_surface().get_size()
 
+    # Video settings button
+    videoSettingsButton = Button(200, 50, (w / 2) - 100, (h / 2) - 25, (255, 255, 255), (0, 0, 0), "VIDEO SETTINGS")
+
     # Back button
-    mainMenuButton = Button(200, 50, (w / 2) - 100, (h / 2) - 25, (255, 255, 255), (0, 0, 0), "MAIN MENU")
+    mainMenuButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "MAIN MENU")
 
     run = True
 
@@ -47,6 +50,10 @@ def serverErrorScreen():
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1: # the right mouse button
 
+                    # Check if video settings button was clicked
+                    if videoSettingsButton.isClicked(event.pos):
+                        return GameState.VIDEO_SETTINGS
+
                     # Check if back button was clicked
                     if mainMenuButton.isClicked(event.pos):
                         return GameState.TITLE
@@ -55,17 +62,18 @@ def serverErrorScreen():
         screen.blit(background, (0, 0))
         
         # Draw buttons and stuff
+        videoSettingsButton.draw(screen)
         mainMenuButton.draw(screen)
-        displayError(screen, w, h)
+        displayTitle(screen, w, h)
 
         pygame.display.flip()
 
-def displayError(screen, w, h):
+def displayTitle(screen, w, h):
 
     # Draw text to screen
     font = pygame.font.SysFont("arial", 25)
-    textColor = (255, 0, 0)
-    text = "Error Connecting to Server"
+    textColor = (0, 0, 0)
+    text = "OPTIONS"
     textWidth, textHeight = font.size(text)
     text = font.render(text, 1, textColor)
     screen.blit(text, ((w / 2) - (textWidth / 2), (h / 2) - 100))

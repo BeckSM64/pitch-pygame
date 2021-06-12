@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from game.objects.Card import *
 from resources.Resources import *
+import resources.Resources as Resources
 pygame.font.init()
 
 class ScoreScreen:
@@ -18,7 +19,7 @@ class ScoreScreen:
             text = player.username + ": " + str(player.score)
 
             # Create text
-            font = pygame.font.SysFont("arial", 25)
+            font = pygame.font.SysFont("arial", Resources.UI_TEXT_SIZE)
             textColor = (0, 0, 0)
             textWidth, textHeight = font.size(text)
             text = font.render(text, 1, textColor)
@@ -33,9 +34,11 @@ class ScoreScreen:
             wonCards = Resources.get_card_collection(player.wonCards)
 
             # Set the position of the cards to be drawn on the screen
+            # TODO: Look into not doing this every frame
             i = 0
             for card in wonCards:
-                card.set_pos(posX + ((textWidth / 2) - (Card.width / 2)), 25 + ((Card.width * i) / 2))
+                card.set_size(Resources.SCALABLE_CARD_WIDTH, Resources.SCALABLE_CARD_HEIGHT)
+                card.set_pos(posX + ((textWidth / 2) - (Resources.SCALABLE_CARD_WIDTH / 2)), 25 + ((Resources.SCALABLE_CARD_WIDTH * i) / 2))
                 i += 1
 
             # Draw the cards to the screen
@@ -45,7 +48,7 @@ class ScoreScreen:
         text = "Ten and Under Pile"
 
         # Create text with specified font
-        font = pygame.font.SysFont("arial", 25)
+        font = pygame.font.SysFont("arial", Resources.UI_TEXT_SIZE)
         textColor = (0, 0, 0)
         textWidth, textHeight = font.size(text)
         text = font.render(text, 1, textColor)
@@ -62,7 +65,8 @@ class ScoreScreen:
         # Set the position of the cards to be drawn on the screen
         i = 0
         for card in tenAndUnderCollection:
-            card.set_pos(posX + ((textWidth / 2) - (Card.width / 2)), 25 + ((Card.width * i) / 2))
+            card.set_size(Resources.SCALABLE_CARD_WIDTH, Resources.SCALABLE_CARD_HEIGHT)
+            card.set_pos(posX + ((textWidth / 2) - (Resources.SCALABLE_CARD_WIDTH / 2)), 25 + ((Resources.SCALABLE_CARD_WIDTH * i) / 2))
             i += 1
 
         tenAndUnderCollection.draw(screen)

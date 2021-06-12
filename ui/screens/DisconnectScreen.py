@@ -3,6 +3,7 @@ from pygame.locals import *
 from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
+import resources.Resources as Resources
 pygame.font.init()
 
 def disconnectScreen():
@@ -12,7 +13,7 @@ def disconnectScreen():
 
     # Initialize screen
     pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
     pygame.display.set_caption('Pitch')
 
     # Fill background

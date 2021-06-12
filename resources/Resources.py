@@ -6,6 +6,24 @@ from game.objects.Hand import Hand
 from game.objects.MainPile import MainPile
 from game.objects.CardCollection import CardCollection
 
+# Screen size
+SCREEN_WIDTH  = 896
+SCREEN_HEIGHT = 504
+
+# UI Text Font Size
+UI_TEXT_SIZE = 15
+
+# Scalable Card Size
+SCALABLE_CARD_WIDTH  = 50
+SCALABLE_CARD_HEIGHT = 83
+
+# Video Settings
+videoSettings = {
+    504 : {"fontSize" : 15, "cardWidth" : 50, "cardHeight" : 83},
+    648 : {"fontSize" : 20, "cardWidth" : 63, "cardHeight" : 105},
+    720 : {"fontSize" : 23, "cardWidth" : 75, "cardHeight" : 125}
+}
+
 def load_png(name):
     """ Load image and return image object"""
     fullname = os.path.join('resources', 'images', name)
@@ -52,4 +70,47 @@ def get_card_collection(server_main_pile):
         card_collection.add_card(card_for_collection)
 
     return card_collection
+
+def set_screen_size(width = 1280, height = 720):
+
+    # Set global screen size variables
+    global SCREEN_WIDTH
+    global SCREEN_HEIGHT
+    SCREEN_WIDTH  = width
+    SCREEN_HEIGHT = height
+
+    # Get settings from the settings dictionary based on screen size
+    fontSize   = videoSettings[SCREEN_HEIGHT]["fontSize"]
+    cardWidth  = videoSettings[SCREEN_HEIGHT]["cardWidth"]
+    cardHeight = videoSettings[SCREEN_HEIGHT]["cardHeight"]
+
+    # Resize all other elements
+    set_ui_font_size(fontSize)
+    set_scalable_card_size(cardWidth, cardHeight)
+
+    # Set screen size
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('Pitch')
+
+    # Fill background
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((0, 250, 250))
+
+    return screen, background
+
+def set_ui_font_size(fontSize):
+
+    # Set global ui font size variable
+    global UI_TEXT_SIZE
+    UI_TEXT_SIZE = fontSize
+
+def set_scalable_card_size(cardWidth, cardHeight):
+
+    # Set global scalable card size variables
+    global SCALABLE_CARD_WIDTH
+    global SCALABLE_CARD_HEIGHT
+
+    SCALABLE_CARD_WIDTH  = cardWidth
+    SCALABLE_CARD_HEIGHT = cardHeight
     
