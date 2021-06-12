@@ -10,6 +10,13 @@ from game.objects.CardCollection import CardCollection
 SCREEN_WIDTH  = 896
 SCREEN_HEIGHT = 504
 
+# UI Text Font Size
+UI_TEXT_SIZE = 15
+
+# Scalable Card Size
+SCALABLE_CARD_WIDTH  = 50
+SCALABLE_CARD_HEIGHT = 83
+
 def load_png(name):
     """ Load image and return image object"""
     fullname = os.path.join('resources', 'images', name)
@@ -75,4 +82,19 @@ def set_screen_size(width = 1280, height = 720):
     background.fill((0, 250, 250))
 
     return screen, background
+
+def set_ui_font_size(fontSize):
+
+    # Set global ui font size variable
+    global UI_TEXT_SIZE
+    UI_TEXT_SIZE = fontSize
+
+def set_scalable_card_size(cardWidth, cardHeight):
+
+    # Set global scalable card size variables
+    global SCALABLE_CARD_WIDTH
+    global SCALABLE_CARD_HEIGHT
+
+    SCALABLE_CARD_WIDTH  = cardWidth
+    SCALABLE_CARD_HEIGHT = cardHeight
     

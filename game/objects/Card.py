@@ -36,6 +36,12 @@ class Card(pygame.sprite.Sprite):
         self.sprite = pygame.sprite.RenderPlain(self)
         self.rect = self.image.get_rect()
 
+    def set_size(self, width, height):
+        self.image = pygame.transform.smoothscale(self.image, (width, height))
+        self.area = self.screen.get_rect()
+        self.sprite = pygame.sprite.RenderPlain(self)
+        self.rect = self.image.get_rect()
+
     def set_pos(self, x, y):
         self.rect.x = x
         self.rect.y = y
