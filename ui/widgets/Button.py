@@ -13,6 +13,9 @@ class Button:
         self.color = color
         self.textColor = textColor
         self.rect = Rect(x, y, width, height)
+        
+        # For multiline text, split on new line character
+        self.textList = text.split("\n")
 
     def draw(self, screen):
 
@@ -21,8 +24,26 @@ class Button:
 
         # Draw text to screen
         font = pygame.font.SysFont("arial", 15)
-        text = font.render(self.text, 1, self.textColor)
-        screen.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
+
+        # Render font render on text in text list
+        textRenderList = []
+        for textElement in self.textList:
+            textRenderList.append(font.render(textElement, 1, self.textColor))
+
+        # Loop through list of indivual lines of text and blit to screen
+        for i in range(len(textRenderList)):
+
+            # Get the text width and height
+            textWidth, textHeight = font.size(self.textList[i])
+
+            # Blit the text to the screen (over the button)
+            screen.blit(
+                textRenderList[i],
+                (
+                    self.x + ((self.width / 2) - textRenderList[i].get_width()/2),
+                    self.y + (((self.height / (len(textRenderList) + 1)) * (i + 1)) - (textHeight / 2))
+                )
+            )
 
     def isClicked(self, eventPos):
         if self.rect.collidepoint(eventPos):

@@ -160,6 +160,9 @@ def threaded_client(conn, p, gameId):
                             # reset main pile
                             game.mainPile = SMainPile()
 
+                            # reset ten and under collection
+                            game.tenAndUnderCollection = SMainPile()
+
                             # deal new hands
                             game.dealHands()
 
@@ -181,6 +184,21 @@ def threaded_client(conn, p, gameId):
 
                         # Get username from player
                         game.players[p].username = get_username(data)
+
+                    elif "tenAndUnder" in data:
+                        
+                        # Add turned in hand to the ten and under collection
+                        for card in game.players[p].playerHand.cards:
+                            game.tenAndUnderCollection.add_card(card)
+
+                        # Deal new hand to player
+                        game.dealHandWithPlayerId(p)
+                        
+                        # Set the player's bid to 0 (pass)
+                        game.players[p].playerBid = 0
+
+                        # Update whose turn it is to bid
+                        game.determineBidTurn()
 
                     # send updated game back to all players
                     packet = pickle.dumps(game)

@@ -10,6 +10,7 @@ class Game:
         self.deck = SDeck()
         self.deck.shuffle()
         self.mainPile = SMainPile()
+        self.tenAndUnderCollection = SMainPile()
         self.ready = False
         self.numPlayers = 0
         self.id = id
@@ -42,6 +43,9 @@ class Game:
 
     def dealHand(self):
         return self.deck.deal_hand()
+
+    def dealHandWithPlayerId(self, playerId):
+        self.players[playerId].playerHand = self.deck.deal_hand()
 
     def dealHands(self):
         for player in self.players:
@@ -162,6 +166,9 @@ class Game:
             if player.playerBid is not None and player.playerBid > highestBid:
                 highestBid = player.playerBid
         return highestBid
+
+    def isBiddingStage(self):
+        return self.biddingStage
 
     def calculateScores(self):
 
