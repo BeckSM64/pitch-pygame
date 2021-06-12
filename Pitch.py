@@ -23,7 +23,7 @@ def main():
 
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
-            game_state = disconnectScreen()
+            game_state = DisconnectScreen().run()
 
         # State for server connection error screen
         if game_state == GameState.SERVER_ERROR:

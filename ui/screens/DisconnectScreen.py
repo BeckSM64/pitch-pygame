@@ -1,71 +1,68 @@
 import pygame
 from pygame.locals import *
+from ui.screens.Screen import Screen
 from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 import resources.Resources as Resources
 pygame.font.init()
 
-def disconnectScreen():
+class DisconnectScreen(Screen):
+    def __init__(self):
 
-    # Clock
-    clock = pygame.time.Clock()
+        # Call screen constructor
+        Screen.__init__(self)
 
-    # Initialize screen
-    pygame.init()
-    screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
-    pygame.display.set_caption('Pitch')
+        # Back button
+        self.mainMenuButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 25,
+            (255, 255, 255),
+            (0, 0, 0),
+            "MAIN MENU"
+        )
 
-    # Fill background
-    background = pygame.Surface(screen.get_size())
-    background = background.convert()
-    background.fill((0, 250, 250))
+    def run(self):
 
-    # Blit everything to the screen
-    screen.blit(background, (0, 0))
-    pygame.display.flip()
+        # Game loop
+        while True:
+            self.clock.tick(60)
 
-    # screen size for position calculations
-    w, h = pygame.display.get_surface().get_size()
+            for event in pygame.event.get():
 
-    # Back button
-    mainMenuButton = Button(200, 50, (w / 2) - 100, (h / 2) - 25, (255, 255, 255), (0, 0, 0), "MAIN MENU")
+                # Check for quit event
+                if event.type == QUIT:
+                    return GameState.QUIT
 
-    run = True
+                # Check for click event
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1: # the right mouse button
 
-    # Game loop
-    while run:
-        clock.tick(60)
+                        # Check if back button was clicked
+                        if self.mainMenuButton.isClicked(event.pos):
+                            return GameState.TITLE
 
-        for event in pygame.event.get():
+            self.draw()
 
-            # Check for quit event
-            if event.type == QUIT:
-                return GameState.QUIT
+    def draw(self):
 
-            # Check for click event
-            if event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1: # the right mouse button
-
-                    # Check if back button was clicked
-                    if mainMenuButton.isClicked(event.pos):
-                        return GameState.TITLE
-    
         # Blit the background of the screen
-        screen.blit(background, (0, 0))
+        self.screen.blit(self.background, (0, 0))
         
         # Draw buttons and stuff
-        mainMenuButton.draw(screen)
-        displayError(screen, w, h)
+        self.mainMenuButton.draw(self.screen)
+        self.displayError()
 
         pygame.display.flip()
 
-def displayError(screen, w, h):
+    def displayError(self):
 
-    # Draw text to screen
-    font = pygame.font.SysFont("arial", 25)
-    textColor = (255, 0, 0)
-    text = "Game ended unexpectedy due to player disconnect"
-    textWidth, textHeight = font.size(text)
-    text = font.render(text, 1, textColor)
-    screen.blit(text, ((w / 2) - (textWidth / 2), (h / 2) - 100))
+        # Draw text to screen
+        font = pygame.font.SysFont("arial", 25)
+        textColor = (255, 0, 0)
+        text = "Game ended unexpectedy due to player disconnect"
+        textWidth, textHeight = font.size(text)
+        text = font.render(text, 1, textColor)
+        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))
