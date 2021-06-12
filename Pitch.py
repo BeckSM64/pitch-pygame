@@ -15,7 +15,7 @@ def main():
 
         # State for title screen
         if game_state == GameState.TITLE:
-            game_state, username = titleScreen()
+            game_state, username = TitleScreen().run()
 
         # State for new game screen
         if game_state == GameState.NEWGAME:
