@@ -34,6 +34,7 @@ class ScoreScreen:
             wonCards = Resources.get_card_collection(player.wonCards)
 
             # Set the position of the cards to be drawn on the screen
+            # TODO: Look into not doing this every frame
             i = 0
             for card in wonCards:
                 card.set_size(Resources.SCALABLE_CARD_WIDTH, Resources.SCALABLE_CARD_HEIGHT)
