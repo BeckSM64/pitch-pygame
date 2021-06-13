@@ -35,7 +35,7 @@ def main():
 
         # State for video settings screen
         if game_state == GameState.VIDEO_SETTINGS:
-            game_state = videoSettingsScreen()
+            game_state = VideoSettingsScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:

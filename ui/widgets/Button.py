@@ -50,3 +50,12 @@ class Button:
             return True
         else:
             return False
+
+    def setPos(self, x, y):
+
+        # Update x and y position
+        self.x = x
+        self.y = y
+
+        # Recreate rectangle
+        self.rect = Rect(self.x, self.y, self.width, self.height)
