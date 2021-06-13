@@ -47,7 +47,7 @@ class SDeck:
 
         hand = []
         for i in range(6):
-            hand.append(self.deck[i])
+            hand.append(SCard(10, "diamonds"))
         
         del self.deck[:6]
 

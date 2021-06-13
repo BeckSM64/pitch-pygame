@@ -19,7 +19,7 @@ def main():
 
         # State for new game screen
         if game_state == GameState.NEWGAME:
-            game_state = gameScreen(username)
+            game_state = GameScreen(username).run()
 
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
