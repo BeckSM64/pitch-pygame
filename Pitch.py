@@ -31,7 +31,7 @@ def main():
 
         # State for options screen
         if game_state == GameState.OPTIONS:
-            game_state = optionsScreen()
+            game_state = OptionsScreen().run()
 
         # State for video settings screen
         if game_state == GameState.VIDEO_SETTINGS:
