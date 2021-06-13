@@ -1,3 +1,4 @@
+import sys
 from game.logic.GameState import GameState
 from ui.screens.GameScreen import *
 from ui.screens.TitleScreen import *
@@ -40,7 +41,7 @@ def main():
         # State for quitting game
         if game_state == GameState.QUIT:
             pygame.quit()
-            return
+            sys.exit()
 
 if __name__ == '__main__':
     main()
