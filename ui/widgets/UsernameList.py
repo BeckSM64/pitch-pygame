@@ -13,15 +13,26 @@ class UsernameList:
         y = 25
         for player in game.players:
 
-            text = str(player.username)
+            text = player.username
             
             # Draw text to screen
             font = pygame.font.SysFont("arial", 25)
-            textColor = (0, 0, 0)
 
-            # If it's the player's turn, highlight their name
+            # If it's the player's turn, highlight their name red
             if player.playerTurn:
                 textColor = (255, 0, 0)
+
+            # Else if it's the player's turn to bid, highlight their name blue
+            elif player.playerBidTurn and game.isBiddingStage():
+                textColor = (0, 0, 255)
+
+            # Else, draw the username white
+            else:
+                textColor = (0, 0, 0)
+
+            # Add the player bid to the text if they've bid
+            if player.playerBid is not None:
+                text = player.username + " -> " + str(player.playerBid)
 
             text = font.render(text, 1, textColor)
             screen.blit(text, (0, (y * player.id)))
