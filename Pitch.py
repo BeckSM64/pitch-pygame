@@ -6,6 +6,7 @@ from ui.screens.DisconnectScreen import *
 from ui.screens.ServerErrorScreen import *
 from ui.screens.OptionsScreen import *
 from ui.screens.VideoSettingsScreen import *
+from ui.screens.HostScreen import *
 
 def main():
 
@@ -37,6 +38,9 @@ def main():
         # State for video settings screen
         if game_state == GameState.VIDEO_SETTINGS:
             game_state = VideoSettingsScreen().run()
+
+        if game_state == GameState.HOST:
+            game_state = HostScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:

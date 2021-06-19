@@ -8,3 +8,4 @@ class GameState(Enum):
     SERVER_ERROR   = 3
     OPTIONS        = 4
     VIDEO_SETTINGS = 5
+    HOST           = 6

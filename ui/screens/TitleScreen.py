@@ -48,7 +48,7 @@ class TitleScreen(Screen):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                return GameState.NEWGAME, self.textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
+                                return GameState.HOST, self.textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
 
                         # Check if options button was clicked
                         if self.optionsButton.isClicked(event.pos):
