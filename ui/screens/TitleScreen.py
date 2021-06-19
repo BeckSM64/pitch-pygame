@@ -13,8 +13,11 @@ class TitleScreen(Screen):
         # Call screen constructor
         Screen.__init__(self)
 
-        # Start button
-        self.startButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 25, (255, 255, 255), (0, 0, 0), "START")
+        # Host button
+        self.hostButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 80, (255, 255, 255), (0, 0, 0), "HOST")
+
+        # Join button
+        self.joinButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 25, (255, 255, 255), (0, 0, 0), "JOIN")
 
         # Options button
         self.optionsButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) + 30, (255, 255, 255), (0, 0, 0), "OPTIONS")
@@ -23,7 +26,7 @@ class TitleScreen(Screen):
         self.quitButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) + 85, (255, 255, 255), (0, 0, 0), "QUIT")
 
         # Text botx to enter username
-        self.textBox = TextBox((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 80, 200, 50)
+        self.textBox = TextBox((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 135, 200, 50)
 
         self.showError = False
 
@@ -43,12 +46,23 @@ class TitleScreen(Screen):
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1: # the right mouse button
 
-                        # Check if start button was clicked
-                        if self.startButton.isClicked(event.pos):
+                        # Check if host button was clicked
+                        if self.hostButton.isClicked(event.pos):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                return GameState.HOST, self.textBox.text # TODO: Look into if there's a better way to get this textbox input to the GameScreen other than returning the value here
+                                # TODO: Look into if there's a better way to get this textbox
+                                # input to the GameScreen other than returning the value here
+                                return GameState.HOST, self.textBox.text
+
+                        # Check if join button was clicked
+                        if self.joinButton.isClicked(event.pos):
+                            if len(self.textBox.text) == 0:
+                                self.showError = True
+                            else:
+                                # TODO: Look into if there's a better way to get this textbox
+                                # input to the GameScreen other than returning the value here
+                                return GameState.JOIN, self.textBox.text
 
                         # Check if options button was clicked
                         if self.optionsButton.isClicked(event.pos):
@@ -74,7 +88,8 @@ class TitleScreen(Screen):
         self.screen.blit(self.background, (0, 0))
         
         # Draw buttons and stuff
-        self.startButton.draw(self.screen)
+        self.hostButton.draw(self.screen)
+        self.joinButton.draw(self.screen)
         self.optionsButton.draw(self.screen)
         self.quitButton.draw(self.screen)
         self.textBox.draw(self.screen)
@@ -92,4 +107,4 @@ class TitleScreen(Screen):
         textColor = (255, 0, 0)
         text = "*Username must not be blank"
         text = font.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 100))
+        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 155))

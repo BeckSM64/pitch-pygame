@@ -7,6 +7,7 @@ from ui.screens.ServerErrorScreen import *
 from ui.screens.OptionsScreen import *
 from ui.screens.VideoSettingsScreen import *
 from ui.screens.HostScreen import *
+from ui.screens.JoinScreen import *
 
 def main():
 
@@ -41,6 +42,9 @@ def main():
 
         if game_state == GameState.HOST:
             game_state = HostScreen().run()
+
+        if game_state == GameState.JOIN:
+            game_state = JoinScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:
