@@ -1,3 +1,4 @@
+import sys
 from game.logic.GameState import GameState
 from ui.screens.GameScreen import *
 from ui.screens.TitleScreen import *
@@ -15,32 +16,32 @@ def main():
 
         # State for title screen
         if game_state == GameState.TITLE:
-            game_state, username = titleScreen()
+            game_state, username = TitleScreen().run()
 
         # State for new game screen
         if game_state == GameState.NEWGAME:
-            game_state = gameScreen(username)
+            game_state = GameScreen(username).run()
 
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
-            game_state = disconnectScreen()
+            game_state = DisconnectScreen().run()
 
         # State for server connection error screen
         if game_state == GameState.SERVER_ERROR:
-            game_state = serverErrorScreen()
+            game_state = ServerErrorScreen().run()
 
         # State for options screen
         if game_state == GameState.OPTIONS:
-            game_state = optionsScreen()
+            game_state = OptionsScreen().run()
 
         # State for video settings screen
         if game_state == GameState.VIDEO_SETTINGS:
-            game_state = videoSettingsScreen()
+            game_state = VideoSettingsScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:
             pygame.quit()
-            return
+            sys.exit()
 
 if __name__ == '__main__':
     main()

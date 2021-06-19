@@ -1,108 +1,139 @@
 import pygame
 from pygame import display
 from pygame.locals import *
+from ui.screens.Screen import Screen
 from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 import resources.Resources as Resources
 pygame.font.init()
 
-def videoSettingsScreen():
+class VideoSettingsScreen(Screen):
+    def __init__(self):
+        Screen.__init__(self)
 
-    # Clock
-    clock = pygame.time.Clock()
+        # 504p button
+        self.fiveOFourButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 135,
+            (255, 255, 255),
+            (0, 0, 0),
+            "896 x 504"
+        )
 
-    # Initialize screen
-    pygame.init()
-    screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
-    pygame.display.set_caption('Pitch')
+        # 648p button
+        self.sixFourtyEightButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 80,
+            (255, 255, 255),
+            (0, 0, 0),
+            "1152 x 648"
+        )
 
-    # Fill background
-    background = pygame.Surface(screen.get_size())
-    background = background.convert()
-    background.fill((0, 250, 250))
+        # 720p button
+        self.sevenTwentyButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 25,
+            (255, 255, 255),
+            (0, 0, 0),
+            "1280 x 720"
+        )
 
-    # Blit everything to the screen
-    screen.blit(background, (0, 0))
-    pygame.display.flip()
+        # Back button
+        self.mainMenuButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) + 30,
+            (255, 255, 255),
+            (0, 0, 0),
+            "MAIN MENU"
+        )
+    
+    def run(self):
 
-    # screen size for position calculations
-    w, h = pygame.display.get_surface().get_size()
+        # Game loop
+        while True:
+            self.clock.tick(60)
 
-    # 504p button
-    fiveOFourButton = Button(200, 50, (w / 2) - 100, (h / 2) - 135, (255, 255, 255), (0, 0, 0), "896 x 504")
+            for event in pygame.event.get():
 
-    # 648p button
-    sixFourtyEightButton = Button(200, 50, (w / 2) - 100, (h / 2) - 80, (255, 255, 255), (0, 0, 0), "1152 x 648")
+                # Check for quit event
+                if event.type == QUIT:
+                    return GameState.QUIT
 
-    # 720p button
-    sevenTwentyButton = Button(200, 50, (w / 2) - 100, (h / 2) - 25, (255, 255, 255), (0, 0, 0), "1280 x 720")
+                # Check for click event
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1: # the right mouse button
 
-    # Back button
-    mainMenuButton = Button(200, 50, (w / 2) - 100, (h / 2) + 30, (255, 255, 255), (0, 0, 0), "MAIN MENU")
+                        # Check if the 504p button was clicked
+                        if self.fiveOFourButton.isClicked(event.pos):
+                            self.updateUi(896, 504)
 
-    run = True
+                        # Check if the 648p button was clicked
+                        if self.sixFourtyEightButton.isClicked(event.pos):
+                            self.updateUi(1152, 648)
 
-    # Game loop
-    while run:
-        clock.tick(60)
+                        # Check if the 720p button was clicked
+                        if self.sevenTwentyButton.isClicked(event.pos):
+                            self.updateUi(1280, 720)
 
-        for event in pygame.event.get():
+                        # Check if back button was clicked
+                        if self.mainMenuButton.isClicked(event.pos):
+                            return GameState.TITLE
+            
+            # Draw everything to the screen
+            self.draw()
 
-            # Check for quit event
-            if event.type == QUIT:
-                return GameState.QUIT
-
-            # Check for click event
-            if event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1: # the right mouse button
-
-                    # Check if the 504p button was clicked
-                    if fiveOFourButton.isClicked(event.pos):
-                        screen, background = Resources.set_screen_size(896, 504)
-                        fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton = updateUi(Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
-
-                    # Check if the 648p button was clicked
-                    if sixFourtyEightButton.isClicked(event.pos):
-                        screen, background = Resources.set_screen_size(1152, 648)
-                        fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton = updateUi(Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
-
-                    # Check if the 720p button was clicked
-                    if sevenTwentyButton.isClicked(event.pos):
-                        screen, background = Resources.set_screen_size(1280, 720)
-                        fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton = updateUi(Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
-
-                    # Check if back button was clicked
-                    if mainMenuButton.isClicked(event.pos):
-                        return GameState.TITLE
+    def draw(self):
     
         # Blit the background of the screen
-        screen.blit(background, (0, 0))
+        self.screen.blit(self.background, (0, 0))
         
         # Draw buttons and stuff
-        fiveOFourButton.draw(screen)
-        sixFourtyEightButton.draw(screen)
-        sevenTwentyButton.draw(screen)
-        mainMenuButton.draw(screen)
-        displayTitle(screen, Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
+        self.fiveOFourButton.draw(self.screen)
+        self.sixFourtyEightButton.draw(self.screen)
+        self.sevenTwentyButton.draw(self.screen)
+        self.mainMenuButton.draw(self.screen)
+        self.displayTitle()
 
         pygame.display.flip()
 
-def displayTitle(screen, w, h):
+    def displayTitle(self):
 
-    # Draw text to screen
-    font = pygame.font.SysFont("arial", 25)
-    textColor = (0, 0, 0)
-    text = "VIDEO SETTINGS"
-    textWidth, textHeight = font.size(text)
-    text = font.render(text, 1, textColor)
-    screen.blit(text, ((w / 2) - (textWidth / 2), 0))
+        # Draw text to screen
+        font = pygame.font.SysFont("arial", 25)
+        textColor = (0, 0, 0)
+        text = "VIDEO SETTINGS"
+        textWidth, textHeight = font.size(text)
+        text = font.render(text, 1, textColor)
+        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), 0))
 
-def updateUi(screenWidth, screenHeight):
-    
-    fiveOFourButton      = Button(200, 50, (screenWidth / 2) - 100, (screenHeight / 2) - 135, (255, 255, 255), (0, 0, 0), "896 x 504")
-    sixFourtyEightButton = Button(200, 50, (screenWidth / 2) - 100, (screenHeight / 2) - 80, (255, 255, 255), (0, 0, 0), "1152 x 648")
-    sevenTwentyButton    = Button(200, 50, (screenWidth / 2) - 100, (screenHeight / 2) - 25, (255, 255, 255), (0, 0, 0), "1280 x 720")
-    mainMenuButton       = Button(200, 50, (screenWidth / 2) - 100, (screenHeight / 2) + 30, (255, 255, 255), (0, 0, 0), "MAIN MENU")
+    def updateUi(self, width, height):
 
-    return fiveOFourButton, sixFourtyEightButton, sevenTwentyButton, mainMenuButton
+        # Resize the screen
+        self.screen, self.background = Resources.set_screen_size(width, height)
+        
+        # Update positions of other widgets
+        self.fiveOFourButton.setPos(
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 135
+        )
+        self.sixFourtyEightButton.setPos(
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 80
+        )
+        self.sevenTwentyButton.setPos(
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 25
+        )
+        self.mainMenuButton.setPos(
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) + 30
+        )
