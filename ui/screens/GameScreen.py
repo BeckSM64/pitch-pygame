@@ -12,7 +12,7 @@ from game.objects.MainPile import MainPile
 from network.Network import Network
 from network.ServerData import *
 from game.objects.Trump import Trump
-from game.objects.Arrow import Arrow
+from game.objects.PlayerTurnIndicator import PlayerTurnIndicator
 from ui.widgets.Button import Button
 from ui.screens.BidScreen import BidScreen
 from ui.screens.ScoreScreen import ScoreScreen
@@ -50,8 +50,8 @@ class GameScreen(Screen):
         # Initialize trump image
         self.trump_image = None
 
-        # Initialize arrow image
-        self.arrow_image = Arrow()
+        # Initialize player turn indicator
+        self.playerTurnIndicator = PlayerTurnIndicator()
 
         # Initialize bid screen
         self.bid_screen = BidScreen()
@@ -215,9 +215,9 @@ class GameScreen(Screen):
             if self.trump_image is not None:
                 self.trump_image.draw(self.screen)
 
-            # Draw arrow image when it is player's turn
+            # Draw player turn indicator image when it is player's turn
             if self.game.players[self.player].playerTurn:
-                self.arrow_image.draw(self.screen)
+                self.playerTurnIndicator.draw(self.screen)
 
             # Draw the bid screen
             if self.game.biddingStage and self.game.players[self.player].playerBidTurn:
