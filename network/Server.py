@@ -5,6 +5,7 @@ from _thread import *
 import pickle
 from network.ServerData import *
 from game.logic.Game import Game
+from game.logic.GameList import GameList
 import struct
 
 #server = "192.168.1.2"
@@ -64,6 +65,7 @@ def getGameKey(data):
     gameKey = ""
     for word in data[1:]:
         gameKey += word + " "
+    gameKey = gameKey[:-1]
     return gameKey
 
 def hostGame(conn, gameKey):
@@ -105,9 +107,16 @@ def joinGame(conn, gameKey):
 
             # Increment number of players in game
             games[value.id].numPlayers += 1
-
             return p, value.id
 
+def getGameList():
+
+    listForGameList = []
+    for key, value in games.items():
+        listForGameList.append(value)
+
+    gameList = GameList(listForGameList)
+    return gameList
 
 def threaded_client(conn, addr):
     global idCount
@@ -137,6 +146,12 @@ def threaded_client(conn, addr):
             elif "join" in data:
                 p, gameId = joinGame(conn, getGameKey(data))
                 packet = str.encode(str(p))
+                length = struct.pack('!I', len(packet))
+                packet = length + packet
+                conn.send(packet)
+
+            elif "gameList" in data:
+                packet = pickle.dumps(getGameList())
                 length = struct.pack('!I', len(packet))
                 packet = length + packet
                 conn.send(packet)

@@ -10,3 +10,4 @@ class GameState(Enum):
     VIDEO_SETTINGS = 5
     HOST           = 6
     JOIN           = 7
+    ACTIVE_GAMES   = 8
