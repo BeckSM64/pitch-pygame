@@ -28,16 +28,18 @@ class ActiveGamesScreen(Screen):
         self.buttonList = []
 
         # Game buttons
+        i = 0
         for game in gameList.games:
             button = ActiveGameButton(
                 game,
                 200,
                 50,
                 (Resources.SCREEN_WIDTH / 2) - 100,
-                (Resources.SCREEN_HEIGHT / 2) - 25,
+                (0 + 55) * i,
                 (255, 255, 255), (0, 0, 0),
             )
             self.buttonList.append(button)
+            i += 1
 
     def run(self):
 
