@@ -74,10 +74,10 @@ class TitleScreen(Screen):
 
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
-                if isInputEntered and len(self.textBox.text) != 0:
-                    return GameState.NEWGAME, self.textBox.text
-                elif isInputEntered and len(self.textBox.text) == 0:
-                    self.showError = True
+                # if isInputEntered and len(self.textBox.text) != 0:
+                #     return GameState.NEWGAME, self.textBox.text
+                # elif isInputEntered and len(self.textBox.text) == 0:
+                #     self.showError = True
 
             # Draw everything to the screen
             self.draw()

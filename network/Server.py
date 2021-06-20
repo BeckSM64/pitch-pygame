@@ -55,14 +55,25 @@ def get_username(data):
 
     return username
 
-def hostGame(conn):
+def getGameKey(data):
+
+    # Get gamekey
+    data = data.split(" ")
+
+    # TODO: This is stupid, just do it better
+    gameKey = ""
+    for word in data[1:]:
+        gameKey += word + " "
+    return gameKey
+
+def hostGame(conn, gameKey):
 
     # Player id will always be 0 if hosting the game
     p = 0
 
     # Create the game with unique ID
     gameId = createUniqueGameId()
-    games[gameId] = Game(gameId, "default")
+    games[gameId] = Game(gameId, gameKey)
     print("GAME ID", gameId)
     print("Creating a new game...")
 
@@ -74,12 +85,36 @@ def hostGame(conn):
 
     return p, gameId
 
+def joinGame(conn, gameKey):
+
+    # Player id
+    p = None
+
+    # Find the game with the gameKey to join
+    for key, value in games.items():
+
+        # Check if this is the correct game to join
+        if value.gameName == gameKey:
+            
+            # TODO: update this to check against max players, not just 4
+            if value.numPlayers < 4:
+                p = value.numPlayers
+
+            # Add player to player list
+            games[value.id].newPlayer(p, conn)
+
+            # Increment number of players in game
+            games[value.id].numPlayers += 1
+
+            return p, value.id
+
+
 def threaded_client(conn, addr):
     global idCount
 
     # For testing
     p = None
-    gameId = 0
+    gameId = None
 
     # Send message length with player id message
     packet = str.encode(str(p))
@@ -93,7 +128,14 @@ def threaded_client(conn, addr):
             data = conn.recv(4096 * 2).decode()
 
             if "host" in data:
-                p, gameId = hostGame(conn)
+                p, gameId = hostGame(conn, getGameKey(data))
+                packet = str.encode(str(p))
+                length = struct.pack('!I', len(packet))
+                packet = length + packet
+                conn.send(packet)
+            
+            elif "join" in data:
+                p, gameId = joinGame(conn, getGameKey(data))
                 packet = str.encode(str(p))
                 length = struct.pack('!I', len(packet))
                 packet = length + packet
