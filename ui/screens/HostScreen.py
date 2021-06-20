@@ -32,6 +32,16 @@ class HostScreen(Screen):
             "MAIN MENU"
         )
 
+        # Text box to enter game name
+        self.textBox = TextBox(
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 80,
+            200,
+            50
+        )
+
+        self.showError = False
+
     def run(self):
 
         # Game loop
@@ -48,13 +58,25 @@ class HostScreen(Screen):
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1: # the right mouse button
 
-                        # Check if video settings button was clicked
+                        # Check if host button was clicked
                         if self.hostButton.isClicked(event.pos):
-                            return GameState.NEWGAME
+                            if len(self.textBox.text) == 0:
+                                self.showError = True
+                            else:
+                                # TODO: Look into if there's a better way to get this textbox
+                                # input to the GameScreen other than returning the value here
+                                return GameState.NEWGAME, self.textBox.text
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
-                            return GameState.TITLE
+                            return GameState.TITLE, None
+
+                # Proceed to game if enter is pressed in the textbox
+                isInputEntered = self.textBox.handle_event(event)
+                if isInputEntered and len(self.textBox.text) != 0:
+                    return GameState.NEWGAME, self.textBox.text
+                elif isInputEntered and len(self.textBox.text) == 0:
+                    self.showError = True
 
             # Draw everything to the screen
             self.draw()
@@ -67,7 +89,11 @@ class HostScreen(Screen):
         # Draw buttons and stuff
         self.hostButton.draw(self.screen)
         self.mainMenuButton.draw(self.screen)
+        self.textBox.draw(self.screen)
         self.displayTitle()
+
+        if self.showError:
+            self.displayInputError()
 
         pygame.display.flip()
 
@@ -79,4 +105,23 @@ class HostScreen(Screen):
         text = "HOST"
         textWidth, textHeight = font.size(text)
         text = font.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))
+
+        self.screen.blit(
+            text,
+            ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+            (Resources.SCREEN_HEIGHT / 2) - 135)
+        )
+
+    def displayInputError(self):
+
+        # Draw text to screen
+        font = pygame.font.SysFont("arial", 15)
+        textColor = (255, 0, 0)
+        text = "*Game name must not be blank"
+        text = font.render(text, 1, textColor)
+        
+        self.screen.blit(
+            text, 
+            ((Resources.SCREEN_WIDTH / 2) - 100,
+            self.textBox.y - 20)
+        )

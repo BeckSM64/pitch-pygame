@@ -55,8 +55,31 @@ def get_username(data):
 
     return username
 
-def threaded_client(conn, p, gameId):
+def hostGame(conn):
+
+    # Player id will always be 0 if hosting the game
+    p = 0
+
+    # Create the game with unique ID
+    gameId = createUniqueGameId()
+    games[gameId] = Game(gameId, "default")
+    print("GAME ID", gameId)
+    print("Creating a new game...")
+
+    # Add player to player list
+    games[gameId].newPlayer(p, conn)
+
+    # Increment number of players in game
+    games[gameId].numPlayers += 1
+
+    return p, gameId
+
+def threaded_client(conn, addr):
     global idCount
+
+    # For testing
+    p = None
+    gameId = 0
 
     # Send message length with player id message
     packet = str.encode(str(p))
@@ -68,8 +91,15 @@ def threaded_client(conn, p, gameId):
     while True:
         try:
             data = conn.recv(4096 * 2).decode()
+
+            if "host" in data:
+                p, gameId = hostGame(conn)
+                packet = str.encode(str(p))
+                length = struct.pack('!I', len(packet))
+                packet = length + packet
+                conn.send(packet)
             
-            if gameId in games:
+            elif gameId in games:
                 game = games[gameId]
 
                 if not data:
@@ -199,7 +229,7 @@ def threaded_client(conn, p, gameId):
 
                         # Update whose turn it is to bid
                         game.determineBidTurn()
-
+                    
                     # send updated game back to all players
                     packet = pickle.dumps(game)
                     length = struct.pack('!I', len(packet))
@@ -241,39 +271,39 @@ def createUniqueGameId():
     return newGameId
 
 def main():
-    global idCount
-    idCount = 0
+    # global idCount
+    # idCount = 0
 
     while True:
         
         conn, addr = s.accept()
         print("Connected to:", addr)
 
-        idCount += 1
-        p = 0
-        gameId = createUniqueGameId()
-        if idCount % 4 == 1:
-            games[gameId] = Game(gameId)
-            print("GAME ID", gameId)
-            print("Creating a new game...")
-        else:
-            for key, value in games.items():
-                if value.numPlayers < 4:
-                    # TODO: Should probably have a check here to make
-                    # sure a game isn't already in progress before joining
-                    gameId = key
-                    break
+        # idCount += 1
+        # p = 0
+        # gameId = createUniqueGameId()
+        # if idCount % 4 == 1:
+        #     games[gameId] = Game(gameId)
+        #     print("GAME ID", gameId)
+        #     print("Creating a new game...")
+        # else:
+        #     for key, value in games.items():
+        #         if value.numPlayers < 4:
+        #             # TODO: Should probably have a check here to make
+        #             # sure a game isn't already in progress before joining
+        #             gameId = key
+        #             break
 
-            games[gameId].ready = True
-            p = idCount - 1
+        #     games[gameId].ready = True
+        #     p = idCount - 1
 
-        # Add player to player list
-        games[gameId].newPlayer(p, conn)
+        # # Add player to player list
+        # games[gameId].newPlayer(p, conn)
 
-        # Increment number of players in game
-        games[gameId].numPlayers += 1
+        # # Increment number of players in game
+        # games[gameId].numPlayers += 1
 
-        start_new_thread(threaded_client, (conn, p, gameId))
+        start_new_thread(threaded_client, (conn, addr))
 
 if __name__ == "__main__":
     main()

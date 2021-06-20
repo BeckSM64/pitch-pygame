@@ -20,21 +20,19 @@ from game.logic.GameState import GameState
 from ui.widgets.UsernameList import UsernameList
 
 class GameScreen(Screen):
-    def __init__(self, username):
+    def __init__(self, username, gameKey = None):
         Screen.__init__(self)
 
         # Set up connection to server
         self.n = Network()
-        self.player = self.n.getP()
+        self.n.connect()
 
-        # Handle error connecting to server
-        if self.player is None:
-            return GameState.SERVER_ERROR
-        
-        # For debugging
-        print("You are player", self.player)
+        # Tell the server to create/join the game and return player id
+        if gameKey is not None:
+            self.player = self.n.getPlayer("host")
+            print("PLEASE BE RIGHT", self.player)
 
-        # Get game
+        # Get the game from the server
         self.game = self.n.send("get")
 
         # Set player username
