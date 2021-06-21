@@ -2,8 +2,11 @@ import pygame
 from pygame.locals import *
 from ui.screens.Screen import Screen
 from ui.widgets.Button import Button
+from ui.widgets.ActiveGameButton import ActiveGameButton
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
+from network.Network import Network
+from game.logic.GameList import GameList
 import resources.Resources as Resources
 pygame.font.init()
 
@@ -13,34 +16,35 @@ class JoinScreen(Screen):
         # Call Screen constructor
         Screen.__init__(self)
 
-        # Join button
-        self.joinButton = Button(
-            200,
-            50,
-            (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) - 25,
-            (255, 255, 255), (0, 0, 0),
-            "JOIN GAME"
-        )
+        # Make connection to the server
+        self.n = Network()
+        self.n.connect()
 
-        # Back button
-        self.mainMenuButton = Button(
-            200,
-            50, (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) + 30,
-            (255, 255, 255), (0, 0, 0),
-            "MAIN MENU"
-        )
+        # Retrieve list of games from server
+        self.buttonList = []
+        self.updateGameList()
 
-        # Text box to enter game name
-        self.textBox = TextBox(
-            (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) - 80,
-            200,
-            50
-        )
+    def updateGameList(self):
 
-        self.showError = False
+        gameList = self.n.send("gameList")
+
+        self.buttonList = []
+
+        # Game buttons
+        i = 0
+        for game in gameList.games:
+            button = ActiveGameButton(
+                game,
+                200,
+                50,
+                (Resources.SCREEN_WIDTH / 2) - 100,
+                (0 + 55) * i,
+                (255, 255, 255),
+                (0, 0, 0)
+            )
+            self.buttonList.append(button)
+            i += 1
+
 
     def run(self):
 
@@ -58,25 +62,14 @@ class JoinScreen(Screen):
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1: # the right mouse button
 
-                       # Check if join button was clicked
-                        if self.joinButton.isClicked(event.pos):
-                            if len(self.textBox.text) == 0:
-                                self.showError = True
-                            else:
-                                # TODO: Look into if there's a better way to get this textbox
-                                # input to the GameScreen other than returning the value here
-                                return GameState.ACTIVE_GAMES, False, self.textBox.text, None
+                        # Check if game button was clicked
+                        for button in self.buttonList:
+                            if button.isClicked(event.pos):
+                                self.n.disconnect()
+                                return GameState.NEWGAME, False, button.gameName, button.gameId
 
-                        # Check if back button was clicked
-                        if self.mainMenuButton.isClicked(event.pos):
-                            return GameState.TITLE, False, None, None
-
-                # Proceed to game if enter is pressed in the textbox
-                isInputEntered = self.textBox.handle_event(event)
-                if isInputEntered and len(self.textBox.text) != 0:
-                    return GameState.ACTIVE_GAMES, False, self.textBox.text, None
-                elif isInputEntered and len(self.textBox.text) == 0:
-                    self.showError = False
+            # Update game list
+            self.updateGameList()
 
             # Draw everything to the screen
             self.draw()
@@ -87,36 +80,7 @@ class JoinScreen(Screen):
         self.screen.blit(self.background, (0, 0))
         
         # Draw buttons and stuff
-        self.joinButton.draw(self.screen)
-        self.mainMenuButton.draw(self.screen)
-        self.textBox.draw(self.screen)
-        self.displayTitle()
-
-        if self.showError:
-            self.displayInputError()
+        for button in self.buttonList:
+            button.draw(self.screen)
 
         pygame.display.flip()
-
-    def displayTitle(self):
-
-        # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
-        textColor = (0, 0, 0)
-        text = "JOIN"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 135))
-
-    def displayInputError(self):
-
-        # Draw text to screen
-        font = pygame.font.SysFont("arial", 15)
-        textColor = (255, 0, 0)
-        text = "*Game name must not be blank"
-        text = font.render(text, 1, textColor)
-        
-        self.screen.blit(
-            text,
-            ((Resources.SCREEN_WIDTH / 2) - 100,
-            self.textBox.y - 20)
-        )

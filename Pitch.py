@@ -8,7 +8,6 @@ from ui.screens.OptionsScreen import *
 from ui.screens.VideoSettingsScreen import *
 from ui.screens.HostScreen import *
 from ui.screens.JoinScreen import *
-from ui.screens.ActiveGamesScreen import *
 
 def main():
 
@@ -51,9 +50,6 @@ def main():
 
         if game_state == GameState.JOIN:
             game_state, isHost, gameName, gameKey = JoinScreen().run()
-
-        if game_state == GameState.ACTIVE_GAMES:
-            game_state, isHost, gameName, gameKey = ActiveGamesScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:
