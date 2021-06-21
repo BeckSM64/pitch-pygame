@@ -20,10 +20,13 @@ class ActiveGamesScreen(Screen):
         self.n = Network()
         self.n.connect()
 
-        gameList = self.n.send("gameList")
-        self.n.disconnect()
+        # Retrieve list of games from server
+        self.buttonList = []
+        self.updateGameList()
 
-        print(gameList.games)
+    def updateGameList(self):
+
+        gameList = self.n.send("gameList")
 
         self.buttonList = []
 
@@ -36,10 +39,12 @@ class ActiveGamesScreen(Screen):
                 50,
                 (Resources.SCREEN_WIDTH / 2) - 100,
                 (0 + 55) * i,
-                (255, 255, 255), (0, 0, 0),
+                (255, 255, 255),
+                (0, 0, 0)
             )
             self.buttonList.append(button)
             i += 1
+
 
     def run(self):
 
@@ -60,7 +65,11 @@ class ActiveGamesScreen(Screen):
                         # Check if game button was clicked
                         for button in self.buttonList:
                             if button.isClicked(event.pos):
+                                self.n.disconnect()
                                 return GameState.NEWGAME, False, button.gameName
+
+            # Update game list
+            self.updateGameList()
 
             # Draw everything to the screen
             self.draw()
