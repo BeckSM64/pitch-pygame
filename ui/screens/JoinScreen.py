@@ -65,16 +65,16 @@ class JoinScreen(Screen):
                             else:
                                 # TODO: Look into if there's a better way to get this textbox
                                 # input to the GameScreen other than returning the value here
-                                return GameState.ACTIVE_GAMES, False, self.textBox.text
+                                return GameState.ACTIVE_GAMES, False, self.textBox.text, None
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
-                            return GameState.TITLE, False, "default"
+                            return GameState.TITLE, False, None, None
 
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
                 if isInputEntered and len(self.textBox.text) != 0:
-                    return GameState.ACTIVE_GAMES, False, self.textBox.text
+                    return GameState.ACTIVE_GAMES, False, self.textBox.text, None
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = False
 

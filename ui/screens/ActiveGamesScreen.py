@@ -66,7 +66,7 @@ class ActiveGamesScreen(Screen):
                         for button in self.buttonList:
                             if button.isClicked(event.pos):
                                 self.n.disconnect()
-                                return GameState.NEWGAME, False, button.gameName
+                                return GameState.NEWGAME, False, button.gameName, button.gameId
 
             # Update game list
             self.updateGameList()

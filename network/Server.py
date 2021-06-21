@@ -56,26 +56,18 @@ def get_username(data):
 
     return username
 
-def getGameKey(data):
+def getGameKeyOrName(data):
+    data = data.split("/")
+    return data[1]
 
-    # Get gamekey
-    data = data.split(" ")
-
-    # TODO: This is stupid, just do it better
-    gameKey = ""
-    for word in data[1:]:
-        gameKey += word + " "
-    gameKey = gameKey[:-1]
-    return gameKey
-
-def hostGame(conn, gameKey):
+def hostGame(conn, gameName):
 
     # Player id will always be 0 if hosting the game
     p = 0
 
     # Create the game with unique ID
     gameId = createUniqueGameId()
-    games[gameId] = Game(gameId, gameKey)
+    games[gameId] = Game(gameId, gameName)
     print("GAME ID", gameId)
     print("Creating a new game...")
 
@@ -96,7 +88,7 @@ def joinGame(conn, gameKey):
     for key, value in games.items():
 
         # Check if this is the correct game to join
-        if value.gameName == gameKey:
+        if value.id == gameKey:
             
             # TODO: update this to check against max players, not just 4
             if value.numPlayers < 4:
@@ -137,14 +129,14 @@ def threaded_client(conn, addr):
             data = conn.recv(4096 * 2).decode()
 
             if "host" in data:
-                p, gameId = hostGame(conn, getGameKey(data))
+                p, gameId = hostGame(conn, getGameKeyOrName(data))
                 packet = str.encode(str(p))
                 length = struct.pack('!I', len(packet))
                 packet = length + packet
                 conn.send(packet)
             
             elif "join" in data:
-                p, gameId = joinGame(conn, getGameKey(data))
+                p, gameId = joinGame(conn, int(getGameKeyOrName(data)))
                 packet = str.encode(str(p))
                 length = struct.pack('!I', len(packet))
                 packet = length + packet

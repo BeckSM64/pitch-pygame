@@ -20,7 +20,7 @@ from game.logic.GameState import GameState
 from ui.widgets.UsernameList import UsernameList
 
 class GameScreen(Screen):
-    def __init__(self, username, isHost, gameKey = None):
+    def __init__(self, username, isHost, gameName = None, gameKey = None):
         Screen.__init__(self)
 
         # Set up connection to server
@@ -29,9 +29,9 @@ class GameScreen(Screen):
 
         # Tell the server to create/join the game and return player id
         if isHost:
-            self.player = self.n.getPlayer(f"host {gameKey}")
+            self.player = self.n.getPlayer(f"host/{gameName}")
         else:
-            self.player = self.n.getPlayer(f"join {gameKey}")
+            self.player = self.n.getPlayer(f"join/{gameKey}")
 
         # Get the game from the server
         self.game = self.n.send("get")

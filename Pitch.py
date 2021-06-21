@@ -16,8 +16,9 @@ def main():
     game_state = GameState.TITLE
 
     username = None
-    gameKey = None
-    isHost  = None
+    gameKey  = None
+    gameName = None
+    isHost   = None
 
     while True:
 
@@ -27,7 +28,7 @@ def main():
 
         # State for new game screen
         if game_state == GameState.NEWGAME:
-            game_state = GameScreen(username, isHost, gameKey).run()
+            game_state = GameScreen(username, isHost, gameName, gameKey).run()
 
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
@@ -46,13 +47,13 @@ def main():
             game_state = VideoSettingsScreen().run()
 
         if game_state == GameState.HOST:
-            game_state, isHost, gameKey = HostScreen().run()
+            game_state, isHost, gameName, gameKey = HostScreen().run()
 
         if game_state == GameState.JOIN:
-            game_state, isHost, gameKey = JoinScreen().run()
+            game_state, isHost, gameName, gameKey = JoinScreen().run()
 
         if game_state == GameState.ACTIVE_GAMES:
-            game_state, isHost, gameKey = ActiveGamesScreen().run()
+            game_state, isHost, gameName, gameKey = ActiveGamesScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:
