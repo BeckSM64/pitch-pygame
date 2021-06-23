@@ -24,7 +24,6 @@ print("Waiting for a connection, Server Started")
 
 connected = set()
 games = {}
-idCount = 0
 
 def get_card(data):
 
@@ -111,7 +110,6 @@ def getGameList():
     return gameList
 
 def threaded_client(conn, addr):
-    global idCount
 
     # For testing
     p = None
@@ -301,8 +299,7 @@ def threaded_client(conn, addr):
             print("Closing Game", gameId)
     except:
         pass
-    
-    idCount -= 1
+
     conn.close()
 
 def createUniqueGameId():
@@ -320,38 +317,14 @@ def createUniqueGameId():
     return newGameId
 
 def main():
-    # global idCount
-    # idCount = 0
 
     while True:
         
+        # Accept connections from clients
         conn, addr = s.accept()
         print("Connected to:", addr)
 
-        # idCount += 1
-        # p = 0
-        # gameId = createUniqueGameId()
-        # if idCount % 4 == 1:
-        #     games[gameId] = Game(gameId)
-        #     print("GAME ID", gameId)
-        #     print("Creating a new game...")
-        # else:
-        #     for key, value in games.items():
-        #         if value.numPlayers < 4:
-        #             # TODO: Should probably have a check here to make
-        #             # sure a game isn't already in progress before joining
-        #             gameId = key
-        #             break
-
-        #     games[gameId].ready = True
-        #     p = idCount - 1
-
-        # # Add player to player list
-        # games[gameId].newPlayer(p, conn)
-
-        # # Increment number of players in game
-        # games[gameId].numPlayers += 1
-
+        # Start thread for connected client
         start_new_thread(threaded_client, (conn, addr))
 
 if __name__ == "__main__":
