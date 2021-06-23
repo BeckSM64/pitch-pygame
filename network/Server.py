@@ -8,7 +8,6 @@ from game.logic.Game import Game
 from game.logic.GameList import GameList
 import struct
 
-#server = "192.168.1.2"
 server = "0.0.0.0"
 port = 54555
 
@@ -22,7 +21,6 @@ except socket.error as e:
 s.listen(4)
 print("Waiting for a connection, Server Started")
 
-connected = set()
 games = {}
 
 def get_card(data):
