@@ -4,6 +4,9 @@
 # Get the argument as number of windows to launch
 numPlayers=$1
 
+# Get second argument to determine if server should be started
+startServer=$2
+
 # Check that an argument was provided
 if [ -z "$numPlayers" ]
 then
@@ -25,6 +28,9 @@ do
     python3 Pitch.py &
 done
 
-# Launch server
-cd network
-python3 Server.py
+if [[ "$startServer" != "noserver" ]]
+then
+    # Launch server
+    cd network
+    python3 Server.py
+fi
