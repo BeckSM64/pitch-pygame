@@ -37,6 +37,7 @@ class Network:
 
                 # Return player id
                 return int(data.decode())
+
         except socket.error as e:
             print(e)
 
@@ -58,9 +59,6 @@ class Network:
                 data = b''
                 while len(data) < length:
                     data += self.client.recv(4)
-
-                # Return player id
-                # return int(data.decode())
 
         except socket.error as e:
             print(e)
