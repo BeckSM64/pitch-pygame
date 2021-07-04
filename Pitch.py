@@ -6,11 +6,18 @@ from ui.screens.DisconnectScreen import *
 from ui.screens.ServerErrorScreen import *
 from ui.screens.OptionsScreen import *
 from ui.screens.VideoSettingsScreen import *
+from ui.screens.HostScreen import *
+from ui.screens.JoinScreen import *
 
 def main():
 
     # Default game state
     game_state = GameState.TITLE
+
+    username = None
+    gameKey  = None
+    gameName = None
+    isHost   = None
 
     while True:
 
@@ -20,7 +27,7 @@ def main():
 
         # State for new game screen
         if game_state == GameState.NEWGAME:
-            game_state = GameScreen(username).run()
+            game_state = GameScreen(username, isHost, gameName, gameKey).run()
 
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
@@ -37,6 +44,12 @@ def main():
         # State for video settings screen
         if game_state == GameState.VIDEO_SETTINGS:
             game_state = VideoSettingsScreen().run()
+
+        if game_state == GameState.HOST:
+            game_state, isHost, gameName, gameKey = HostScreen().run()
+
+        if game_state == GameState.JOIN:
+            game_state, isHost, gameName, gameKey = JoinScreen().run()
 
         # State for quitting game
         if game_state == GameState.QUIT:
