@@ -57,14 +57,22 @@ def getGameKeyOrName(data):
     data = data.split("/")
     return data[1]
 
-def hostGame(conn, gameName):
+def getMaxPlayers(data):
+    data = data.split("/")
+    return data[2]
+
+def getGameMode(data):
+    data = data.split("/")
+    return data[3]
+
+def hostGame(conn, gameName, maxPlayers, gameMode):
 
     # Player id will always be 0 if hosting the game
     p = 0
 
     # Create the game with unique ID
     gameId = createUniqueGameId()
-    games[gameId] = Game(gameId, gameName)
+    games[gameId] = Game(gameId, gameName, maxPlayers, gameMode)
     print("GAME ID", gameId)
     print("Creating a new game...")
 
@@ -125,7 +133,7 @@ def threaded_client(conn, addr):
             data = conn.recv(4096 * 2).decode()
 
             if "host" in data:
-                p, gameId = hostGame(conn, getGameKeyOrName(data))
+                p, gameId = hostGame(conn, getGameKeyOrName(data), getMaxPlayers(data), getGameMode(data))
                 packet = str.encode(str(p))
                 length = struct.pack('!I', len(packet))
                 packet = length + packet

@@ -68,7 +68,7 @@ class HostScreen(Screen):
 
                 # Check for quit event
                 if event.type == QUIT:
-                    return GameState.QUIT, None, None, None
+                    return GameState.QUIT, None, None, None, None, None
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -79,7 +79,7 @@ class HostScreen(Screen):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                return GameState.NEWGAME, True, self.textBox.text, None
+                                return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
@@ -92,7 +92,7 @@ class HostScreen(Screen):
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
                 if isInputEntered and len(self.textBox.text) != 0:
-                    return GameState.NEWGAME, True, self.textBox.text
+                    return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = True
 

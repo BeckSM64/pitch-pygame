@@ -51,8 +51,6 @@ class TitleScreen(Screen):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                # TODO: Look into if there's a better way to get this textbox
-                                # input to the GameScreen other than returning the value here
                                 return GameState.HOST, self.textBox.text
 
                         # Check if join button was clicked
@@ -60,8 +58,6 @@ class TitleScreen(Screen):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                # TODO: Look into if there's a better way to get this textbox
-                                # input to the GameScreen other than returning the value here
                                 return GameState.JOIN, self.textBox.text
 
                         # Check if options button was clicked
@@ -70,14 +66,10 @@ class TitleScreen(Screen):
 
                         # Check if quit button was clicked
                         if self.quitButton.isClicked(event.pos):
-                            return GameState.QUIT
+                            return GameState.QUIT, None
 
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
-                # if isInputEntered and len(self.textBox.text) != 0:
-                #     return GameState.NEWGAME, self.textBox.text
-                # elif isInputEntered and len(self.textBox.text) == 0:
-                #     self.showError = True
 
             # Draw everything to the screen
             self.draw()

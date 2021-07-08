@@ -6,6 +6,9 @@ pygame.font.init()
 
 class Incrementer:
     def __init__(self, options):
+
+        # Options
+        self.options = options
         
         # Number of options for incrementer
         self.numOptions = len(options)
@@ -61,6 +64,9 @@ class Incrementer:
         # The active index for the text map
         self.activeTextIndex = 0
 
+        # Option that is currently selected
+        self.activeOption = options[0]
+
     def handleInput(self, eventPos):
         if self.leftArrow.isClicked(eventPos):
             if (self.activeTextIndex - 1) >= 0:
@@ -69,6 +75,9 @@ class Incrementer:
         if self.rightArrow.isClicked(eventPos):
             if (self.activeTextIndex + 1) < self.numOptions:
                 self.activeTextIndex += 1
+
+        # Set the active option
+        self.activeOption = self.options[self.activeTextIndex]
     
     def setPos(self, x, y):
 

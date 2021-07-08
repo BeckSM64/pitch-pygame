@@ -1,7 +1,7 @@
 from network.ServerData import *
 
 class Game:
-    def __init__(self, id, gameName):
+    def __init__(self, id, gameName, maxPlayers, gameMode):
 
         # list of player objects
         self.players = []
@@ -15,6 +15,8 @@ class Game:
         self.numPlayers = 0
         self.id = id
         self.gameName = gameName
+        self.maxPlayers = maxPlayers
+        self.gameMode = gameMode
 
         # Flag to determine if in bidding stage or not
         self.biddingStage = True
