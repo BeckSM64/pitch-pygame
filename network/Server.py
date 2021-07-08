@@ -59,7 +59,7 @@ def getGameKeyOrName(data):
 
 def getMaxPlayers(data):
     data = data.split("/")
-    return data[2]
+    return int(data[2])
 
 def getGameMode(data):
     data = data.split("/")

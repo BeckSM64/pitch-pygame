@@ -122,7 +122,7 @@ class GameScreen(Screen):
                     return GameState.DISCONNECT
 
                 # Check to see if game is ready to start
-                if self.game.numPlayers >= 3 and self.showScoreScreen == False:
+                if self.game.numPlayers >= self.game.maxPlayers and self.showScoreScreen == False:
                     self.gameReady = True
                     self.showGameScreen = True
 
