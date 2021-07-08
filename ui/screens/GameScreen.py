@@ -23,8 +23,6 @@ class GameScreen(Screen):
     def __init__(self, username, isHost, gameName = None, gameKey = None, maxPlayers = None, gameMode = None):
         Screen.__init__(self)
 
-        print(maxPlayers, gameMode)
-
         # Set up connection to server
         self.n = Network()
         self.n.connect()
