@@ -5,7 +5,7 @@ from ui.widgets.Button import Button
 class ActiveGameButton(Button):
     def __init__(self, game, width, height, x, y, color, textColor):
 
-        buttonText       = "Game Name: " + game.gameName + '\n' + "Active Players: " + str(game.numPlayers) + '\n' + "Max Players: " + str(game.maxPlayers)
+        buttonText       = "Game Name: " + game.gameName + '\n' + "Open Slots: " + str(game.maxPlayers - game.numPlayers) + '\n' + "Game Mode: " + game.gameMode
         self.gameName    = game.gameName
         self.gameId      = game.id
 
