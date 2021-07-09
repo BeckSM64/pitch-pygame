@@ -112,6 +112,25 @@ class SMainPile:
                 return True
         return False
 
+    def hasJick(self, trump):
+
+        # Determine jick suit based on trump (Opposite same colored suit)
+        jickSuit = None
+        if trump == "hearts":
+            jickSuit = "diamonds"
+        elif trump == "diamonds":
+            jickSuit = "hearts"
+        elif trump == "spades":
+            jickSuit = "clubs"
+        else:
+            jickSuit = "spades"
+
+        # Check if player has jick
+        for card in self.cards:
+            if card.value == 11 and card.suit == jickSuit:
+                return True
+        return False
+
     def getHigh(self, trump):
 
         # If there is no trump card, can't have potential high
