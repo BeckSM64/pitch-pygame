@@ -42,7 +42,7 @@ class HostScreen(Screen):
         )
 
         # Game mode incrementer
-        gameModeOptions = ["Normal", "Jick", "Jersey", "Joker"]
+        gameModeOptions = ["Normal", "Jick"]
         self.gameModeIncrementer = Incrementer(gameModeOptions)
         INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (self.gameModeIncrementer.incrementerWidth / 2)
         INCREMENTER_Y = 40
