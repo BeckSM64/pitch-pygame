@@ -71,6 +71,14 @@ def get_card_collection(server_main_pile):
 
     return card_collection
 
+def combine_card_collections(cardCollection1, cardCollection2):
+    """Combine two card collections"""
+
+    for card in cardCollection2:
+        cardCollection1.add_card(card)
+
+    return cardCollection1
+
 def set_screen_size(width = 1280, height = 720):
 
     # Set global screen size variables

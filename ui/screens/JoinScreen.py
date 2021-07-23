@@ -43,24 +43,31 @@ class JoinScreen(Screen):
         BUTTON_WIDTH   = 400
         BUTTON_HEIGHT  = 100
         BUTTON_PADDING = 5
-        for game in gameList.games:
-            button = ActiveGameButton(
-                game,
-                BUTTON_WIDTH,
-                BUTTON_HEIGHT,
-                (Resources.SCREEN_WIDTH / 2) - (BUTTON_WIDTH / 2),
-                (0 + BUTTON_HEIGHT + BUTTON_PADDING) * i,
-                (255, 255, 255),
-                (0, 0, 0)
-            )
-            self.buttonList.append(button)
-            i += 1
 
+        # Loop through active games in the game list
+        for game in gameList.games:
+
+            # Only create a button for games that have open spots
+            if game.maxPlayers != game.numPlayers:
+                button = ActiveGameButton(
+                    game,
+                    BUTTON_WIDTH,
+                    BUTTON_HEIGHT,
+                    (Resources.SCREEN_WIDTH / 2) - (BUTTON_WIDTH / 2),
+                    (0 + BUTTON_HEIGHT + BUTTON_PADDING) * i,
+                    (255, 255, 255),
+                    (0, 0, 0)
+                )
+                self.buttonList.append(button)
+                i += 1
+
+        # Only display 4 games per page
         if len(self.buttonList) > 4:
             self.buttonListSubset = self.buttonList[self.buttonListSlice[0]:self.buttonListSlice[1]]
         else:
             self.buttonListSubset = self.buttonList
 
+        # Update the positions of all the buttons
         self.updateButtonPositions()
 
     def updateButtonPositions(self):

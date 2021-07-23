@@ -20,7 +20,7 @@ from game.logic.GameState import GameState
 from ui.widgets.UsernameList import UsernameList
 
 class GameScreen(Screen):
-    def __init__(self, username, isHost, gameName = None, gameKey = None):
+    def __init__(self, username, isHost, gameName = None, gameKey = None, maxPlayers = None, gameMode = None):
         Screen.__init__(self)
 
         # Set up connection to server
@@ -29,7 +29,7 @@ class GameScreen(Screen):
 
         # Tell the server to create/join the game and return player id
         if isHost:
-            self.player = self.n.getPlayer(f"host/{gameName}")
+            self.player = self.n.getPlayer(f"host/{gameName}/{maxPlayers}/{gameMode}")
         else:
             self.player = self.n.getPlayer(f"join/{gameKey}")
 
@@ -122,7 +122,7 @@ class GameScreen(Screen):
                     return GameState.DISCONNECT
 
                 # Check to see if game is ready to start
-                if self.game.numPlayers >= 3 and self.showScoreScreen == False:
+                if self.game.numPlayers >= self.game.maxPlayers and self.showScoreScreen == False:
                     self.gameReady = True
                     self.showGameScreen = True
 

@@ -4,6 +4,7 @@ from ui.screens.Screen import Screen
 from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
+from ui.widgets.Incrementer import Incrementer
 import resources.Resources as Resources
 pygame.font.init()
 
@@ -40,6 +41,21 @@ class HostScreen(Screen):
             50
         )
 
+        # Game mode incrementer
+        gameModeOptions = ["Normal", "Jick"]
+        self.gameModeIncrementer = Incrementer(gameModeOptions)
+        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (self.gameModeIncrementer.incrementerWidth / 2)
+        INCREMENTER_Y = 40
+        self.gameModeIncrementer.setPos(INCREMENTER_X, INCREMENTER_Y)
+
+        # Number of players incrementer
+        numPlayersOptions = ["3", "4"]
+        self.numPlayersIncrementer = Incrementer(numPlayersOptions)
+        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (self.numPlayersIncrementer.incrementerWidth / 2)
+        INCREMENTER_Y = 90
+        self.numPlayersIncrementer.setPos(INCREMENTER_X, INCREMENTER_Y)
+
+        # Flag to show textbox input error
         self.showError = False
 
     def run(self):
@@ -52,7 +68,7 @@ class HostScreen(Screen):
 
                 # Check for quit event
                 if event.type == QUIT:
-                    return GameState.QUIT
+                    return GameState.QUIT, None, None, None, None, None
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -63,18 +79,20 @@ class HostScreen(Screen):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                # TODO: Look into if there's a better way to get this textbox
-                                # input to the GameScreen other than returning the value here
-                                return GameState.NEWGAME, True, self.textBox.text, None
+                                return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE, False, None, None
 
+                        # Handle input for incrementers
+                        self.gameModeIncrementer.handleInput(event.pos)
+                        self.numPlayersIncrementer.handleInput(event.pos)
+
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
                 if isInputEntered and len(self.textBox.text) != 0:
-                    return GameState.NEWGAME, True, self.textBox.text
+                    return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = True
 
@@ -90,6 +108,8 @@ class HostScreen(Screen):
         self.hostButton.draw(self.screen)
         self.mainMenuButton.draw(self.screen)
         self.textBox.draw(self.screen)
+        self.gameModeIncrementer.draw(self.screen)
+        self.numPlayersIncrementer.draw(self.screen)
         self.displayTitle()
 
         if self.showError:
@@ -109,7 +129,7 @@ class HostScreen(Screen):
         self.screen.blit(
             text,
             ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
-            (Resources.SCREEN_HEIGHT / 2) - 135)
+            0)
         )
 
     def displayInputError(self):

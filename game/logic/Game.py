@@ -1,7 +1,7 @@
 from network.ServerData import *
 
 class Game:
-    def __init__(self, id, gameName):
+    def __init__(self, id, gameName, maxPlayers, gameMode):
 
         # list of player objects
         self.players = []
@@ -15,6 +15,8 @@ class Game:
         self.numPlayers = 0
         self.id = id
         self.gameName = gameName
+        self.maxPlayers = maxPlayers
+        self.gameMode = gameMode
 
         # Flag to determine if in bidding stage or not
         self.biddingStage = True
@@ -178,66 +180,227 @@ class Game:
         gameScore = 0
         hasHigh   = None
         hasLow    = None
+        hasJack   = None
         hasGame   = None
 
-        for player in self.players:
+        # Dependent on game mode
+        hasJick   = None
 
-            # Determine jack point
-            if player.wonCards.hasJack(self.trump):
-                player.roundPoints += 1
-                print(player.id, "has jack")
+        if self.maxPlayers == 3:
+            for player in self.players:
 
-            # Determine high point
-            playerCard = player.wonCards.getHigh(self.trump)
-            if playerCard is not None:
-                if playerCard.value > highCard.value:
-                    highCard = playerCard
-                    hasHigh = player.id
+                # Determine jack point
+                if player.wonCards.hasJack(self.trump):
+                    hasJack = player.id
 
-            # Determine low point
-            playerCard = player.wonCards.getLow(self.trump)
-            if playerCard is not None:
-                if playerCard.value < lowCard.value:
-                    lowCard = playerCard
-                    hasLow = player.id
+                # Determine high point
+                playerCard = player.wonCards.getHigh(self.trump)
+                if playerCard is not None:
+                    if playerCard.value > highCard.value:
+                        highCard = playerCard
+                        hasHigh = player.id
+
+                # Determine low point
+                playerCard = player.wonCards.getLow(self.trump)
+                if playerCard is not None:
+                    if playerCard.value < lowCard.value:
+                        lowCard = playerCard
+                        hasLow = player.id
+
+                # Determine game point
+                playerScore = player.wonCards.getGame()
+                if playerScore > gameScore:
+                    gameScore = playerScore
+                    hasGame = player.id
+
+                # Only check for jick if game mode is jick
+                if self.gameMode == "Jick":
+                    if player.wonCards.hasJick(self.trump):
+                        hasJick = player.id
+
+            # Check if two players had the high game score
+            # If so, no game point
+            for player in self.players:
+                if player.wonCards.getGame() == gameScore and player.id != hasGame:
+                    hasGame = None
+
+            # Award Points
+            for player in self.players:
+
+                # Award high
+                if hasHigh == player.id:
+                    player.roundPoints += 1
+                    print(player.id, "has high", highCard.value, "of", highCard.suit)
+
+                # Award low
+                if hasLow == player.id:
+                    player.roundPoints += 1
+                    print(player.id, "has low", lowCard.value, "of", lowCard.suit)
+
+                if hasJack == player.id:
+                    player.roundPoints += 1
+                    print(player.id, "has jack")
+
+                # Award game point
+                if hasGame == player.id:
+                    player.roundPoints += 1
+                    print(player.id, "has game", gameScore)
+
+                # Award jick if game mode is jick
+                if self.gameMode == "Jick":
+                    if hasJick == player.id:
+                        player.roundPoints += 1
+                        print(player.id, "has jick")
+
+            # Print player scores
+            for player in self.players:
+                if player.id == self.bidWinner:
+                    if player.roundPoints >= player.playerBid:
+                        player.score += player.roundPoints
+                    else:
+                        player.score -= player.playerBid
+                else:
+                    player.score += player.roundPoints
+                print("PLAYER", player.id, "SCORE:", player.score)
+        else:
+            teamOne = [0, 2]
+            teamTwo = [1, 3]
+
+            for player in self.players:
+
+                # Determine jack point
+                if player.wonCards.hasJack(self.trump):
+                    hasJack = player.id
+
+                # Determine high point
+                playerCard = player.wonCards.getHigh(self.trump)
+                if playerCard is not None:
+                    if playerCard.value > highCard.value:
+                        highCard = playerCard
+                        hasHigh = player.id
+
+                # Determine low point
+                playerCard = player.wonCards.getLow(self.trump)
+                if playerCard is not None:
+                    if playerCard.value < lowCard.value:
+                        lowCard = playerCard
+                        hasLow = player.id
+
+                # Determine jick point if game mode is jick
+                if self.gameMode == "Jick":
+                    if player.wonCards.hasJick(self.trump):
+                        hasJick = player.id
 
             # Determine game point
-            playerScore = player.wonCards.getGame()
-            if playerScore > gameScore:
-                gameScore = playerScore
-                hasGame = player.id
+            teamOneGame = self.players[0].wonCards.getGame() + self.players[2].wonCards.getGame()
+            teamTwoGame = self.players[1].wonCards.getGame() + self.players[3].wonCards.getGame()
 
-        # Check if two players had the high game score
-        # If so, no game point
-        for player in self.players:
-            if player.wonCards.getGame() == gameScore and player.id != hasGame:
+            # Check if team one has game
+            if teamOneGame > gameScore:
+                gameScore = teamOneGame
+                hasGame = 0 # Player id 0
+            
+            # Check if team two has game
+            if teamTwoGame > gameScore:
+                gameScore = teamTwoGame
+                hasGame = 1 # Player id 1
+
+            # If both teams had the same points for game, then no game point is awarded
+            if teamOneGame == teamTwoGame:
                 hasGame = None
 
-        # Award points
-        for player in self.players:
+            for player in self.players:
 
-            # Award high
-            if hasHigh == player.id:
-                player.roundPoints += 1
-                print(player.id, "has high", highCard.value, "of", highCard.suit)
+                # Award high
+                if hasHigh == player.id:
 
-            # Award low
-            if hasLow == player.id:
-                player.roundPoints += 1
-                print(player.id, "has low", lowCard.value, "of", lowCard.suit)
+                    # Check if player id is in team one or team two
+                    if player.id in teamOne:
+                        self.players[teamOne[0]].roundPoints += 1
+                        self.players[teamOne[1]].roundPoints += 1
+                    else:
+                        self.players[teamTwo[0]].roundPoints += 1
+                        self.players[teamTwo[1]].roundPoints += 1
 
-            # Award game point
-            if hasGame == player.id:
-                player.roundPoints += 1
-                print(player.id, "has game", gameScore)
+                    print(player.id, "has high", highCard.value, "of", highCard.suit)
 
-        # Print player scores
-        for player in self.players:
-            if player.id == self.bidWinner:
-                if player.roundPoints >= player.playerBid:
-                    player.score += player.roundPoints
+                # Award low
+                if hasLow == player.id:
+
+                    # Check if player id is in team one or team two
+                    if player.id in teamOne:
+                        self.players[teamOne[0]].roundPoints += 1
+                        self.players[teamOne[1]].roundPoints += 1
+                    else:
+                        self.players[teamTwo[0]].roundPoints += 1
+                        self.players[teamTwo[1]].roundPoints += 1
+
+                    print(player.id, "has low", lowCard.value, "of", lowCard.suit)
+
+                # Award jack
+                if hasJack == player.id:
+
+                    # Check if player id is in team one or team two
+                    if player.id in teamOne:
+                        self.players[teamOne[0]].roundPoints += 1
+                        self.players[teamOne[1]].roundPoints += 1
+                    else:
+                        self.players[teamTwo[0]].roundPoints += 1
+                        self.players[teamTwo[1]].roundPoints += 1
+
+                    print(player.id, "has jack")
+
+                # Award game
+                if hasGame == player.id:
+
+                    # Check if player id is in team one or team two
+                    if player.id in teamOne:
+                        self.players[teamOne[0]].roundPoints += 1
+                        self.players[teamOne[1]].roundPoints += 1
+                    else:
+                        self.players[teamTwo[0]].roundPoints += 1
+                        self.players[teamTwo[1]].roundPoints += 1
+
+                    print(player.id, "has game")
+
+                # Award jick
+                if self.gameMode == "Jick":
+                    if hasJick == player.id:
+
+                        # Check if player id is in team one or team two
+                        if player.id in teamOne:
+                            self.players[teamOne[0]].roundPoints += 1
+                            self.players[teamOne[1]].roundPoints += 1
+                        else:
+                            self.players[teamTwo[0]].roundPoints += 1
+                            self.players[teamTwo[1]].roundPoints += 1
+
+                        print(player.id, "has jick")
+
+            # Print player scores
+            if self.bidWinner in teamOne:
+
+                # Award or subtract points
+                if self.players[self.bidWinner].roundPoints >= self.players[self.bidWinner].playerBid:
+                    self.players[teamOne[0]].score += self.players[self.bidWinner].roundPoints
+                    self.players[teamOne[1]].score += self.players[self.bidWinner].roundPoints
                 else:
-                    player.score -= player.playerBid
+                    self.players[teamOne[0]].score -= self.players[self.bidWinner].playerBid
+                    self.players[teamOne[1]].score -= self.players[self.bidWinner].playerBid
+                
+                # Award points to team that didn't bid
+                self.players[teamTwo[0]].score += self.players[teamTwo[0]].roundPoints
+                self.players[teamTwo[1]].score += self.players[teamTwo[1]].roundPoints
             else:
-                player.score += player.roundPoints
-            print("PLAYER", player.id, "SCORE:", player.score)
+
+                # Award or subtract points
+                if self.players[self.bidWinner].roundPoints >= self.players[self.bidWinner].playerBid:
+                    self.players[teamTwo[0]].score += self.players[self.bidWinner].roundPoints
+                    self.players[teamTwo[1]].score += self.players[self.bidWinner].roundPoints
+                else:
+                    self.players[teamTwo[0]].score -= self.players[self.bidWinner].playerBid
+                    self.players[teamTwo[1]].score -= self.players[self.bidWinner].playerBid
+                
+                # Award points to team that didn't bid
+                self.players[teamOne[0]].score += self.players[teamOne[0]].roundPoints
+                self.players[teamOne[1]].score += self.players[teamOne[1]].roundPoints

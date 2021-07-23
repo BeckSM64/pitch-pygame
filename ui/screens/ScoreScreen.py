@@ -13,10 +13,18 @@ class ScoreScreen:
 
     def draw(self, game, screen):
 
-        # Draw player usernames, scores, and cards
-        for player in game.players:
+        if game.maxPlayers == 3:
+            self.drawPlayerNamesAndCards(screen, game, 3)
+        else:
+            self.drawPlayerNamesAndCards(screen, game, 2)
 
-            text = player.username + ": " + str(player.score)
+    def drawPlayerNamesAndCards(self, screen, game, numPlayers):
+        for i in range(numPlayers):
+
+            if numPlayers == 3:
+                text = game.players[i].username + ": " + str(game.players[i].score)
+            else:
+                text = game.players[i].username + "/" + game.players[i + 2].username + ": " + str(game.players[i].score)
 
             # Create text
             font = pygame.font.SysFont("arial", Resources.UI_TEXT_SIZE)
@@ -25,13 +33,19 @@ class ScoreScreen:
             text = font.render(text, 1, textColor)
 
             # Calculate x position of username text and cards
-            posX = self.calculateXPosition(game.numPlayers + 1, player.id, textWidth)
+            if numPlayers == 3:
+                posX = self.calculateXPosition(game.numPlayers + 1, i, textWidth)
+            else:
+                posX = self.calculateXPosition(game.numPlayers - 1, i, textWidth)
 
             # Draw text to screen
             screen.blit(text, (posX, 0))
 
             # Get the cards the player won as a card collection
-            wonCards = Resources.get_card_collection(player.wonCards)
+            if numPlayers == 3:
+                wonCards = Resources.get_card_collection(game.players[i].wonCards)
+            else:
+                wonCards = Resources.combine_card_collections(Resources.get_card_collection(game.players[i].wonCards), Resources.get_card_collection(game.players[i + 2].wonCards))
 
             # Set the position of the cards to be drawn on the screen
             # TODO: Look into not doing this every frame
@@ -53,8 +67,12 @@ class ScoreScreen:
         textWidth, textHeight = font.size(text)
         text = font.render(text, 1, textColor)
 
-        # Calculate x position of tend and under text and cards
-        posX = self.calculateXPosition(game.numPlayers + 1, game.numPlayers, textWidth)
+        if game.maxPlayers == 3:
+            # Calculate x position of tend and under text and cards
+            posX = self.calculateXPosition(game.numPlayers + 1, game.numPlayers, textWidth)
+        else:
+            # Calculate x position of tend and under text and cards
+            posX = self.calculateXPosition(game.numPlayers - 1, 2, textWidth)
 
         # Draw text to screen
         screen.blit(text, (posX, 0))
