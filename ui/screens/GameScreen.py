@@ -103,6 +103,7 @@ class GameScreen(Screen):
         self.showGameScreen = False
         self.showScoreScreen = False
         self.gameReady = False
+        self.cardClickable = True
 
     def run(self):
 
@@ -158,9 +159,19 @@ class GameScreen(Screen):
                             if (
                                     card.rect.collidepoint(event.pos) and self.game.players[self.player].playerTurn and
                                     self.game.players[self.player].playerBid is not None and self.game.didPlayersBid() == True and
-                                    card.isPlayable(self.game, self.test_hand.hasCurrentSuit(self.game.currentSuit))
+                                    card.isPlayable(self.game, self.test_hand.hasCurrentSuit(self.game.currentSuit)) and self.cardClickable
                                 ):
+
+                                # Set small delay to ensure that the card played does
+                                # not get counted as part of the previous trick
+                                # TODO: This is hacky, look into another way to fix this
+                                pygame.time.delay(200)
+
+                                # Remove the card from the player's hand to be played in the main pile
                                 self.test_hand.remove(card)
+
+                                # Set the cardClickable flag to false 
+                                self.cardClickable = False
 
                                 # Set not ready
                                 if len(self.test_hand) == 0:
@@ -238,6 +249,7 @@ class GameScreen(Screen):
             if self.game.mainPile.size() % len(self.game.players) == 0 and self.game.mainPile.size() != 0 and not self.game.isPlayersReady():
                 pygame.time.delay(2000)
                 self.n.send("ready")
+                self.cardClickable = True
 
         if self.showScoreScreen == True:
 
