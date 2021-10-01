@@ -5,6 +5,11 @@ pygame.font.init()
 class Button:
     def __init__(self, width, height, x, y, color, textColor, text):
 
+        # Constants
+        self.UNFILLED_BUTTON_BORDER_WIDTH = 3
+        self.FILLED_BUTTON_BORDER_WIDTH   = 0
+
+        # Members
         self.width = width
         self.height = height
         self.x = x
@@ -13,7 +18,7 @@ class Button:
         self.color = color
         self.textColor = textColor
         self.rect = Rect(x, y, width, height)
-        self.borderWidth = 3
+        self.borderWidth = self.UNFILLED_BUTTON_BORDER_WIDTH
         
         # For multiline text, split on new line character
         self.textList = text.split("\n")
@@ -54,9 +59,9 @@ class Button:
 
     def isHovering(self, mousePos):
         if self.rect.collidepoint(mousePos):
-            self.borderWidth = 0
+            self.borderWidth = self.FILLED_BUTTON_BORDER_WIDTH
         else:
-            self.borderWidth = 3
+            self.borderWidth = self.UNFILLED_BUTTON_BORDER_WIDTH
 
     def setPos(self, x, y):
 
