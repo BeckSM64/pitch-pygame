@@ -104,8 +104,7 @@ class TitleScreen(Screen):
     def displayInputError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 15)
         textColor = (255, 0, 0)
         text = "*Username must not be blank"
-        text = font.render(text, 1, textColor)
+        text = Resources.FONT_FIFTEEN.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 155))

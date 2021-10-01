@@ -127,28 +127,30 @@ class HostScreen(Screen):
     def displayTitle(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (0, 0, 0)
         text = "HOST"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
 
         self.screen.blit(
             text,
-            ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
-            0)
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                0
+            )
         )
 
     def displayInputError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 15)
         textColor = (255, 0, 0)
         text = "*Game name must not be blank"
-        text = font.render(text, 1, textColor)
+        text = Resources.FONT_FIFTEEN.render(text, 1, textColor)
         
         self.screen.blit(
             text, 
-            ((Resources.SCREEN_WIDTH / 2) - 100,
-            self.textBox.y - 20)
+            (
+                (Resources.SCREEN_WIDTH / 2) - 100,
+                self.textBox.y - 20
+            )
         )

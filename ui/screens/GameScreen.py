@@ -307,9 +307,15 @@ class GameScreen(Screen):
     def displayWaitMessage(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 30)
         textColor = (0, 0, 0)
         text = "Waiting For More Players..."
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)))
+        textWidth, textHeight = Resources.FONT_THIRTY.size(text)
+        text = Resources.FONT_THIRTY.render(text, 1, textColor)
+        
+        self.screen.blit(
+            text,
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)
+            )
+        )

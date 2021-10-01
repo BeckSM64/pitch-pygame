@@ -5,6 +5,7 @@ from game.objects.Card import Card
 from game.objects.Hand import Hand
 from game.objects.MainPile import MainPile
 from game.objects.CardCollection import CardCollection
+pygame.init()
 
 # Screen size
 SCREEN_WIDTH  = 896
@@ -17,12 +18,22 @@ UI_TEXT_SIZE = 15
 SCALABLE_CARD_WIDTH  = 50
 SCALABLE_CARD_HEIGHT = 83
 
+# Active font
+ACTIVE_FONT = "arial"
+
 # Video Settings
 videoSettings = {
     504 : {"fontSize" : 15, "cardWidth" : 50, "cardHeight" : 83},
     648 : {"fontSize" : 20, "cardWidth" : 63, "cardHeight" : 105},
     720 : {"fontSize" : 23, "cardWidth" : 75, "cardHeight" : 125}
 }
+
+# Fonts
+FONT_SIXTY         = pygame.font.SysFont(ACTIVE_FONT, 60)
+FONT_TWENTY_FIVE   = pygame.font.SysFont(ACTIVE_FONT, 25)
+FONT_THIRTY        = pygame.font.SysFont(ACTIVE_FONT, 30)
+FONT_FIFTEEN       = pygame.font.SysFont(ACTIVE_FONT, 15)
+FONT_VARIABLE_SIZE = pygame.font.SysFont(ACTIVE_FONT, UI_TEXT_SIZE)
 
 def load_png(name):
     """ Load image and return image object"""
@@ -109,9 +120,14 @@ def set_screen_size(width = 1280, height = 720):
 
 def set_ui_font_size(fontSize):
 
-    # Set global ui font size variable
+    # Set global ui font size and
+    # font variable size variables
     global UI_TEXT_SIZE
-    UI_TEXT_SIZE = fontSize
+    global FONT_VARIABLE_SIZE
+
+    # Update UI text size and variable size font
+    UI_TEXT_SIZE       = fontSize
+    FONT_VARIABLE_SIZE = pygame.font.SysFont("arial", UI_TEXT_SIZE)
 
 def set_scalable_card_size(cardWidth, cardHeight):
 

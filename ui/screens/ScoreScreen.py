@@ -27,10 +27,9 @@ class ScoreScreen:
                 text = game.players[i].username + "/" + game.players[i + 2].username + ": " + str(game.players[i].score)
 
             # Create text
-            font = pygame.font.SysFont("arial", Resources.UI_TEXT_SIZE)
             textColor = (0, 0, 0)
-            textWidth, textHeight = font.size(text)
-            text = font.render(text, 1, textColor)
+            textWidth, textHeight = Resources.FONT_VARIABLE_SIZE.size(text)
+            text = Resources.FONT_VARIABLE_SIZE.render(text, 1, textColor)
 
             # Calculate x position of username text and cards
             if numPlayers == 3:
@@ -62,10 +61,9 @@ class ScoreScreen:
         text = "Ten and Under Pile"
 
         # Create text with specified font
-        font = pygame.font.SysFont("arial", Resources.UI_TEXT_SIZE)
         textColor = (0, 0, 0)
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_VARIABLE_SIZE.size(text)
+        text = Resources.FONT_VARIABLE_SIZE.render(text, 1, textColor)
 
         if game.maxPlayers == 3:
             # Calculate x position of tend and under text and cards
