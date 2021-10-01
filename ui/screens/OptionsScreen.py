@@ -32,6 +32,12 @@ class OptionsScreen(Screen):
             "MAIN MENU"
         )
 
+        # List of buttons
+        self.buttonList = [
+            self.videoSettingsButton,
+            self.mainMenuButton
+        ]
+
     def run(self):
 
         # Game loop
@@ -55,6 +61,10 @@ class OptionsScreen(Screen):
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
+
+                # Check if mouse is hovering over buttons
+                for button in self.buttonList:
+                    button.isHovering(pygame.mouse.get_pos())
 
             # Draw everything to the screen
             self.draw()

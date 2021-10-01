@@ -16,7 +16,7 @@ class Screen:
         # Fill background
         self.background = pygame.Surface(self.screen.get_size())
         self.background = self.background.convert()
-        self.background.fill((0, 250, 250))
+        self.background.fill((21, 107, 5))
 
         # Blit everything to the screen
         self.screen.blit(self.background, (0, 0))

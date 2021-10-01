@@ -53,6 +53,7 @@ class BidScreen:
         # Draw the bid buttons to the screen
         for button in self.buttonList:
             button.draw(screen)
+            button.isHovering(pygame.mouse.get_pos())
 
     def setButtonList4(self):
         bidButton2    = Button(

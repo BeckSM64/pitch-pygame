@@ -55,6 +55,14 @@ class VideoSettingsScreen(Screen):
             (0, 0, 0),
             "MAIN MENU"
         )
+
+        # List of buttons
+        self.buttonList = [
+            self.fiveOFourButton,
+            self.sixFourtyEightButton,
+            self.sevenTwentyButton,
+            self.mainMenuButton
+        ]
     
     def run(self):
 
@@ -87,6 +95,10 @@ class VideoSettingsScreen(Screen):
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
+
+                # Check if mouse is hovering over button
+                for button in self.buttonList:
+                    button.isHovering(pygame.mouse.get_pos())
             
             # Draw everything to the screen
             self.draw()

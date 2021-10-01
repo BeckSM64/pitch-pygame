@@ -33,6 +33,12 @@ class HostScreen(Screen):
             "MAIN MENU"
         )
 
+        # List of buttons
+        self.buttonList = [
+            self.hostButton,
+            self.mainMenuButton
+        ]
+
         # Text box to enter game name
         self.textBox = TextBox(
             (Resources.SCREEN_WIDTH / 2) - 100,
@@ -83,7 +89,7 @@ class HostScreen(Screen):
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
-                            return GameState.TITLE, False, None, None
+                            return GameState.TITLE, False, None, None, None, None
 
                         # Handle input for incrementers
                         self.gameModeIncrementer.handleInput(event.pos)
@@ -95,6 +101,10 @@ class HostScreen(Screen):
                     return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = True
+
+                # Check if mouse is hovering over buttons
+                for button in self.buttonList:
+                    button.isHovering(pygame.mouse.get_pos())
 
             # Draw everything to the screen
             self.draw()

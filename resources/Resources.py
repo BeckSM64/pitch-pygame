@@ -103,7 +103,7 @@ def set_screen_size(width = 1280, height = 720):
     # Fill background
     background = pygame.Surface(screen.get_size())
     background = background.convert()
-    background.fill((0, 250, 250))
+    background.fill((21, 107, 5))
 
     return screen, background
 

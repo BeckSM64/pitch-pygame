@@ -97,6 +97,12 @@ class GameScreen(Screen):
             TEN_AND_UNDER_BUTTON_TEXT
         )
 
+        # List of all the buttons
+        self.buttonList = [
+            self.scoreButton,
+            self.tenAndUnderButton
+        ]
+
         # Score screen
         self.scoreScreen = ScoreScreen()
 
@@ -206,6 +212,11 @@ class GameScreen(Screen):
 
                                 # Get the new player hand from the updated game
                                 self.test_hand = get_hand(self.game.players[self.player].playerHand)
+
+                # Check if mouse is hovering over button
+                for button in self.buttonList:
+                    button.isHovering(pygame.mouse.get_pos())
+
             self.draw()
 
     def draw(self):

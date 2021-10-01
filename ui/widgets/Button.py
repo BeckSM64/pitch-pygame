@@ -13,6 +13,7 @@ class Button:
         self.color = color
         self.textColor = textColor
         self.rect = Rect(x, y, width, height)
+        self.borderWidth = 3
         
         # For multiline text, split on new line character
         self.textList = text.split("\n")
@@ -20,7 +21,7 @@ class Button:
     def draw(self, screen):
 
         # Draw rectangle to screen
-        pygame.draw.rect(screen, self.color, self.rect, border_radius = 5)
+        pygame.draw.rect(screen, self.color, self.rect, border_radius = 5, width = self.borderWidth)
 
         # Draw text to screen
         font = pygame.font.SysFont("arial", 15)
@@ -50,6 +51,12 @@ class Button:
             return True
         else:
             return False
+
+    def isHovering(self, mousePos):
+        if self.rect.collidepoint(mousePos):
+            self.borderWidth = 0
+        else:
+            self.borderWidth = 3
 
     def setPos(self, x, y):
 
