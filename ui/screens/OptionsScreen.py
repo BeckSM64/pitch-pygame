@@ -33,10 +33,8 @@ class OptionsScreen(Screen):
         )
 
         # List of buttons
-        self.buttonList = [
-            self.videoSettingsButton,
-            self.mainMenuButton
-        ]
+        self.buttonList.append(self.videoSettingsButton)
+        self.buttonList.append(self.mainMenuButton)
 
     def run(self):
 
@@ -63,8 +61,7 @@ class OptionsScreen(Screen):
                             return GameState.TITLE
 
                 # Check if mouse is hovering over buttons
-                for button in self.buttonList:
-                    button.isHovering(pygame.mouse.get_pos())
+                self.isMouseHoveringOverButtons()
 
             # Draw everything to the screen
             self.draw()

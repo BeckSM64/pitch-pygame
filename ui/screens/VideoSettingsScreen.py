@@ -57,12 +57,10 @@ class VideoSettingsScreen(Screen):
         )
 
         # List of buttons
-        self.buttonList = [
-            self.fiveOFourButton,
-            self.sixFourtyEightButton,
-            self.sevenTwentyButton,
-            self.mainMenuButton
-        ]
+        self.buttonList.append(self.fiveOFourButton)
+        self.buttonList.append(self.sixFourtyEightButton)
+        self.buttonList.append(self.sevenTwentyButton)
+        self.buttonList.append(self.mainMenuButton)
     
     def run(self):
 
@@ -97,8 +95,7 @@ class VideoSettingsScreen(Screen):
                             return GameState.TITLE
 
                 # Check if mouse is hovering over button
-                for button in self.buttonList:
-                    button.isHovering(pygame.mouse.get_pos())
+                self.isMouseHoveringOverButtons()
             
             # Draw everything to the screen
             self.draw()

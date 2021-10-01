@@ -24,10 +24,8 @@ class DisconnectScreen(Screen):
             "MAIN MENU"
         )
 
-        # List of all the buttons
-        self.buttonList = [
-            self.mainMenuButton
-        ]
+        # Add buttons to button list
+        self.buttonList.append(self.mainMenuButton)
 
     def run(self):
 
@@ -50,8 +48,7 @@ class DisconnectScreen(Screen):
                             return GameState.TITLE
 
                 # Check if mouse is hover over buttons
-                for button in self.buttonList:
-                    button.isHovering(pygame.mouse.get_pos())
+                self.isMouseHoveringOverButtons()
 
             self.draw()
 

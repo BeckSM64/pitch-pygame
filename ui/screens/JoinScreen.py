@@ -71,8 +71,7 @@ class JoinScreen(Screen):
         self.updateButtonPositions()
 
         # Check if mouse is hovering over buttons
-        for button in self.buttonListSubset:
-            button.isHovering(pygame.mouse.get_pos())
+        self.isMouseHoveringOverButtons()
 
     def updateButtonPositions(self):
 

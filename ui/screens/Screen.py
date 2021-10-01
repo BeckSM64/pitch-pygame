@@ -21,3 +21,10 @@ class Screen:
         # Blit everything to the screen
         self.screen.blit(self.background, (0, 0))
         pygame.display.flip()
+
+        # List of buttons
+        self.buttonList = []
+
+    def isMouseHoveringOverButtons(self):
+        for button in self.buttonList:
+            button.isHovering(pygame.mouse.get_pos())

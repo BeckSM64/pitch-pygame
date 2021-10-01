@@ -22,9 +22,8 @@ class ServerErrorScreen(Screen):
             "MAIN MENU"
         )
 
-        self.buttonList = [
-            self.mainMenuButton
-        ]
+        # Add buttons to list
+        self.buttonList.append(self.mainMenuButton)
 
     def run(self):
 
@@ -47,8 +46,7 @@ class ServerErrorScreen(Screen):
                             return GameState.TITLE
 
                 # Check if mouse is hovering over buttons
-                for button in self.buttonList:
-                    button.isHovering(pygame.mouse.get_pos())
+                self.isMouseHoveringOverButtons()
                 
             # Draw everything to the screen
             self.draw()

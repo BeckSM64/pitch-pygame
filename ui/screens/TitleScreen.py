@@ -28,13 +28,11 @@ class TitleScreen(Screen):
         # Text botx to enter username
         self.textBox = TextBox((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 135, 200, 50)
 
-        # List of all the buttons
-        self.buttonList = [
-            self.hostButton,
-            self.joinButton,
-            self.optionsButton,
-            self.quitButton
-        ]
+        # Add buttons to button list
+        self.buttonList.append(self.hostButton)
+        self.buttonList.append(self.joinButton)
+        self.buttonList.append(self.optionsButton)
+        self.buttonList.append(self.quitButton)
 
         self.showError = False
 
@@ -77,8 +75,7 @@ class TitleScreen(Screen):
                             return GameState.QUIT, None
 
                 # Check if buttons are being hovered over
-                for button in self.buttonList:
-                    button.isHovering(pygame.mouse.get_pos())
+                self.isMouseHoveringOverButtons()
 
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
