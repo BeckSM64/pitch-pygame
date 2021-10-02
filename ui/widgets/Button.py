@@ -9,6 +9,7 @@ class Button:
         # Constants
         self.UNFILLED_BUTTON_BORDER_WIDTH = 3
         self.FILLED_BUTTON_BORDER_WIDTH   = 0
+        self.TEXT_COLOR = textColor
 
         # Members
         self.width = width
@@ -27,7 +28,7 @@ class Button:
     def draw(self, screen):
 
         # Draw rectangle to screen
-        pygame.draw.rect(screen, self.color, self.rect, border_radius = 5, width = self.borderWidth)
+        pygame.draw.rect(screen, (0,0,0), self.rect, border_radius = 5, width = self.borderWidth)
 
         # Render font render on text in text list
         textRenderList = []
@@ -58,8 +59,10 @@ class Button:
     def isHovering(self, mousePos):
         if self.rect.collidepoint(mousePos):
             self.borderWidth = self.FILLED_BUTTON_BORDER_WIDTH
+            self.textColor   = Resources.BACKGROUND_COLOR
         else:
             self.borderWidth = self.UNFILLED_BUTTON_BORDER_WIDTH
+            self.textColor   = self.TEXT_COLOR
 
     def setPos(self, x, y):
 

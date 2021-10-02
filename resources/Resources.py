@@ -19,7 +19,7 @@ SCALABLE_CARD_WIDTH  = 50
 SCALABLE_CARD_HEIGHT = 83
 
 # Active font
-ACTIVE_FONT = "arial"
+ACTIVE_FONT = "resources/fonts/omaner/omaner.otf"
 
 # Video Settings
 videoSettings = {
@@ -29,11 +29,14 @@ videoSettings = {
 }
 
 # Fonts
-FONT_SIXTY         = pygame.font.SysFont(ACTIVE_FONT, 60)
-FONT_TWENTY_FIVE   = pygame.font.SysFont(ACTIVE_FONT, 25)
-FONT_THIRTY        = pygame.font.SysFont(ACTIVE_FONT, 30)
-FONT_FIFTEEN       = pygame.font.SysFont(ACTIVE_FONT, 15)
-FONT_VARIABLE_SIZE = pygame.font.SysFont(ACTIVE_FONT, UI_TEXT_SIZE)
+FONT_SIXTY         = pygame.font.Font(ACTIVE_FONT, 60)
+FONT_TWENTY_FIVE   = pygame.font.Font(ACTIVE_FONT, 25)
+FONT_THIRTY        = pygame.font.Font(ACTIVE_FONT, 30)
+FONT_FIFTEEN       = pygame.font.Font(ACTIVE_FONT, 15)
+FONT_VARIABLE_SIZE = pygame.font.Font(ACTIVE_FONT, UI_TEXT_SIZE)
+
+# Colors
+BACKGROUND_COLOR = (21, 107, 5)
 
 def load_png(name):
     """ Load image and return image object"""
@@ -92,9 +95,10 @@ def combine_card_collections(cardCollection1, cardCollection2):
 
 def set_screen_size(width = 1280, height = 720):
 
-    # Set global screen size variables
+    # Set global variables
     global SCREEN_WIDTH
     global SCREEN_HEIGHT
+    global BACKGROUND_COLOR
     SCREEN_WIDTH  = width
     SCREEN_HEIGHT = height
 
@@ -114,7 +118,7 @@ def set_screen_size(width = 1280, height = 720):
     # Fill background
     background = pygame.Surface(screen.get_size())
     background = background.convert()
-    background.fill((21, 107, 5))
+    background.fill(BACKGROUND_COLOR)
 
     return screen, background
 
