@@ -11,9 +11,6 @@ pygame.init()
 SCREEN_WIDTH  = 896
 SCREEN_HEIGHT = 504
 
-# UI Text Font Size
-UI_TEXT_SIZE = 15
-
 # Scalable Card Size
 SCALABLE_CARD_WIDTH  = 50
 SCALABLE_CARD_HEIGHT = 83
@@ -28,10 +25,14 @@ videoSettings = {
     720 : {"fontSize" : 23, "cardWidth" : 75, "cardHeight" : 125}
 }
 
+# UI Text Font Size
+UI_TEXT_SIZE = 15
+
 # Fonts
 FONT_SIXTY         = pygame.font.Font(ACTIVE_FONT, 60)
-FONT_TWENTY_FIVE   = pygame.font.Font(ACTIVE_FONT, 25)
 FONT_THIRTY        = pygame.font.Font(ACTIVE_FONT, 30)
+FONT_THIRTY_TWO    = pygame.font.Font(ACTIVE_FONT, 32)
+FONT_TWENTY_FIVE   = pygame.font.Font(ACTIVE_FONT, 25)
 FONT_FIFTEEN       = pygame.font.Font(ACTIVE_FONT, 15)
 FONT_VARIABLE_SIZE = pygame.font.Font(ACTIVE_FONT, UI_TEXT_SIZE)
 
