@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import os
+import sys
 from game.objects.Card import Card
 from game.objects.Hand import Hand
 from game.objects.MainPile import MainPile
@@ -15,8 +16,18 @@ SCREEN_HEIGHT = 504
 SCALABLE_CARD_WIDTH  = 50
 SCALABLE_CARD_HEIGHT = 83
 
+def resolve_path(path):
+    if getattr(sys, "frozen", False):
+        # Running as a windows exe, so use temp directory absolute path
+        resolved_path = os.path.abspath(os.path.join(sys._MEIPASS, path))
+    else:
+        # Running as a script, use absolute path to working directory
+        resolved_path = os.path.abspath(os.path.join(os.getcwd(), path))
+
+    return resolved_path
+
 # Active font
-ACTIVE_FONT = "resources/fonts/omaner/omaner.otf"
+ACTIVE_FONT = resolve_path("resources/fonts/omaner/omaner.otf")
 
 # Video Settings
 videoSettings = {
@@ -41,7 +52,7 @@ BACKGROUND_COLOR = (21, 107, 5)
 
 def load_png(name):
     """ Load image and return image object"""
-    fullname = os.path.join('resources', 'images', name)
+    fullname = resolve_path(os.path.join('resources', 'images', name))
     try:
         image = pygame.image.load(fullname)
         if image.get_alpha() is None:
