@@ -8,6 +8,10 @@ class Screen:
         # Clock
         self.clock = pygame.time.Clock()
 
+        # Set the icon
+        self.icon = pygame.image.load(Resources.resolve_path('./resources/diamond.png'))
+        pygame.display.set_icon(self.icon)
+
         # Initialize screen
         pygame.init()
         self.screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
