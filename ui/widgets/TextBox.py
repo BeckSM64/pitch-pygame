@@ -1,9 +1,9 @@
 import pygame
+import resources.Resources as Resources
 from pygame.locals import *
 
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
 COLOR_ACTIVE = pygame.Color('dodgerblue2')
-FONT = pygame.font.Font(None, 32)
 
 class TextBox:
     def __init__(self, x, y, width, height, text = ''):
@@ -14,7 +14,7 @@ class TextBox:
         self.rect = Rect(x, y, width, height)
         self.color = COLOR_INACTIVE
         self.text = text
-        self.txt_surface = FONT.render(text, True, (0, 0, 0))
+        self.txt_surface = Resources.FONT_TWENTY_FIVE.render(text, True, (0, 0, 0))
         self.active = False
 
     def handle_event(self, event):
@@ -49,7 +49,7 @@ class TextBox:
                         self.text += event.unicode
                         
                 # Re-render the text
-                self.txt_surface = FONT.render(self.text, True, (0, 0, 0))
+                self.txt_surface = Resources.FONT_TWENTY_FIVE.render(self.text, True, (0, 0, 0))
 
     def draw(self, screen):
 

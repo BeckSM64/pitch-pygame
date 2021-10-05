@@ -32,6 +32,10 @@ class OptionsScreen(Screen):
             "MAIN MENU"
         )
 
+        # List of buttons
+        self.buttonList.append(self.videoSettingsButton)
+        self.buttonList.append(self.mainMenuButton)
+
     def run(self):
 
         # Game loop
@@ -56,6 +60,9 @@ class OptionsScreen(Screen):
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
 
+                # Check if mouse is hovering over buttons
+                self.isMouseHoveringOverButtons()
+
             # Draw everything to the screen
             self.draw()
 
@@ -74,9 +81,8 @@ class OptionsScreen(Screen):
     def displayTitle(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (0, 0, 0)
         text = "OPTIONS"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))

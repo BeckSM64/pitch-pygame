@@ -33,6 +33,10 @@ class HostScreen(Screen):
             "MAIN MENU"
         )
 
+        # List of buttons
+        self.buttonList.append(self.hostButton)
+        self.buttonList.append(self.mainMenuButton)
+
         # Text box to enter game name
         self.textBox = TextBox(
             (Resources.SCREEN_WIDTH / 2) - 100,
@@ -83,7 +87,7 @@ class HostScreen(Screen):
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
-                            return GameState.TITLE, False, None, None
+                            return GameState.TITLE, False, None, None, None, None
 
                         # Handle input for incrementers
                         self.gameModeIncrementer.handleInput(event.pos)
@@ -95,6 +99,9 @@ class HostScreen(Screen):
                     return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = True
+
+                # Check if mouse is hovering over buttons
+                self.isMouseHoveringOverButtons()
 
             # Draw everything to the screen
             self.draw()
@@ -120,28 +127,30 @@ class HostScreen(Screen):
     def displayTitle(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (0, 0, 0)
         text = "HOST"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
 
         self.screen.blit(
             text,
-            ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
-            0)
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                0
+            )
         )
 
     def displayInputError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 15)
         textColor = (255, 0, 0)
         text = "*Game name must not be blank"
-        text = font.render(text, 1, textColor)
+        text = Resources.FONT_FIFTEEN.render(text, 1, textColor)
         
         self.screen.blit(
             text, 
-            ((Resources.SCREEN_WIDTH / 2) - 100,
-            self.textBox.y - 20)
+            (
+                (Resources.SCREEN_WIDTH / 2) - 100,
+                self.textBox.y - 20
+            )
         )

@@ -28,6 +28,12 @@ class TitleScreen(Screen):
         # Text botx to enter username
         self.textBox = TextBox((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 135, 200, 50)
 
+        # Add buttons to button list
+        self.buttonList.append(self.hostButton)
+        self.buttonList.append(self.joinButton)
+        self.buttonList.append(self.optionsButton)
+        self.buttonList.append(self.quitButton)
+
         self.showError = False
 
     def run(self):
@@ -68,6 +74,9 @@ class TitleScreen(Screen):
                         if self.quitButton.isClicked(event.pos):
                             return GameState.QUIT, None
 
+                # Check if buttons are being hovered over
+                self.isMouseHoveringOverButtons()
+
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
 
@@ -95,8 +104,7 @@ class TitleScreen(Screen):
     def displayInputError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 15)
         textColor = (255, 0, 0)
         text = "*Username must not be blank"
-        text = font.render(text, 1, textColor)
+        text = Resources.FONT_FIFTEEN.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 155))

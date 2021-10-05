@@ -8,6 +8,10 @@ class Screen:
         # Clock
         self.clock = pygame.time.Clock()
 
+        # Set the icon
+        self.icon = pygame.image.load(Resources.resolve_path('./resources/diamond.png'))
+        pygame.display.set_icon(self.icon)
+
         # Initialize screen
         pygame.init()
         self.screen = pygame.display.set_mode((Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT))
@@ -16,8 +20,15 @@ class Screen:
         # Fill background
         self.background = pygame.Surface(self.screen.get_size())
         self.background = self.background.convert()
-        self.background.fill((0, 250, 250))
+        self.background.fill(Resources.BACKGROUND_COLOR)
 
         # Blit everything to the screen
         self.screen.blit(self.background, (0, 0))
         pygame.display.flip()
+
+        # List of buttons
+        self.buttonList = []
+
+    def isMouseHoveringOverButtons(self):
+        for button in self.buttonList:
+            button.isHovering(pygame.mouse.get_pos())

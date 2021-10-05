@@ -55,6 +55,12 @@ class VideoSettingsScreen(Screen):
             (0, 0, 0),
             "MAIN MENU"
         )
+
+        # List of buttons
+        self.buttonList.append(self.fiveOFourButton)
+        self.buttonList.append(self.sixFourtyEightButton)
+        self.buttonList.append(self.sevenTwentyButton)
+        self.buttonList.append(self.mainMenuButton)
     
     def run(self):
 
@@ -87,6 +93,9 @@ class VideoSettingsScreen(Screen):
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
+
+                # Check if mouse is hovering over button
+                self.isMouseHoveringOverButtons()
             
             # Draw everything to the screen
             self.draw()
@@ -108,11 +117,10 @@ class VideoSettingsScreen(Screen):
     def displayTitle(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (0, 0, 0)
         text = "VIDEO SETTINGS"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), 0))
 
     def updateUi(self, width, height):

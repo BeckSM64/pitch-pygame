@@ -14,7 +14,6 @@ class Incrementer:
         self.numOptions = len(options)
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (0, 0, 0)
 
         # Create list of text to render
@@ -25,8 +24,8 @@ class Incrementer:
         # Loop through options and create text to render
         i = 0
         for option in options:
-            textWidth, textHeight = font.size(option)
-            text = font.render(option, 1, textColor)
+            textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(option)
+            text = Resources.FONT_TWENTY_FIVE.render(option, 1, textColor)
 
             # Append to text width map
             self.textWidthMap[i] = {text : textWidth}

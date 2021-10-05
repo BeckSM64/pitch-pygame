@@ -24,6 +24,9 @@ class DisconnectScreen(Screen):
             "MAIN MENU"
         )
 
+        # Add buttons to button list
+        self.buttonList.append(self.mainMenuButton)
+
     def run(self):
 
         # Game loop
@@ -44,6 +47,9 @@ class DisconnectScreen(Screen):
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
 
+                # Check if mouse is hover over buttons
+                self.isMouseHoveringOverButtons()
+
             self.draw()
 
     def draw(self):
@@ -60,9 +66,8 @@ class DisconnectScreen(Screen):
     def displayError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (255, 0, 0)
         text = "Game ended unexpectedy due to player disconnect"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))

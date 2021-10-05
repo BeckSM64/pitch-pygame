@@ -1,4 +1,5 @@
 import pygame
+import resources.Resources as Resources
 from pygame.locals import *
 pygame.font.init()
 
@@ -14,9 +15,6 @@ class UsernameList:
         for player in game.players:
 
             text = player.username
-            
-            # Draw text to screen
-            font = pygame.font.SysFont("arial", 25)
 
             # If it's the player's turn, highlight their name red
             if player.playerTurn:
@@ -34,5 +32,5 @@ class UsernameList:
             if player.playerBid is not None:
                 text = player.username + " -> " + str(player.playerBid)
 
-            text = font.render(text, 1, textColor)
+            text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
             screen.blit(text, (0, (y * player.id)))

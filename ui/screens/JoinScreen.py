@@ -70,6 +70,9 @@ class JoinScreen(Screen):
         # Update the positions of all the buttons
         self.updateButtonPositions()
 
+        # Check if mouse is hovering over buttons
+        self.isMouseHoveringOverButtons()
+
     def updateButtonPositions(self):
 
         i = 0
@@ -141,9 +144,15 @@ class JoinScreen(Screen):
     def displayError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (0, 0, 0)
         text = "No Active Games"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)))
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
+
+        self.screen.blit(
+            text,
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)
+            )
+        )

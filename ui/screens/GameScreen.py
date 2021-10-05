@@ -97,6 +97,10 @@ class GameScreen(Screen):
             TEN_AND_UNDER_BUTTON_TEXT
         )
 
+        # List of all the buttons
+        self.buttonList.append(self.scoreButton)
+        self.buttonList.append(self.tenAndUnderButton)
+
         # Score screen
         self.scoreScreen = ScoreScreen()
 
@@ -206,6 +210,10 @@ class GameScreen(Screen):
 
                                 # Get the new player hand from the updated game
                                 self.test_hand = get_hand(self.game.players[self.player].playerHand)
+
+                # Check if mouse is hovering over button
+                self.isMouseHoveringOverButtons()
+
             self.draw()
 
     def draw(self):
@@ -299,9 +307,15 @@ class GameScreen(Screen):
     def displayWaitMessage(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 30)
         textColor = (0, 0, 0)
         text = "Waiting For More Players..."
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)))
+        textWidth, textHeight = Resources.FONT_THIRTY.size(text)
+        text = Resources.FONT_THIRTY.render(text, 1, textColor)
+        
+        self.screen.blit(
+            text,
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)
+            )
+        )

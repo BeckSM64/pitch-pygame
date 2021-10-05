@@ -22,6 +22,9 @@ class ServerErrorScreen(Screen):
             "MAIN MENU"
         )
 
+        # Add buttons to list
+        self.buttonList.append(self.mainMenuButton)
+
     def run(self):
 
         # Game loop
@@ -41,6 +44,9 @@ class ServerErrorScreen(Screen):
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
+
+                # Check if mouse is hovering over buttons
+                self.isMouseHoveringOverButtons()
                 
             # Draw everything to the screen
             self.draw()
@@ -59,9 +65,8 @@ class ServerErrorScreen(Screen):
     def displayError(self):
 
         # Draw text to screen
-        font = pygame.font.SysFont("arial", 25)
         textColor = (255, 0, 0)
         text = "Error Connecting to Server"
-        textWidth, textHeight = font.size(text)
-        text = font.render(text, 1, textColor)
+        textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
+        text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))
