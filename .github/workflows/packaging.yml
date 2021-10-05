@@ -25,4 +25,4 @@ jobs:
         with:
           name: upload-exe
           path: |
-            ./Pitch.exe
+            ./dist/Pitch.exe
