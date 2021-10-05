@@ -20,3 +20,9 @@ jobs:
       - name: build with Pyinstaller
         run : |
           pyinstaller --onefile --noconsole --clean --icon=diamond.ico Pitch.spec
+      - name: Archive Pyinstaller Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: upload-exe
+          path: |
+            ./Pitch.exe
