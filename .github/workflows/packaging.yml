@@ -23,6 +23,6 @@ jobs:
       - name: Archive Pyinstaller Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: upload-exe
+          name: pitch-exe
           path: |
             ./dist/Pitch.exe
