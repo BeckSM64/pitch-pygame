@@ -16,7 +16,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller
+          pip3 install pyinstaller
+          pip3 install pygame
       - name: build with Pyinstaller
         run : |
           pyinstaller --onefile --noconsole --clean --icon=diamond.ico Pitch.spec
