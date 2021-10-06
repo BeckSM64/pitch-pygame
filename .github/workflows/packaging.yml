@@ -28,7 +28,7 @@ jobs:
           path: |
             ./dist/Pitch.exe
       - name: version
-        run: echo "::set-output name=version::$(./bin/azblogfilter --version)"
+        run: echo "1.0.0"
         id: version
       - name: release
         uses: actions/create-release@v1
