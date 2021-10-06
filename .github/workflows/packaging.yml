@@ -19,7 +19,7 @@ jobs:
           pip install pyinstaller
       - name: build with Pyinstaller
         run : |
-          pyinstaller --onefile --noconsole --clean --icon=diamond.ico --hidden-import game Pitch.spec
+          pyinstaller --onefile --noconsole --clean --icon=diamond.ico Pitch.spec
       - name: Archive Pyinstaller Artifacts
         uses: actions/upload-artifact@v2
         with:
