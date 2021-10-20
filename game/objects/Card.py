@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import resources.Resources as Resources
 
+
 class Card(pygame.sprite.Sprite):
 
     # Size of card
@@ -48,7 +49,7 @@ class Card(pygame.sprite.Sprite):
 
     def get_pos_x(self):
         return self.rect.x
-    
+
     def get_pos_y(self):
         return self.rect.y
 
@@ -60,11 +61,13 @@ class Card(pygame.sprite.Sprite):
         self.rect = rot_rect
 
     def isPlayable(self, game, handHasCurrentSuit):
-        
+
         if (
-                game.trump == self.suit or game.currentSuit == self.suit or
-                game.mainPile.size() == 0 or not handHasCurrentSuit
-            ):
+            game.trump == self.suit
+            or game.currentSuit == self.suit
+            or game.mainPile.size() == 0
+            or not handHasCurrentSuit
+        ):
             return True
         else:
             return False

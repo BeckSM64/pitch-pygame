@@ -5,28 +5,67 @@ from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 import resources.Resources as Resources
+
 pygame.font.init()
+
 
 class TitleScreen(Screen):
     def __init__(self):
-        
+
         # Call screen constructor
         Screen.__init__(self)
 
         # Host button
-        self.hostButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 80, (255, 255, 255), (0, 0, 0), "HOST")
+        self.hostButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 80,
+            (255, 255, 255),
+            (0, 0, 0),
+            "HOST",
+        )
 
         # Join button
-        self.joinButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 25, (255, 255, 255), (0, 0, 0), "JOIN")
+        self.joinButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 25,
+            (255, 255, 255),
+            (0, 0, 0),
+            "JOIN",
+        )
 
         # Options button
-        self.optionsButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) + 30, (255, 255, 255), (0, 0, 0), "OPTIONS")
+        self.optionsButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) + 30,
+            (255, 255, 255),
+            (0, 0, 0),
+            "OPTIONS",
+        )
 
         # Quit button
-        self.quitButton = Button(200, 50, (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) + 85, (255, 255, 255), (0, 0, 0), "QUIT")
+        self.quitButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) + 85,
+            (255, 255, 255),
+            (0, 0, 0),
+            "QUIT",
+        )
 
         # Text botx to enter username
-        self.textBox = TextBox((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 135, 200, 50)
+        self.textBox = TextBox(
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 135,
+            200,
+            50,
+        )
 
         # Add buttons to button list
         self.buttonList.append(self.hostButton)
@@ -50,7 +89,7 @@ class TitleScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
 
                         # Check if host button was clicked
                         if self.hostButton.isClicked(event.pos):
@@ -84,10 +123,10 @@ class TitleScreen(Screen):
             self.draw()
 
     def draw(self):
-    
+
         # Blit the background of the screen
         self.screen.blit(self.background, (0, 0))
-        
+
         # Draw buttons and stuff
         self.hostButton.draw(self.screen)
         self.joinButton.draw(self.screen)
@@ -107,4 +146,7 @@ class TitleScreen(Screen):
         textColor = (255, 0, 0)
         text = "*Username must not be blank"
         text = Resources.FONT_FIFTEEN.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 155))
+        self.screen.blit(
+            text,
+            ((Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 155),
+        )

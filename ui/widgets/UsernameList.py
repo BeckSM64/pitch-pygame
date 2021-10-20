@@ -1,7 +1,9 @@
 import pygame
 import resources.Resources as Resources
 from pygame.locals import *
+
 pygame.font.init()
+
 
 class UsernameList:
     def __init__(self):

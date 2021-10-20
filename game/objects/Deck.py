@@ -1,7 +1,8 @@
 from game.objects.Card import Card
 import random
 
-class Deck():
+
+class Deck:
     def __init__(self):
 
         # Holds 52 cards
@@ -35,7 +36,7 @@ class Deck():
         hand = []
         for i in range(6):
             hand.append(self.deck[i])
-        
+
         del self.deck[:6]
 
         return hand

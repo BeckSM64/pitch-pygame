@@ -4,7 +4,9 @@ from ui.screens.Screen import Screen
 from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 import resources.Resources as Resources
+
 pygame.font.init()
+
 
 class ServerErrorScreen(Screen):
     def __init__(self):
@@ -18,8 +20,9 @@ class ServerErrorScreen(Screen):
             50,
             (Resources.SCREEN_WIDTH / 2) - 100,
             (Resources.SCREEN_HEIGHT / 2) - 25,
-            (255, 255, 255), (0, 0, 0),
-            "MAIN MENU"
+            (255, 255, 255),
+            (0, 0, 0),
+            "MAIN MENU",
         )
 
         # Add buttons to list
@@ -39,7 +42,7 @@ class ServerErrorScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
@@ -47,15 +50,15 @@ class ServerErrorScreen(Screen):
 
                 # Check if mouse is hovering over buttons
                 self.isMouseHoveringOverButtons()
-                
+
             # Draw everything to the screen
             self.draw()
 
     def draw(self):
-        
+
         # Blit the background of the screen
         self.screen.blit(self.background, (0, 0))
-        
+
         # Draw buttons and stuff
         self.mainMenuButton.draw(self.screen)
         self.displayError()
@@ -69,4 +72,10 @@ class ServerErrorScreen(Screen):
         text = "Error Connecting to Server"
         textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
         text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))
+        self.screen.blit(
+            text,
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                (Resources.SCREEN_HEIGHT / 2) - 100,
+            ),
+        )

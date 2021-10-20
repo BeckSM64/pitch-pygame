@@ -5,7 +5,9 @@ from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 import resources.Resources as Resources
+
 pygame.font.init()
+
 
 class OptionsScreen(Screen):
     def __init__(self):
@@ -19,17 +21,20 @@ class OptionsScreen(Screen):
             50,
             (Resources.SCREEN_WIDTH / 2) - 100,
             (Resources.SCREEN_HEIGHT / 2) - 25,
-            (255, 255, 255), (0, 0, 0),
-            "VIDEO SETTINGS"
+            (255, 255, 255),
+            (0, 0, 0),
+            "VIDEO SETTINGS",
         )
 
         # Back button
         self.mainMenuButton = Button(
             200,
-            50, (Resources.SCREEN_WIDTH / 2) - 100,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
             (Resources.SCREEN_HEIGHT / 2) + 30,
-            (255, 255, 255), (0, 0, 0),
-            "MAIN MENU"
+            (255, 255, 255),
+            (0, 0, 0),
+            "MAIN MENU",
         )
 
         # List of buttons
@@ -50,7 +55,7 @@ class OptionsScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
 
                         # Check if video settings button was clicked
                         if self.videoSettingsButton.isClicked(event.pos):
@@ -67,10 +72,10 @@ class OptionsScreen(Screen):
             self.draw()
 
     def draw(self):
-    
+
         # Blit the background of the screen
         self.screen.blit(self.background, (0, 0))
-        
+
         # Draw buttons and stuff
         self.videoSettingsButton.draw(self.screen)
         self.mainMenuButton.draw(self.screen)
@@ -85,4 +90,10 @@ class OptionsScreen(Screen):
         text = "OPTIONS"
         textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
         text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))
+        self.screen.blit(
+            text,
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                (Resources.SCREEN_HEIGHT / 2) - 100,
+            ),
+        )

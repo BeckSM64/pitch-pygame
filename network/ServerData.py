@@ -1,5 +1,6 @@
 import random
 
+
 class SCard:
     def __init__(self, value, suit):
 
@@ -7,12 +8,14 @@ class SCard:
         self.value = value
         self.suit = suit
 
+
 class SHand:
     def __init__(self, cards):
         self.cards = cards
 
     def size(self):
         return len(self.cards)
+
 
 class SDeck:
     def __init__(self):
@@ -48,15 +51,16 @@ class SDeck:
         hand = []
         for i in range(6):
             hand.append(self.deck[i])
-        
+
         del self.deck[:6]
 
         return SHand(hand)
 
+
 class SMainPile:
     def __init__(self):
         self.cards = []
-    
+
     def add_card(self, card):
         self.cards.append(card)
 
@@ -73,10 +77,10 @@ class SMainPile:
                 return False
 
             else:
-                
+
                 # Check if there is a greater trump card in the pile
                 for card in self.cards:
-                    if ((card.value > cardToCompare.value) and (card.suit == trump)):
+                    if (card.value > cardToCompare.value) and (card.suit == trump):
                         return False
                 return True
 
@@ -89,15 +93,17 @@ class SMainPile:
             # cannot be the best card
             if cardToCompare.suit != baseSuit:
                 return False
-            
+
             else:
                 for card in self.cards:
 
                     # If card is same suit as player card and value is greater,
                     # player did not play the best card
-                    if ((card.value > cardToCompare.value) and (card.suit == cardToCompare.suit)):
+                    if (card.value > cardToCompare.value) and (
+                        card.suit == cardToCompare.suit
+                    ):
                         return False
-                
+
                 return True
 
     def hasTrump(self, trump):
@@ -137,7 +143,7 @@ class SMainPile:
         if not self.hasTrump(trump):
             return None
 
-        highCard = SCard(2, trump) # High card will always be greater than this
+        highCard = SCard(2, trump)  # High card will always be greater than this
         for card in self.cards:
             if card.value > highCard.value and card.suit == trump:
                 highCard = card
@@ -149,7 +155,7 @@ class SMainPile:
         if not self.hasTrump(trump):
             return None
 
-        lowCard = SCard(14, trump) # High card will always be greater than this
+        lowCard = SCard(14, trump)  # High card will always be greater than this
         for card in self.cards:
             if card.value < lowCard.value and card.suit == trump:
                 lowCard = card
@@ -172,6 +178,7 @@ class SMainPile:
                 gameScore += 4
 
         return gameScore
+
 
 class Player:
     def __init__(self, id, hand, conn):

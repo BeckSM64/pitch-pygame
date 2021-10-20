@@ -5,7 +5,9 @@ from ui.widgets.Button import Button
 from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 import resources.Resources as Resources
+
 pygame.font.init()
+
 
 class DisconnectScreen(Screen):
     def __init__(self):
@@ -21,7 +23,7 @@ class DisconnectScreen(Screen):
             (Resources.SCREEN_HEIGHT / 2) - 25,
             (255, 255, 255),
             (0, 0, 0),
-            "MAIN MENU"
+            "MAIN MENU",
         )
 
         # Add buttons to button list
@@ -41,7 +43,7 @@ class DisconnectScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
@@ -56,7 +58,7 @@ class DisconnectScreen(Screen):
 
         # Blit the background of the screen
         self.screen.blit(self.background, (0, 0))
-        
+
         # Draw buttons and stuff
         self.mainMenuButton.draw(self.screen)
         self.displayError()
@@ -70,4 +72,10 @@ class DisconnectScreen(Screen):
         text = "Game ended unexpectedy due to player disconnect"
         textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
         text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
-        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), (Resources.SCREEN_HEIGHT / 2) - 100))
+        self.screen.blit(
+            text,
+            (
+                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
+                (Resources.SCREEN_HEIGHT / 2) - 100,
+            ),
+        )

@@ -19,8 +19,17 @@ from ui.screens.ScoreScreen import ScoreScreen
 from game.logic.GameState import GameState
 from ui.widgets.UsernameList import UsernameList
 
+
 class GameScreen(Screen):
-    def __init__(self, username, isHost, gameName = None, gameKey = None, maxPlayers = None, gameMode = None):
+    def __init__(
+        self,
+        username,
+        isHost,
+        gameName=None,
+        gameKey=None,
+        maxPlayers=None,
+        gameMode=None,
+    ):
         Screen.__init__(self)
 
         # Set up connection to server
@@ -59,13 +68,13 @@ class GameScreen(Screen):
         self.username_list = UsernameList()
 
         # Score button
-        SCORE_BUTTON_WIDTH      = 50
-        SCORE_BUTTON_HEIGHT     = 50
-        SCORE_BUTTON_X          = self.screen.get_width() - SCORE_BUTTON_WIDTH
-        SCORE_BUTTON_Y          = 0
-        SCORE_BUTTON_COLOR      = (255, 255, 255)
+        SCORE_BUTTON_WIDTH = 50
+        SCORE_BUTTON_HEIGHT = 50
+        SCORE_BUTTON_X = self.screen.get_width() - SCORE_BUTTON_WIDTH
+        SCORE_BUTTON_Y = 0
+        SCORE_BUTTON_COLOR = (255, 255, 255)
         SCORE_BUTTON_TEXT_COLOR = (0, 0, 0)
-        SCORE_BUTTON_TEXT       = "S"
+        SCORE_BUTTON_TEXT = "S"
 
         self.scoreButton = Button(
             SCORE_BUTTON_WIDTH,
@@ -74,18 +83,22 @@ class GameScreen(Screen):
             SCORE_BUTTON_Y,
             SCORE_BUTTON_COLOR,
             SCORE_BUTTON_TEXT_COLOR,
-            SCORE_BUTTON_TEXT
+            SCORE_BUTTON_TEXT,
         )
 
         # Ten and Under Button
-        TEN_AND_UNDER_BUTTON_WIDTH      = 100
-        TEN_AND_UNDER_BUTTON_HEIGHT     = 100
-        TEN_AND_UNDER_BUTTON_PADDING    = 10
-        TEN_AND_UNDER_BUTTON_X          = ((self.screen.get_width() / 2) - (TEN_AND_UNDER_BUTTON_WIDTH / 2))
-        TEN_AND_UNDER_BUTTON_Y          = ((self.screen.get_height() / 2) - (TEN_AND_UNDER_BUTTON_HEIGHT / 2)) - (TEN_AND_UNDER_BUTTON_HEIGHT + TEN_AND_UNDER_BUTTON_PADDING)
-        TEN_AND_UNDER_BUTTON_COLOR      = (255, 0, 0)
+        TEN_AND_UNDER_BUTTON_WIDTH = 100
+        TEN_AND_UNDER_BUTTON_HEIGHT = 100
+        TEN_AND_UNDER_BUTTON_PADDING = 10
+        TEN_AND_UNDER_BUTTON_X = (self.screen.get_width() / 2) - (
+            TEN_AND_UNDER_BUTTON_WIDTH / 2
+        )
+        TEN_AND_UNDER_BUTTON_Y = (
+            (self.screen.get_height() / 2) - (TEN_AND_UNDER_BUTTON_HEIGHT / 2)
+        ) - (TEN_AND_UNDER_BUTTON_HEIGHT + TEN_AND_UNDER_BUTTON_PADDING)
+        TEN_AND_UNDER_BUTTON_COLOR = (255, 0, 0)
         TEN_AND_UNDER_BUTTON_TEXT_COLOR = (0, 0, 0)
-        TEN_AND_UNDER_BUTTON_TEXT       = "TEN\nAND\nUNDER"
+        TEN_AND_UNDER_BUTTON_TEXT = "TEN\nAND\nUNDER"
 
         self.tenAndUnderButton = Button(
             TEN_AND_UNDER_BUTTON_WIDTH,
@@ -94,7 +107,7 @@ class GameScreen(Screen):
             TEN_AND_UNDER_BUTTON_Y,
             TEN_AND_UNDER_BUTTON_COLOR,
             TEN_AND_UNDER_BUTTON_TEXT_COLOR,
-            TEN_AND_UNDER_BUTTON_TEXT
+            TEN_AND_UNDER_BUTTON_TEXT,
         )
 
         # List of all the buttons
@@ -116,9 +129,9 @@ class GameScreen(Screen):
 
             # Attempt to get the game from the server
             try:
-                    
+
                 self.game = self.n.send("get")
-                
+
                 # If a player left the game (numPlayers decreased),
                 # disconnect from server and return to the title screen
                 if self.game.numPlayers != len(self.game.players):
@@ -126,7 +139,10 @@ class GameScreen(Screen):
                     return GameState.DISCONNECT
 
                 # Check to see if game is ready to start
-                if self.game.numPlayers >= self.game.maxPlayers and self.showScoreScreen == False:
+                if (
+                    self.game.numPlayers >= self.game.maxPlayers
+                    and self.showScoreScreen == False
+                ):
                     self.gameReady = True
                     self.showGameScreen = True
 
@@ -155,15 +171,22 @@ class GameScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP and self.gameReady:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
                         for card in self.test_hand:
 
                             # Only play card if it is this player's turn
                             if (
-                                    card.rect.collidepoint(event.pos) and self.game.players[self.player].playerTurn and
-                                    self.game.players[self.player].playerBid is not None and self.game.didPlayersBid() == True and
-                                    card.isPlayable(self.game, self.test_hand.hasCurrentSuit(self.game.currentSuit))
-                                ):
+                                card.rect.collidepoint(event.pos)
+                                and self.game.players[self.player].playerTurn
+                                and self.game.players[self.player].playerBid is not None
+                                and self.game.didPlayersBid() == True
+                                and card.isPlayable(
+                                    self.game,
+                                    self.test_hand.hasCurrentSuit(
+                                        self.game.currentSuit
+                                    ),
+                                )
+                            ):
 
                                 # Set small delay to ensure that the card played does
                                 # not get counted as part of the previous trick
@@ -178,25 +201,39 @@ class GameScreen(Screen):
                                     self.n.send("not ready")
 
                                 # Send card to server
-                                self.n.send("card: " + str(card.value) + " " + card.suit)
-                            
+                                self.n.send(
+                                    "card: " + str(card.value) + " " + card.suit
+                                )
+
                         # Check if a bid button was clicked
-                        if self.game.players[self.player].playerBidTurn and self.game.biddingStage:
+                        if (
+                            self.game.players[self.player].playerBidTurn
+                            and self.game.biddingStage
+                        ):
                             for button in self.bid_screen.buttonList:
                                 if button.isClicked(event.pos):
                                     self.n.send("bid: " + button.text)
 
                         # Check if score button was clicked
-                        if self.scoreButton.isClicked(event.pos) and self.showGameScreen == True:
+                        if (
+                            self.scoreButton.isClicked(event.pos)
+                            and self.showGameScreen == True
+                        ):
                             self.showGameScreen = False
                             self.showScoreScreen = True
-                        elif self.scoreButton.isClicked(event.pos) and self.showScoreScreen == True:
+                        elif (
+                            self.scoreButton.isClicked(event.pos)
+                            and self.showScoreScreen == True
+                        ):
                             self.showGameScreen = True
                             self.showScoreScreen = False
 
                         # Check if ten and under button was clicked
                         if self.hasTenAndUnder():
-                            if self.tenAndUnderButton.isClicked(event.pos) and self.showGameScreen == True:
+                            if (
+                                self.tenAndUnderButton.isClicked(event.pos)
+                                and self.showGameScreen == True
+                            ):
 
                                 # Alert the server that player is turning in ten and under
                                 self.n.send("tenAndUnder")
@@ -205,7 +242,9 @@ class GameScreen(Screen):
                                 self.game = self.n.send("get")
 
                                 # Get the new player hand from the updated game
-                                self.test_hand = get_hand(self.game.players[self.player].playerHand)
+                                self.test_hand = get_hand(
+                                    self.game.players[self.player].playerHand
+                                )
 
                 # Check if mouse is hovering over button
                 self.isMouseHoveringOverButtons()
@@ -250,7 +289,11 @@ class GameScreen(Screen):
             pygame.display.flip()
 
             # Time delay to keep the last card on screen in trick
-            if self.game.mainPile.size() % len(self.game.players) == 0 and self.game.mainPile.size() != 0 and not self.game.isPlayersReady():
+            if (
+                self.game.mainPile.size() % len(self.game.players) == 0
+                and self.game.mainPile.size() != 0
+                and not self.game.isPlayersReady()
+            ):
                 pygame.time.delay(2000)
                 self.n.send("ready")
 
@@ -279,25 +322,25 @@ class GameScreen(Screen):
         """Player has a ten and under that meets the criteria to turn in"""
 
         return (
-
             # Players are actively bidding
-            self.game.isBiddingStage() and
-
+            self.game.isBiddingStage()
+            and
             # Player's turn to bid
-            self.game.players[self.player].playerBidTurn and
-
+            self.game.players[self.player].playerBidTurn
+            and
             # Player has a ten and under
-            self.test_hand.hasTenAndUnder() and
-
-            (
+            self.test_hand.hasTenAndUnder()
+            and (
                 # Player is not the last bidder
-                (self.game.getNumberOfBids() < (self.game.numPlayers - 1)) or
-
+                (self.game.getNumberOfBids() < (self.game.numPlayers - 1))
+                or
                 # Player is the last bidder and someone has bid already
-                ((self.game.getNumberOfBids() == (self.game.numPlayers - 1)) and (self.game.getHighestBid() > 0))
+                (
+                    (self.game.getNumberOfBids() == (self.game.numPlayers - 1))
+                    and (self.game.getHighestBid() > 0)
+                )
             )
         )
-
 
     def displayWaitMessage(self):
 
@@ -306,11 +349,11 @@ class GameScreen(Screen):
         text = "Waiting For More Players..."
         textWidth, textHeight = Resources.FONT_THIRTY.size(text)
         text = Resources.FONT_THIRTY.render(text, 1, textColor)
-        
+
         self.screen.blit(
             text,
             (
                 (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
-                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)
-            )
+                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2),
+            ),
         )

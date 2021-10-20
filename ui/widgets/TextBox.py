@@ -2,11 +2,12 @@ import pygame
 import resources.Resources as Resources
 from pygame.locals import *
 
-COLOR_INACTIVE = pygame.Color('lightskyblue3')
-COLOR_ACTIVE = pygame.Color('dodgerblue2')
+COLOR_INACTIVE = pygame.Color("lightskyblue3")
+COLOR_ACTIVE = pygame.Color("dodgerblue2")
+
 
 class TextBox:
-    def __init__(self, x, y, width, height, text = ''):
+    def __init__(self, x, y, width, height, text=""):
         self.x = x
         self.y = y
         self.width = width
@@ -31,12 +32,12 @@ class TextBox:
 
             # Change the current color of the input box
             self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
-            
+
         if event.type == pygame.KEYDOWN:
             if self.active:
 
                 if event.key == pygame.K_RETURN:
-                    
+
                     # Return true if enter is pressed
                     return True
                 elif event.key == pygame.K_BACKSPACE:
@@ -45,16 +46,18 @@ class TextBox:
                     self.text = self.text[:-1]
                 else:
                     # Don't exceed the length of the text box
-                    if ((self.txt_surface.get_width() + 10) < (self.rect.w - 10)):
+                    if (self.txt_surface.get_width() + 10) < (self.rect.w - 10):
                         self.text += event.unicode
-                        
+
                 # Re-render the text
-                self.txt_surface = Resources.FONT_TWENTY_FIVE.render(self.text, True, (0, 0, 0))
+                self.txt_surface = Resources.FONT_TWENTY_FIVE.render(
+                    self.text, True, (0, 0, 0)
+                )
 
     def draw(self, screen):
 
         # Draw textbox to screen
-        pygame.draw.rect(screen, self.color, self.rect, border_radius = 5)
+        pygame.draw.rect(screen, self.color, self.rect, border_radius=5)
 
         # Draw the text to the screen
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
