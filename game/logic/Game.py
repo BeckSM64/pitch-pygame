@@ -1,5 +1,6 @@
 from network.ServerData import *
 
+
 class Game:
     def __init__(self, id, gameName, maxPlayers, gameMode):
 
@@ -106,7 +107,7 @@ class Game:
                     else:
                         self.players[i + 1].playerBidTurn = True
                     break
-        
+
         # Determine if all players have bid
         self.biddingStage = False
         for player in self.players:
@@ -129,7 +130,7 @@ class Game:
                 # Stuck with it
                 self.players[lastBid].playerBid = 2
                 playerIndex = lastBid
-            
+
             # Set starting player turn
             self.players[playerIndex].playerTurn = True
 
@@ -175,16 +176,16 @@ class Game:
 
     def calculateScores(self):
 
-        highCard  = SCard(2, self.trump)
-        lowCard   = SCard(14, self.trump)
+        highCard = SCard(2, self.trump)
+        lowCard = SCard(14, self.trump)
         gameScore = 0
-        hasHigh   = None
-        hasLow    = None
-        hasJack   = None
-        hasGame   = None
+        hasHigh = None
+        hasLow = None
+        hasJack = None
+        hasGame = None
 
         # Dependent on game mode
-        hasJick   = None
+        hasJick = None
 
         if self.maxPlayers == 3:
             for player in self.players:
@@ -292,18 +293,22 @@ class Game:
                         hasJick = player.id
 
             # Determine game point
-            teamOneGame = self.players[0].wonCards.getGame() + self.players[2].wonCards.getGame()
-            teamTwoGame = self.players[1].wonCards.getGame() + self.players[3].wonCards.getGame()
+            teamOneGame = (
+                self.players[0].wonCards.getGame() + self.players[2].wonCards.getGame()
+            )
+            teamTwoGame = (
+                self.players[1].wonCards.getGame() + self.players[3].wonCards.getGame()
+            )
 
             # Check if team one has game
             if teamOneGame > gameScore:
                 gameScore = teamOneGame
-                hasGame = 0 # Player id 0
-            
+                hasGame = 0  # Player id 0
+
             # Check if team two has game
             if teamTwoGame > gameScore:
                 gameScore = teamTwoGame
-                hasGame = 1 # Player id 1
+                hasGame = 1  # Player id 1
 
             # If both teams had the same points for game, then no game point is awarded
             if teamOneGame == teamTwoGame:
@@ -381,26 +386,48 @@ class Game:
             if self.bidWinner in teamOne:
 
                 # Award or subtract points
-                if self.players[self.bidWinner].roundPoints >= self.players[self.bidWinner].playerBid:
-                    self.players[teamOne[0]].score += self.players[self.bidWinner].roundPoints
-                    self.players[teamOne[1]].score += self.players[self.bidWinner].roundPoints
+                if (
+                    self.players[self.bidWinner].roundPoints
+                    >= self.players[self.bidWinner].playerBid
+                ):
+                    self.players[teamOne[0]].score += self.players[
+                        self.bidWinner
+                    ].roundPoints
+                    self.players[teamOne[1]].score += self.players[
+                        self.bidWinner
+                    ].roundPoints
                 else:
-                    self.players[teamOne[0]].score -= self.players[self.bidWinner].playerBid
-                    self.players[teamOne[1]].score -= self.players[self.bidWinner].playerBid
-                
+                    self.players[teamOne[0]].score -= self.players[
+                        self.bidWinner
+                    ].playerBid
+                    self.players[teamOne[1]].score -= self.players[
+                        self.bidWinner
+                    ].playerBid
+
                 # Award points to team that didn't bid
                 self.players[teamTwo[0]].score += self.players[teamTwo[0]].roundPoints
                 self.players[teamTwo[1]].score += self.players[teamTwo[1]].roundPoints
             else:
 
                 # Award or subtract points
-                if self.players[self.bidWinner].roundPoints >= self.players[self.bidWinner].playerBid:
-                    self.players[teamTwo[0]].score += self.players[self.bidWinner].roundPoints
-                    self.players[teamTwo[1]].score += self.players[self.bidWinner].roundPoints
+                if (
+                    self.players[self.bidWinner].roundPoints
+                    >= self.players[self.bidWinner].playerBid
+                ):
+                    self.players[teamTwo[0]].score += self.players[
+                        self.bidWinner
+                    ].roundPoints
+                    self.players[teamTwo[1]].score += self.players[
+                        self.bidWinner
+                    ].roundPoints
                 else:
-                    self.players[teamTwo[0]].score -= self.players[self.bidWinner].playerBid
-                    self.players[teamTwo[1]].score -= self.players[self.bidWinner].playerBid
-                
+                    self.players[teamTwo[0]].score -= self.players[
+                        self.bidWinner
+                    ].playerBid
+                    self.players[teamTwo[1]].score -= self.players[
+                        self.bidWinner
+                    ].playerBid
+
                 # Award points to team that didn't bid
                 self.players[teamOne[0]].score += self.players[teamOne[0]].roundPoints
                 self.players[teamOne[1]].score += self.players[teamOne[1]].roundPoints

@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from game.objects.Card import Card
 
+
 class Hand(pygame.sprite.Group):
     def __init__(self, cards):
 
@@ -21,7 +22,6 @@ class Hand(pygame.sprite.Group):
         for i in range(6):
             self.add(cards[i])
 
-    
     def hasCurrentSuit(self, currentSuit):
         for card in self:
             if card.suit == currentSuit:

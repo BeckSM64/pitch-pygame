@@ -1,5 +1,6 @@
 import sys
-sys.path.insert(0, '../')
+
+sys.path.insert(0, "../")
 import socket
 from _thread import *
 import pickle
@@ -23,6 +24,7 @@ print("Waiting for a connection, Server Started")
 
 games = {}
 
+
 def get_card(data):
 
     # split data to get value and suit
@@ -30,6 +32,7 @@ def get_card(data):
 
     # return the server card
     return SCard(int(data[1]), data[2])
+
 
 def get_bid(data):
 
@@ -45,6 +48,7 @@ def get_bid(data):
 
     return bid
 
+
 def get_username(data):
 
     # Get username located at position 1
@@ -53,17 +57,21 @@ def get_username(data):
 
     return username
 
+
 def getGameKeyOrName(data):
     data = data.split("/")
     return data[1]
+
 
 def getMaxPlayers(data):
     data = data.split("/")
     return int(data[2])
 
+
 def getGameMode(data):
     data = data.split("/")
     return data[3]
+
 
 def hostGame(conn, gameName, maxPlayers, gameMode):
 
@@ -84,6 +92,7 @@ def hostGame(conn, gameName, maxPlayers, gameMode):
 
     return p, gameId
 
+
 def joinGame(conn, gameKey):
 
     # Player id
@@ -94,7 +103,7 @@ def joinGame(conn, gameKey):
 
         # Check if this is the correct game to join
         if value.id == gameKey:
-            
+
             # TODO: update this to check against max players, not just 4
             if value.numPlayers < 4:
                 p = value.numPlayers
@@ -106,6 +115,7 @@ def joinGame(conn, gameKey):
             games[value.id].numPlayers += 1
             return p, value.id
 
+
 def getGameList():
 
     listForGameList = []
@@ -115,6 +125,7 @@ def getGameList():
     gameList = GameList(listForGameList)
     return gameList
 
+
 def threaded_client(conn, addr):
 
     # For testing
@@ -123,7 +134,7 @@ def threaded_client(conn, addr):
 
     # Send message length with player id message
     packet = str.encode(str(p))
-    length = struct.pack('!I', len(packet))
+    length = struct.pack("!I", len(packet))
     packet = length + packet
     conn.send(packet)
 
@@ -133,25 +144,27 @@ def threaded_client(conn, addr):
             data = conn.recv(4096 * 2).decode()
 
             if "host" in data:
-                p, gameId = hostGame(conn, getGameKeyOrName(data), getMaxPlayers(data), getGameMode(data))
+                p, gameId = hostGame(
+                    conn, getGameKeyOrName(data), getMaxPlayers(data), getGameMode(data)
+                )
                 packet = str.encode(str(p))
-                length = struct.pack('!I', len(packet))
+                length = struct.pack("!I", len(packet))
                 packet = length + packet
                 conn.send(packet)
-            
+
             elif "join" in data:
                 p, gameId = joinGame(conn, int(getGameKeyOrName(data)))
                 packet = str.encode(str(p))
-                length = struct.pack('!I', len(packet))
+                length = struct.pack("!I", len(packet))
                 packet = length + packet
                 conn.send(packet)
 
             elif "gameList" in data:
                 packet = pickle.dumps(getGameList())
-                length = struct.pack('!I', len(packet))
+                length = struct.pack("!I", len(packet))
                 packet = length + packet
                 conn.send(packet)
-            
+
             elif gameId in games:
                 game = games[gameId]
 
@@ -159,15 +172,18 @@ def threaded_client(conn, addr):
                     break
                 else:
                     if data == "reset":
-                        #game.resetWent()
+                        # game.resetWent()
                         pass
                     elif "card:" in data:
-                        
+
                         # get card from data
                         s_card = get_card(data)
 
                         for playerCard in game.players[p].playerHand.cards:
-                            if playerCard.value == s_card.value and playerCard.suit == s_card.suit:
+                            if (
+                                playerCard.value == s_card.value
+                                and playerCard.suit == s_card.suit
+                            ):
                                 game.players[p].playerHand.cards.remove(playerCard)
 
                         # add card to main pile
@@ -187,7 +203,7 @@ def threaded_client(conn, addr):
                         # update player turn
                         # TODO: This may need to change after trick mechanics are implemented
                         game.determinePlayerTurn()
-                    
+
                     elif "ready" == data:
 
                         # Award cards from trick to winning player
@@ -223,7 +239,7 @@ def threaded_client(conn, addr):
                                 player.playerTurn = False
                                 player.roundPoints = 0
                                 player.wonCards = SMainPile()
-                            
+
                             game.bidWinner = None
                             game.biddingStage = True
 
@@ -269,23 +285,23 @@ def threaded_client(conn, addr):
                         game.players[p].username = get_username(data)
 
                     elif "tenAndUnder" in data:
-                        
+
                         # Add turned in hand to the ten and under collection
                         for card in game.players[p].playerHand.cards:
                             game.tenAndUnderCollection.add_card(card)
 
                         # Deal new hand to player
                         game.dealHandWithPlayerId(p)
-                        
+
                         # Set the player's bid to 0 (pass)
                         game.players[p].playerBid = 0
 
                         # Update whose turn it is to bid
                         game.determineBidTurn()
-                    
+
                     # send updated game back to all players
                     packet = pickle.dumps(game)
-                    length = struct.pack('!I', len(packet))
+                    length = struct.pack("!I", len(packet))
                     packet = length + packet
                     conn.sendall(packet)
 
@@ -298,7 +314,7 @@ def threaded_client(conn, addr):
     try:
         # Decrease number of players in game
         games[gameId].numPlayers -= 1
-        
+
         # If all players have been disconnected, delete the game
         if games[gameId].numPlayers == 0:
             del games[gameId]
@@ -308,6 +324,7 @@ def threaded_client(conn, addr):
 
     conn.close()
 
+
 def createUniqueGameId():
     maxGameId = -1
 
@@ -315,23 +332,25 @@ def createUniqueGameId():
     for key, value in games.items():
         if key > maxGameId:
             maxGameId = key
-    
+
     # Increment largest id to get a new unique id
     newGameId = maxGameId + 1
 
     # Return new game id
     return newGameId
 
+
 def main():
 
     while True:
-        
+
         # Accept connections from clients
         conn, addr = s.accept()
         print("Connected to:", addr)
 
         # Start thread for connected client
         start_new_thread(threaded_client, (conn, addr))
+
 
 if __name__ == "__main__":
     main()

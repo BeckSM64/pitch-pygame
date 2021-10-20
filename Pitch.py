@@ -9,17 +9,18 @@ from ui.screens.VideoSettingsScreen import *
 from ui.screens.HostScreen import *
 from ui.screens.JoinScreen import *
 
+
 def main():
 
     # Default game state
     game_state = GameState.TITLE
 
-    username   = None
-    gameKey    = None
-    gameName   = None
-    isHost     = None
+    username = None
+    gameKey = None
+    gameName = None
+    isHost = None
     maxPlayers = None
-    gameMode   = None
+    gameMode = None
 
     while True:
 
@@ -29,7 +30,9 @@ def main():
 
         # State for new game screen
         if game_state == GameState.NEWGAME:
-            game_state = GameScreen(username, isHost, gameName, gameKey, maxPlayers, gameMode).run()
+            game_state = GameScreen(
+                username, isHost, gameName, gameKey, maxPlayers, gameMode
+            ).run()
 
         # State for disconnect screen
         if game_state == GameState.DISCONNECT:
@@ -48,7 +51,14 @@ def main():
             game_state = VideoSettingsScreen().run()
 
         if game_state == GameState.HOST:
-            game_state, isHost, gameName, gameKey, maxPlayers, gameMode = HostScreen().run()
+            (
+                game_state,
+                isHost,
+                gameName,
+                gameKey,
+                maxPlayers,
+                gameMode,
+            ) = HostScreen().run()
 
         if game_state == GameState.JOIN:
             game_state, isHost, gameName, gameKey = JoinScreen().run()
@@ -58,5 +68,6 @@ def main():
             pygame.quit()
             sys.exit()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

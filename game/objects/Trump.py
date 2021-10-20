@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import resources.Resources as Resources
 
+
 class Trump(pygame.sprite.Sprite):
     def __init__(self, suit):
 
@@ -26,7 +27,7 @@ class Trump(pygame.sprite.Sprite):
 
         # Set position of trump image
         self.rect.x = 0
-        self.rect.y = (self.h - self.rect.height)
+        self.rect.y = self.h - self.rect.height
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

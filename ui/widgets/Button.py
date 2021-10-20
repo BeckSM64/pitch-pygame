@@ -1,14 +1,16 @@
 import pygame
 import resources.Resources as Resources
 from pygame.locals import *
+
 pygame.font.init()
+
 
 class Button:
     def __init__(self, width, height, x, y, color, textColor, text):
 
         # Constants
         self.UNFILLED_BUTTON_BORDER_WIDTH = 3
-        self.FILLED_BUTTON_BORDER_WIDTH   = 0
+        self.FILLED_BUTTON_BORDER_WIDTH = 0
         self.TEXT_COLOR = textColor
 
         # Members
@@ -21,19 +23,23 @@ class Button:
         self.textColor = textColor
         self.rect = Rect(x, y, width, height)
         self.borderWidth = self.UNFILLED_BUTTON_BORDER_WIDTH
-        
+
         # For multiline text, split on new line character
         self.textList = text.split("\n")
 
     def draw(self, screen):
 
         # Draw rectangle to screen
-        pygame.draw.rect(screen, (0,0,0), self.rect, border_radius = 5, width = self.borderWidth)
+        pygame.draw.rect(
+            screen, (0, 0, 0), self.rect, border_radius=5, width=self.borderWidth
+        )
 
         # Render font render on text in text list
         textRenderList = []
         for textElement in self.textList:
-            textRenderList.append(Resources.FONT_FIFTEEN.render(textElement, 1, self.textColor))
+            textRenderList.append(
+                Resources.FONT_FIFTEEN.render(textElement, 1, self.textColor)
+            )
 
         # Loop through list of indivual lines of text and blit to screen
         for i in range(len(textRenderList)):
@@ -45,9 +51,13 @@ class Button:
             screen.blit(
                 textRenderList[i],
                 (
-                    self.x + ((self.width / 2) - textRenderList[i].get_width()/2),
-                    self.y + (((self.height / (len(textRenderList) + 1)) * (i + 1)) - (textHeight / 2))
-                )
+                    self.x + ((self.width / 2) - textRenderList[i].get_width() / 2),
+                    self.y
+                    + (
+                        ((self.height / (len(textRenderList) + 1)) * (i + 1))
+                        - (textHeight / 2)
+                    ),
+                ),
             )
 
     def isClicked(self, eventPos):
@@ -59,10 +69,10 @@ class Button:
     def isHovering(self, mousePos):
         if self.rect.collidepoint(mousePos):
             self.borderWidth = self.FILLED_BUTTON_BORDER_WIDTH
-            self.textColor   = Resources.BACKGROUND_COLOR
+            self.textColor = Resources.BACKGROUND_COLOR
         else:
             self.borderWidth = self.UNFILLED_BUTTON_BORDER_WIDTH
-            self.textColor   = self.TEXT_COLOR
+            self.textColor = self.TEXT_COLOR
 
     def setPos(self, x, y):
 

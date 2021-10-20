@@ -2,12 +2,22 @@ import pygame
 from pygame.locals import *
 from ui.widgets.Button import Button
 
+
 class ActiveGameButton(Button):
     def __init__(self, game, width, height, x, y, color, textColor):
 
-        buttonText       = "Game Name: " + game.gameName + '\n' + "Open Slots: " + str(game.maxPlayers - game.numPlayers) + '\n' + "Game Mode: " + game.gameMode
-        self.gameName    = game.gameName
-        self.gameId      = game.id
+        buttonText = (
+            "Game Name: "
+            + game.gameName
+            + "\n"
+            + "Open Slots: "
+            + str(game.maxPlayers - game.numPlayers)
+            + "\n"
+            + "Game Mode: "
+            + game.gameMode
+        )
+        self.gameName = game.gameName
+        self.gameId = game.id
 
         # Call button constructor
         Button.__init__(self, width, height, x, y, color, textColor, buttonText)

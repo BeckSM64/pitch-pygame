@@ -2,12 +2,13 @@ import pygame
 from pygame.locals import *
 import resources.Resources as Resources
 
+
 class Arrow(pygame.sprite.Sprite):
 
-    width  = 50
+    width = 50
     height = 50
 
-    def __init__(self, x, y, rotation = None):
+    def __init__(self, x, y, rotation=None):
 
         # Super class constructor
         pygame.sprite.Sprite.__init__(self)
@@ -16,7 +17,9 @@ class Arrow(pygame.sprite.Sprite):
         filename = f"arrow.png"
         self.image, self.rect = Resources.load_png(filename)
         self.screen = pygame.display.get_surface()
-        self.image = pygame.transform.smoothscale(self.image, (Arrow.width, Arrow.height))
+        self.image = pygame.transform.smoothscale(
+            self.image, (Arrow.width, Arrow.height)
+        )
         self.area = self.screen.get_rect()
         self.sprite = pygame.sprite.RenderPlain(self)
         self.rect = self.image.get_rect()
@@ -27,10 +30,10 @@ class Arrow(pygame.sprite.Sprite):
 
         # Rotate image if rotation was specified
         if rotation is not None:
-            rot_image  = pygame.transform.rotate(self.image, rotation)
-            rot_rect   = rot_image.get_rect(center=self.rect.center)
+            rot_image = pygame.transform.rotate(self.image, rotation)
+            rot_rect = rot_image.get_rect(center=self.rect.center)
             self.image = rot_image
-            self.rect  = rot_rect
+            self.rect = rot_rect
 
     def isClicked(self, eventPos):
         return self.rect.collidepoint(eventPos)

@@ -6,7 +6,9 @@ from game.logic.GameState import GameState
 from ui.widgets.TextBox import TextBox
 from ui.widgets.Incrementer import Incrementer
 import resources.Resources as Resources
+
 pygame.font.init()
+
 
 class HostScreen(Screen):
     def __init__(self):
@@ -20,17 +22,20 @@ class HostScreen(Screen):
             50,
             (Resources.SCREEN_WIDTH / 2) - 100,
             (Resources.SCREEN_HEIGHT / 2) - 25,
-            (255, 255, 255), (0, 0, 0),
-            "HOST GAME"
+            (255, 255, 255),
+            (0, 0, 0),
+            "HOST GAME",
         )
 
         # Back button
         self.mainMenuButton = Button(
             200,
-            50, (Resources.SCREEN_WIDTH / 2) - 100,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
             (Resources.SCREEN_HEIGHT / 2) + 30,
-            (255, 255, 255), (0, 0, 0),
-            "MAIN MENU"
+            (255, 255, 255),
+            (0, 0, 0),
+            "MAIN MENU",
         )
 
         # List of buttons
@@ -42,20 +47,24 @@ class HostScreen(Screen):
             (Resources.SCREEN_WIDTH / 2) - 100,
             (Resources.SCREEN_HEIGHT / 2) - 80,
             200,
-            50
+            50,
         )
 
         # Game mode incrementer
         gameModeOptions = ["Normal", "Jick"]
         self.gameModeIncrementer = Incrementer(gameModeOptions)
-        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (self.gameModeIncrementer.incrementerWidth / 2)
+        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (
+            self.gameModeIncrementer.incrementerWidth / 2
+        )
         INCREMENTER_Y = 40
         self.gameModeIncrementer.setPos(INCREMENTER_X, INCREMENTER_Y)
 
         # Number of players incrementer
         numPlayersOptions = ["3", "4"]
         self.numPlayersIncrementer = Incrementer(numPlayersOptions)
-        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (self.numPlayersIncrementer.incrementerWidth / 2)
+        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (
+            self.numPlayersIncrementer.incrementerWidth / 2
+        )
         INCREMENTER_Y = 90
         self.numPlayersIncrementer.setPos(INCREMENTER_X, INCREMENTER_Y)
 
@@ -76,14 +85,21 @@ class HostScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
 
                         # Check if host button was clicked
                         if self.hostButton.isClicked(event.pos):
                             if len(self.textBox.text) == 0:
                                 self.showError = True
                             else:
-                                return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
+                                return (
+                                    GameState.NEWGAME,
+                                    True,
+                                    self.textBox.text,
+                                    None,
+                                    int(self.numPlayersIncrementer.activeOption),
+                                    self.gameModeIncrementer.activeOption,
+                                )
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
@@ -96,7 +112,14 @@ class HostScreen(Screen):
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
                 if isInputEntered and len(self.textBox.text) != 0:
-                    return GameState.NEWGAME, True, self.textBox.text, None, int(self.numPlayersIncrementer.activeOption), self.gameModeIncrementer.activeOption
+                    return (
+                        GameState.NEWGAME,
+                        True,
+                        self.textBox.text,
+                        None,
+                        int(self.numPlayersIncrementer.activeOption),
+                        self.gameModeIncrementer.activeOption,
+                    )
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = True
 
@@ -107,10 +130,10 @@ class HostScreen(Screen):
             self.draw()
 
     def draw(self):
-    
+
         # Blit the background of the screen
         self.screen.blit(self.background, (0, 0))
-        
+
         # Draw buttons and stuff
         self.hostButton.draw(self.screen)
         self.mainMenuButton.draw(self.screen)
@@ -132,13 +155,7 @@ class HostScreen(Screen):
         textWidth, textHeight = Resources.FONT_TWENTY_FIVE.size(text)
         text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
 
-        self.screen.blit(
-            text,
-            (
-                (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
-                0
-            )
-        )
+        self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), 0))
 
     def displayInputError(self):
 
@@ -146,11 +163,7 @@ class HostScreen(Screen):
         textColor = (255, 0, 0)
         text = "*Game name must not be blank"
         text = Resources.FONT_FIFTEEN.render(text, 1, textColor)
-        
+
         self.screen.blit(
-            text, 
-            (
-                (Resources.SCREEN_WIDTH / 2) - 100,
-                self.textBox.y - 20
-            )
+            text, ((Resources.SCREEN_WIDTH / 2) - 100, self.textBox.y - 20)
         )

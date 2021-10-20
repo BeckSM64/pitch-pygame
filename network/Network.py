@@ -3,6 +3,7 @@ import pickle
 import struct
 import select
 
+
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -25,13 +26,13 @@ class Network:
             if ready[0]:
 
                 # Keep receiving data until whole message is received
-                buf = b''
+                buf = b""
                 while len(buf) < 4:
                     buf += self.client.recv(4 - len(buf))
 
-                length = struct.unpack('!I', buf)[0]
+                length = struct.unpack("!I", buf)[0]
 
-                data = b''
+                data = b""
                 while len(data) < length:
                     data += self.client.recv(4)
 
@@ -50,13 +51,13 @@ class Network:
 
             if ready[0]:
                 # Keep receiving data until whole message is received
-                buf = b''
+                buf = b""
                 while len(buf) < 4:
                     buf += self.client.recv(4 - len(buf))
 
-                length = struct.unpack('!I', buf)[0]
+                length = struct.unpack("!I", buf)[0]
 
-                data = b''
+                data = b""
                 while len(data) < length:
                     data += self.client.recv(4)
 
@@ -78,17 +79,16 @@ class Network:
 
             if ready[0]:
                 # Keep receiving data until whole message is received
-                buf = b''
+                buf = b""
                 while len(buf) < 4:
                     buf += self.client.recv(4 - len(buf))
 
-                length = struct.unpack('!I', buf)[0]
+                length = struct.unpack("!I", buf)[0]
 
-                data = b''
+                data = b""
                 while len(data) < length:
                     data += self.client.recv(4)
                 return pickle.loads(data)
 
         except socket.error as e:
             print(e)
-

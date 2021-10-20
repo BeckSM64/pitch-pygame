@@ -11,7 +11,9 @@ from network.Network import Network
 from game.logic.GameList import GameList
 from ui.widgets.PageNavigator import PageNavigator
 import resources.Resources as Resources
+
 pygame.font.init()
+
 
 class JoinScreen(Screen):
     def __init__(self):
@@ -40,8 +42,8 @@ class JoinScreen(Screen):
 
         # Game buttons
         i = 0
-        BUTTON_WIDTH   = 400
-        BUTTON_HEIGHT  = 100
+        BUTTON_WIDTH = 400
+        BUTTON_HEIGHT = 100
         BUTTON_PADDING = 5
 
         # Loop through active games in the game list
@@ -56,14 +58,16 @@ class JoinScreen(Screen):
                     (Resources.SCREEN_WIDTH / 2) - (BUTTON_WIDTH / 2),
                     (0 + BUTTON_HEIGHT + BUTTON_PADDING) * i,
                     (255, 255, 255),
-                    (0, 0, 0)
+                    (0, 0, 0),
                 )
                 self.buttonList.append(button)
                 i += 1
 
         # Only display 4 games per page
         if len(self.buttonList) > 4:
-            self.buttonListSubset = self.buttonList[self.buttonListSlice[0]:self.buttonListSlice[1]]
+            self.buttonListSubset = self.buttonList[
+                self.buttonListSlice[0] : self.buttonListSlice[1]
+            ]
         else:
             self.buttonListSubset = self.buttonList
 
@@ -76,13 +80,13 @@ class JoinScreen(Screen):
     def updateButtonPositions(self):
 
         i = 0
-        BUTTON_WIDTH   = 400
-        BUTTON_HEIGHT  = 100
+        BUTTON_WIDTH = 400
+        BUTTON_HEIGHT = 100
         BUTTON_PADDING = 5
         for button in self.buttonListSubset:
             button.setPos(
                 (Resources.SCREEN_WIDTH / 2) - (BUTTON_WIDTH / 2),
-                (0 + BUTTON_HEIGHT + BUTTON_PADDING) * i
+                (0 + BUTTON_HEIGHT + BUTTON_PADDING) * i,
             )
             i += 1
 
@@ -100,13 +104,18 @@ class JoinScreen(Screen):
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1: # the right mouse button
+                    if event.button == 1:  # the right mouse button
 
                         # Check if game button was clicked
                         for button in self.buttonListSubset:
                             if button.isClicked(event.pos):
                                 self.n.disconnect()
-                                return GameState.NEWGAME, False, button.gameName, button.gameId
+                                return (
+                                    GameState.NEWGAME,
+                                    False,
+                                    button.gameName,
+                                    button.gameId,
+                                )
 
                     if self.pageNavigator.isLeftClicked(event.pos):
                         if 0 <= self.buttonListSlice[0] - 1 < len(self.buttonList):
@@ -125,13 +134,13 @@ class JoinScreen(Screen):
             self.draw()
 
     def draw(self):
-    
+
         # Blit the background of the screen
         self.screen.blit(self.background, (0, 0))
-        
+
         for button in self.buttonListSubset:
             button.draw(self.screen)
-            
+
         # if there are no active games display error message
         if len(self.buttonList) == 0:
             self.displayError()
@@ -153,6 +162,6 @@ class JoinScreen(Screen):
             text,
             (
                 (Resources.SCREEN_WIDTH / 2) - (textWidth / 2),
-                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2)
-            )
+                (Resources.SCREEN_HEIGHT / 2) - (textHeight / 2),
+            ),
         )
