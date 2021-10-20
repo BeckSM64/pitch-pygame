@@ -153,7 +153,7 @@ def set_ui_font_size(fontSize):
 
     # Update UI text size and variable size font
     UI_TEXT_SIZE = fontSize
-    FONT_VARIABLE_SIZE = pygame.font.SysFont("arial", UI_TEXT_SIZE)
+    FONT_VARIABLE_SIZE = pygame.font.Font(ACTIVE_FONT, UI_TEXT_SIZE)
 
 
 def set_scalable_card_size(cardWidth, cardHeight):
