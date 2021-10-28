@@ -8,6 +8,21 @@ class SCard:
         self.value = value
         self.suit = suit
 
+    def getCardAsString(self):
+        valueAsName = ""
+        if self.value == 11:
+            valueAsName = "J"
+        elif self.value == 12:
+            valueAsName = "Q"
+        elif self.value == 13:
+            valueAsName = "K"
+        elif self.value == 14:
+            valueAsName = "A"
+        else:
+            valueAsName = str(self.value)
+
+        return f"{valueAsName}{self.suit[0]}"
+
 
 class SHand:
     def __init__(self, cards):

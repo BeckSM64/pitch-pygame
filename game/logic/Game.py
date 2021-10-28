@@ -174,6 +174,62 @@ class Game:
     def isBiddingStage(self):
         return self.biddingStage
 
+    def getUsernameWithHigh(self):
+        usernameWithHigh = ""
+        highCard = SCard(2, self.trump)
+
+        for player in self.players:
+            playerCard = player.wonCards.getHigh(self.trump)
+            if playerCard is not None:
+                if playerCard.value > highCard.value:
+                    highCard = playerCard
+                    usernameWithHigh = player.username
+
+        return usernameWithHigh
+
+    def getUsernameWithLow(self):
+        usernameWithLow = ""
+        lowCard = SCard(14, self.trump)
+
+        for player in self.players:
+            playerCard = player.wonCards.getLow(self.trump)
+            if playerCard is not None:
+                if playerCard.value < lowCard.value:
+                    lowCard = playerCard
+                    usernameWithLow = player.username
+
+        return usernameWithLow
+
+    def getUsernameWithJack(self):
+        usernameWithJack = ""
+        for player in self.players:
+            if player.wonCards.hasJack(self.trump):
+                usernameWithJack = player.username
+
+        return usernameWithJack
+
+    def getHighestCard(self):
+        """Gets the current highest card that has been played"""
+        highestCard = None
+        for player in self.players:
+            playerHighestCard = player.wonCards.getHigh(self.trump)
+            if playerHighestCard is not None:
+                if highestCard is None or player.wonCards.getHigh(self.trump).value > highestCard.value:
+                    highestCard = player.wonCards.getHigh(self.trump)
+        return highestCard
+
+    
+    def getLowestCard(self):
+        """Gets the current lowest card that has been played"""
+        lowestCard = None
+        for player in self.players:
+            playerLowestCard = player.wonCards.getLow(self.trump)
+            if playerLowestCard is not None:
+                if lowestCard is None or player.wonCards.getLow(self.trump).value < lowestCard.value:
+                    lowestCard = player.wonCards.getLow(self.trump)
+        return lowestCard
+        
+
     def calculateScores(self):
 
         highCard = SCard(2, self.trump)
