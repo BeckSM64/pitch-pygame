@@ -208,6 +208,13 @@ class Game:
 
         return usernameWithJack
 
+    def getUsernameWithJick(self):
+        usernameWithJick = ""
+        for player in self.players:
+            if player.wonCards.hasJick(self.trump):
+                usernameWithJick = player.username
+        return usernameWithJick
+
     def getHighestCard(self):
         """Gets the current highest card that has been played"""
         highestCard = None
