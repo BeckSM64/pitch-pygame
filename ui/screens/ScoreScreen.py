@@ -28,7 +28,7 @@ class ScoreScreen:
         for i in range(numPlayers):
 
             if numPlayers == 3:
-                text = game.players[i].username + ": " + str(game.players[i].score)
+                text = game.players[i].username + ": " + str(game.players[i].score) + "/" + str(game.players[i].wonCards.getGame())
             else:
                 text = (
                     game.players[i].username
@@ -36,6 +36,8 @@ class ScoreScreen:
                     + game.players[i + 2].username
                     + ": "
                     + str(game.players[i].score)
+                    + "/"
+                    + str(game.players[i].wonCards.getGame() + game.players[i + 2].wonCards.getGame())
                 )
 
             # Create text
