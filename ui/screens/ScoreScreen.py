@@ -137,12 +137,12 @@ class ScoreScreen:
             highCard = highCard.getCardAsString()
         else:
             highCard = ""
-        
+
         if lowCard is not None:
             lowCard = lowCard.getCardAsString()
         else:
             lowCard = ""
-        
+
         # High, low, jack, game indicators
         highText = "HIGH: " + game.getUsernameWithHigh() + " - " + highCard
         lowText = "LOW: " + game.getUsernameWithLow() + " - " + lowCard
@@ -174,7 +174,7 @@ class ScoreScreen:
             numPoints = 3
         elif game.gameMode == "Jick":
             numPoints = 4
-            
+
         highPosX = self.calculateXPosition(numPoints, 0, highTextWidth)
         lowPosX = self.calculateXPosition(numPoints, 1, lowTextWidth)
         jackPosX = self.calculateXPosition(numPoints, 2, jackTextWidth)
@@ -186,7 +186,9 @@ class ScoreScreen:
         screen.blit(jackText, (jackPosX, (Resources.SCREEN_HEIGHT - jackTextHeight)))
 
         if game.gameMode == "Jick":
-            screen.blit(jickText, (jickPosX, (Resources.SCREEN_HEIGHT - jickTextHeight)))
+            screen.blit(
+                jickText, (jickPosX, (Resources.SCREEN_HEIGHT - jickTextHeight))
+            )
 
     def calculateXPosition(self, numPlayers, playerId, textWidth):
         posX = ((self.w / (numPlayers + 1)) * (playerId + 1)) - (textWidth / 2)

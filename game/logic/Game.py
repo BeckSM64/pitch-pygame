@@ -221,21 +221,25 @@ class Game:
         for player in self.players:
             playerHighestCard = player.wonCards.getHigh(self.trump)
             if playerHighestCard is not None:
-                if highestCard is None or player.wonCards.getHigh(self.trump).value > highestCard.value:
+                if (
+                    highestCard is None
+                    or player.wonCards.getHigh(self.trump).value > highestCard.value
+                ):
                     highestCard = player.wonCards.getHigh(self.trump)
         return highestCard
 
-    
     def getLowestCard(self):
         """Gets the current lowest card that has been played"""
         lowestCard = None
         for player in self.players:
             playerLowestCard = player.wonCards.getLow(self.trump)
             if playerLowestCard is not None:
-                if lowestCard is None or player.wonCards.getLow(self.trump).value < lowestCard.value:
+                if (
+                    lowestCard is None
+                    or player.wonCards.getLow(self.trump).value < lowestCard.value
+                ):
                     lowestCard = player.wonCards.getLow(self.trump)
         return lowestCard
-        
 
     def calculateScores(self):
 
