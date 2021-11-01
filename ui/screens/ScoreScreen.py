@@ -15,16 +15,26 @@ class ScoreScreen:
 
     def draw(self, game, screen):
 
+        # Draw player names, scores, and cards
         if game.maxPlayers == 3:
             self.drawPlayerNamesAndCards(screen, game, 3)
         else:
             self.drawPlayerNamesAndCards(screen, game, 2)
 
+        # Draw high, low, jack, and game indicators
+        self.drawHighLowJackJickStatus(screen, game)
+
     def drawPlayerNamesAndCards(self, screen, game, numPlayers):
         for i in range(numPlayers):
 
             if numPlayers == 3:
-                text = game.players[i].username + ": " + str(game.players[i].score)
+                text = (
+                    game.players[i].username
+                    + ": "
+                    + str(game.players[i].score)
+                    + "/"
+                    + str(game.players[i].wonCards.getGame())
+                )
             else:
                 text = (
                     game.players[i].username
@@ -32,6 +42,11 @@ class ScoreScreen:
                     + game.players[i + 2].username
                     + ": "
                     + str(game.players[i].score)
+                    + "/"
+                    + str(
+                        game.players[i].wonCards.getGame()
+                        + game.players[i + 2].wonCards.getGame()
+                    )
                 )
 
             # Create text
@@ -109,6 +124,82 @@ class ScoreScreen:
             i += 1
 
         tenAndUnderCollection.draw(screen)
+
+    def drawHighLowJackJickStatus(self, screen, game):
+
+        # Get the highest and lowest cards played so far
+        highCard = game.getHighestCard()
+        lowCard = game.getLowestCard()
+
+        # Get the username of who has the jack (if anyone)
+        userWithJack = game.getUsernameWithJack()
+
+        # Get the username of who has the jick (if anyone)
+        userWithJick = game.getUsernameWithJick()
+
+        # Setup strings for indicator display
+        if len(userWithJack) == 0:
+            userWithJack = " - "
+
+        if len(userWithJick) == 0:
+            userWithJick = " - "
+
+        if highCard is not None:
+            highCard = highCard.getCardAsString()
+        else:
+            highCard = ""
+
+        if lowCard is not None:
+            lowCard = lowCard.getCardAsString()
+        else:
+            lowCard = ""
+
+        # High, low, jack, game indicators
+        highText = "HIGH: " + game.getUsernameWithHigh() + " - " + highCard
+        lowText = "LOW: " + game.getUsernameWithLow() + " - " + lowCard
+        jackText = "JACK: " + userWithJack
+        jickText = "JICK: " + userWithJick
+
+        # Create text color
+        textColor = (0, 0, 0)
+
+        # High text
+        highTextWidth, highTextHeight = Resources.FONT_VARIABLE_SIZE.size(highText)
+        highText = Resources.FONT_VARIABLE_SIZE.render(highText, 1, textColor)
+
+        # Low text
+        lowTextWidth, lowTextHeight = Resources.FONT_VARIABLE_SIZE.size(lowText)
+        lowText = Resources.FONT_VARIABLE_SIZE.render(lowText, 1, textColor)
+
+        # Jack text
+        jackTextWidth, jackTextHeight = Resources.FONT_VARIABLE_SIZE.size(jackText)
+        jackText = Resources.FONT_VARIABLE_SIZE.render(jackText, 1, textColor)
+
+        # Jick text
+        jickTextWidth, jickTextHeight = Resources.FONT_VARIABLE_SIZE.size(jickText)
+        jickText = Resources.FONT_VARIABLE_SIZE.render(jickText, 1, textColor)
+
+        # Calculate x position of text
+        # TODO: Fix magic numbers
+        if game.gameMode == "Normal":
+            numPoints = 3
+        elif game.gameMode == "Jick":
+            numPoints = 4
+
+        highPosX = self.calculateXPosition(numPoints, 0, highTextWidth)
+        lowPosX = self.calculateXPosition(numPoints, 1, lowTextWidth)
+        jackPosX = self.calculateXPosition(numPoints, 2, jackTextWidth)
+        jickPosX = self.calculateXPosition(numPoints, 3, jickTextWidth)
+
+        # Draw text to screen
+        screen.blit(highText, (highPosX, (Resources.SCREEN_HEIGHT - highTextHeight)))
+        screen.blit(lowText, (lowPosX, (Resources.SCREEN_HEIGHT - lowTextHeight)))
+        screen.blit(jackText, (jackPosX, (Resources.SCREEN_HEIGHT - jackTextHeight)))
+
+        if game.gameMode == "Jick":
+            screen.blit(
+                jickText, (jickPosX, (Resources.SCREEN_HEIGHT - jickTextHeight))
+            )
 
     def calculateXPosition(self, numPlayers, playerId, textWidth):
         posX = ((self.w / (numPlayers + 1)) * (playerId + 1)) - (textWidth / 2)
