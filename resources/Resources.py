@@ -119,8 +119,6 @@ def combine_card_collections(cardCollection1, cardCollection2):
 
 def set_screen_size(width=1280, height=720, fullscreen=False):
 
-    print("GOT HERE", fullscreen)
-
     # Set global variables
     global SCREEN_WIDTH
     global SCREEN_HEIGHT
