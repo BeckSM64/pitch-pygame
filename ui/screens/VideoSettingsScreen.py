@@ -106,7 +106,7 @@ class VideoSettingsScreen(Screen):
 
                         # Check if the fullscreen button was clicked
                         if self.fullScreenButton.isClicked(event.pos):
-                            self.updateUi(1280, 720, True)
+                            self.updateUi(1920, 1080, True)
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):

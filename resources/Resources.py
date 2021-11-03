@@ -40,6 +40,7 @@ videoSettings = {
     504: {"fontSize": 15, "cardWidth": 50, "cardHeight": 83},
     648: {"fontSize": 20, "cardWidth": 63, "cardHeight": 105},
     720: {"fontSize": 23, "cardWidth": 75, "cardHeight": 125},
+    1080: {"fontSize": 23, "cardWidth": 75, "cardHeight": 125},
 }
 
 # UI Text Font Size
