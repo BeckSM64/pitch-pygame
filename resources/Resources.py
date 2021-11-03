@@ -13,6 +13,9 @@ pygame.init()
 SCREEN_WIDTH = 896
 SCREEN_HEIGHT = 504
 
+# Flag for fullscreen
+FULLSCREEN = False
+
 # Scalable Card Size
 SCALABLE_CARD_WIDTH = 50
 SCALABLE_CARD_HEIGHT = 83
@@ -37,6 +40,7 @@ videoSettings = {
     504: {"fontSize": 15, "cardWidth": 50, "cardHeight": 83},
     648: {"fontSize": 20, "cardWidth": 63, "cardHeight": 105},
     720: {"fontSize": 23, "cardWidth": 75, "cardHeight": 125},
+    1080: {"fontSize": 23, "cardWidth": 75, "cardHeight": 125},
 }
 
 # UI Text Font Size
@@ -114,14 +118,16 @@ def combine_card_collections(cardCollection1, cardCollection2):
     return cardCollection1
 
 
-def set_screen_size(width=1280, height=720):
+def set_screen_size(width=1280, height=720, fullscreen=False):
 
     # Set global variables
     global SCREEN_WIDTH
     global SCREEN_HEIGHT
+    global FULLSCREEN
     global BACKGROUND_COLOR
     SCREEN_WIDTH = width
     SCREEN_HEIGHT = height
+    FULLSCREEN = fullscreen
 
     # Get settings from the settings dictionary based on screen size
     fontSize = videoSettings[SCREEN_HEIGHT]["fontSize"]
@@ -133,7 +139,11 @@ def set_screen_size(width=1280, height=720):
     set_scalable_card_size(cardWidth, cardHeight)
 
     # Set screen size
-    screen = pygame.display.set_mode((width, height))
+    if fullscreen:
+        screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+    else:
+        screen = pygame.display.set_mode((width, height))
+
     pygame.display.set_caption("Pitch")
 
     # Fill background
