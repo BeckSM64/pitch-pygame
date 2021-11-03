@@ -29,6 +29,7 @@ class GameScreen(Screen):
         gameKey=None,
         maxPlayers=None,
         gameMode=None,
+        winningScore=None,
     ):
         Screen.__init__(self)
 
@@ -38,7 +39,7 @@ class GameScreen(Screen):
 
         # Tell the server to create/join the game and return player id
         if isHost:
-            self.player = self.n.getPlayer(f"host/{gameName}/{maxPlayers}/{gameMode}")
+            self.player = self.n.getPlayer(f"host/{gameName}/{maxPlayers}/{gameMode}/{winningScore}")
         else:
             self.player = self.n.getPlayer(f"join/{gameKey}")
 
