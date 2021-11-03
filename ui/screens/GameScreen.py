@@ -45,83 +45,97 @@ class GameScreen(Screen):
         # Get the game from the server
         self.game = self.n.send("get")
 
-        # Set player username
-        self.game.players[self.player].username = username
-        self.n.send("username: " + username)
+        # Check if the game could be received from the server
+        connectionAttempts = 0
+        MAX_ATTMEPTS = 10000
+        while self.game is None and connectionAttempts < MAX_ATTMEPTS:
+            self.game = self.n.send("get")
+            connectionAttempts += 1
 
-        # Initialize test hand
-        self.test_hand = get_hand(self.game.players[self.player].playerHand)
+        # Only initialize game screen objects if server connectino was succesful
+        if self.game is not None:
 
-        # Initialize main pile to play cards into
-        self.main_pile = MainPile()
+            # Set player username
+            self.game.players[self.player].username = username
+            self.n.send("username: " + username)
 
-        # Initialize trump image
-        self.trump_image = None
+            # Initialize test hand
+            self.test_hand = get_hand(self.game.players[self.player].playerHand)
 
-        # Initialize player turn indicator
-        self.playerTurnIndicator = PlayerTurnIndicator()
+            # Initialize main pile to play cards into
+            self.main_pile = MainPile()
 
-        # Initialize bid screen
-        self.bid_screen = BidScreen()
+            # Initialize trump image
+            self.trump_image = None
 
-        # Initialize username list
-        self.username_list = UsernameList()
+            # Initialize player turn indicator
+            self.playerTurnIndicator = PlayerTurnIndicator()
 
-        # Score button
-        SCORE_BUTTON_WIDTH = 50
-        SCORE_BUTTON_HEIGHT = 50
-        SCORE_BUTTON_X = self.screen.get_width() - SCORE_BUTTON_WIDTH
-        SCORE_BUTTON_Y = 0
-        SCORE_BUTTON_COLOR = (255, 255, 255)
-        SCORE_BUTTON_TEXT_COLOR = (0, 0, 0)
-        SCORE_BUTTON_TEXT = "S"
+            # Initialize bid screen
+            self.bid_screen = BidScreen()
 
-        self.scoreButton = Button(
-            SCORE_BUTTON_WIDTH,
-            SCORE_BUTTON_HEIGHT,
-            SCORE_BUTTON_X,
-            SCORE_BUTTON_Y,
-            SCORE_BUTTON_COLOR,
-            SCORE_BUTTON_TEXT_COLOR,
-            SCORE_BUTTON_TEXT,
-        )
+            # Initialize username list
+            self.username_list = UsernameList()
 
-        # Ten and Under Button
-        TEN_AND_UNDER_BUTTON_WIDTH = 100
-        TEN_AND_UNDER_BUTTON_HEIGHT = 100
-        TEN_AND_UNDER_BUTTON_PADDING = 10
-        TEN_AND_UNDER_BUTTON_X = (self.screen.get_width() / 2) - (
-            TEN_AND_UNDER_BUTTON_WIDTH / 2
-        )
-        TEN_AND_UNDER_BUTTON_Y = (
-            (self.screen.get_height() / 2) - (TEN_AND_UNDER_BUTTON_HEIGHT / 2)
-        ) - (TEN_AND_UNDER_BUTTON_HEIGHT + TEN_AND_UNDER_BUTTON_PADDING)
-        TEN_AND_UNDER_BUTTON_COLOR = (255, 0, 0)
-        TEN_AND_UNDER_BUTTON_TEXT_COLOR = (0, 0, 0)
-        TEN_AND_UNDER_BUTTON_TEXT = "TEN\nAND\nUNDER"
+            # Score button
+            SCORE_BUTTON_WIDTH = 50
+            SCORE_BUTTON_HEIGHT = 50
+            SCORE_BUTTON_X = self.screen.get_width() - SCORE_BUTTON_WIDTH
+            SCORE_BUTTON_Y = 0
+            SCORE_BUTTON_COLOR = (255, 255, 255)
+            SCORE_BUTTON_TEXT_COLOR = (0, 0, 0)
+            SCORE_BUTTON_TEXT = "S"
 
-        self.tenAndUnderButton = Button(
-            TEN_AND_UNDER_BUTTON_WIDTH,
-            TEN_AND_UNDER_BUTTON_HEIGHT,
-            TEN_AND_UNDER_BUTTON_X,
-            TEN_AND_UNDER_BUTTON_Y,
-            TEN_AND_UNDER_BUTTON_COLOR,
-            TEN_AND_UNDER_BUTTON_TEXT_COLOR,
-            TEN_AND_UNDER_BUTTON_TEXT,
-        )
+            self.scoreButton = Button(
+                SCORE_BUTTON_WIDTH,
+                SCORE_BUTTON_HEIGHT,
+                SCORE_BUTTON_X,
+                SCORE_BUTTON_Y,
+                SCORE_BUTTON_COLOR,
+                SCORE_BUTTON_TEXT_COLOR,
+                SCORE_BUTTON_TEXT,
+            )
 
-        # List of all the buttons
-        self.buttonList.append(self.scoreButton)
-        self.buttonList.append(self.tenAndUnderButton)
+            # Ten and Under Button
+            TEN_AND_UNDER_BUTTON_WIDTH = 100
+            TEN_AND_UNDER_BUTTON_HEIGHT = 100
+            TEN_AND_UNDER_BUTTON_PADDING = 10
+            TEN_AND_UNDER_BUTTON_X = (self.screen.get_width() / 2) - (
+                TEN_AND_UNDER_BUTTON_WIDTH / 2
+            )
+            TEN_AND_UNDER_BUTTON_Y = (
+                (self.screen.get_height() / 2) - (TEN_AND_UNDER_BUTTON_HEIGHT / 2)
+            ) - (TEN_AND_UNDER_BUTTON_HEIGHT + TEN_AND_UNDER_BUTTON_PADDING)
+            TEN_AND_UNDER_BUTTON_COLOR = (255, 0, 0)
+            TEN_AND_UNDER_BUTTON_TEXT_COLOR = (0, 0, 0)
+            TEN_AND_UNDER_BUTTON_TEXT = "TEN\nAND\nUNDER"
 
-        # Score screen
-        self.scoreScreen = ScoreScreen()
+            self.tenAndUnderButton = Button(
+                TEN_AND_UNDER_BUTTON_WIDTH,
+                TEN_AND_UNDER_BUTTON_HEIGHT,
+                TEN_AND_UNDER_BUTTON_X,
+                TEN_AND_UNDER_BUTTON_Y,
+                TEN_AND_UNDER_BUTTON_COLOR,
+                TEN_AND_UNDER_BUTTON_TEXT_COLOR,
+                TEN_AND_UNDER_BUTTON_TEXT,
+            )
 
-        self.showGameScreen = False
-        self.showScoreScreen = False
-        self.gameReady = False
+            # List of all the buttons
+            self.buttonList.append(self.scoreButton)
+            self.buttonList.append(self.tenAndUnderButton)
+
+            # Score screen
+            self.scoreScreen = ScoreScreen()
+
+            self.showGameScreen = False
+            self.showScoreScreen = False
+            self.gameReady = False
 
     def run(self):
+
+        # Check if the connection to the server was successful
+        if self.game is None:
+            return GameState.SERVER_ERROR
 
         # Game loop
         while True:
