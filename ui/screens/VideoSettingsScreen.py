@@ -47,12 +47,23 @@ class VideoSettingsScreen(Screen):
             "1280 x 720",
         )
 
+        # Fullscreen button
+        self.fullScreenButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) + 30,
+            (255, 255, 255),
+            (0, 0, 0),
+            "FULLSCREEN",
+        )
+
         # Back button
         self.mainMenuButton = Button(
             200,
             50,
             (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) + 30,
+            (Resources.SCREEN_HEIGHT / 2) + 85,
             (255, 255, 255),
             (0, 0, 0),
             "MAIN MENU",
@@ -62,6 +73,7 @@ class VideoSettingsScreen(Screen):
         self.buttonList.append(self.fiveOFourButton)
         self.buttonList.append(self.sixFourtyEightButton)
         self.buttonList.append(self.sevenTwentyButton)
+        self.buttonList.append(self.fullScreenButton)
         self.buttonList.append(self.mainMenuButton)
 
     def run(self):
@@ -92,6 +104,10 @@ class VideoSettingsScreen(Screen):
                         if self.sevenTwentyButton.isClicked(event.pos):
                             self.updateUi(1280, 720)
 
+                        # Check if the fullscreen button was clicked
+                        if self.fullScreenButton.isClicked(event.pos):
+                            self.updateUi(1280, 720, True)
+
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
                             return GameState.TITLE
@@ -111,6 +127,7 @@ class VideoSettingsScreen(Screen):
         self.fiveOFourButton.draw(self.screen)
         self.sixFourtyEightButton.draw(self.screen)
         self.sevenTwentyButton.draw(self.screen)
+        self.fullScreenButton.draw(self.screen)
         self.mainMenuButton.draw(self.screen)
         self.displayTitle()
 
@@ -125,10 +142,10 @@ class VideoSettingsScreen(Screen):
         text = Resources.FONT_TWENTY_FIVE.render(text, 1, textColor)
         self.screen.blit(text, ((Resources.SCREEN_WIDTH / 2) - (textWidth / 2), 0))
 
-    def updateUi(self, width, height):
+    def updateUi(self, width, height, fullscreen=False):
 
         # Resize the screen
-        self.screen, self.background = Resources.set_screen_size(width, height)
+        self.screen, self.background = Resources.set_screen_size(width, height, fullscreen)
 
         # Update positions of other widgets
         self.fiveOFourButton.setPos(
@@ -140,6 +157,9 @@ class VideoSettingsScreen(Screen):
         self.sevenTwentyButton.setPos(
             (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) - 25
         )
-        self.mainMenuButton.setPos(
+        self.fullScreenButton.setPos(
             (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) + 30
+        )
+        self.mainMenuButton.setPos(
+            (Resources.SCREEN_WIDTH / 2) - 100, (Resources.SCREEN_HEIGHT / 2) + 85
         )

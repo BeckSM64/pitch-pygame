@@ -15,9 +15,15 @@ class Screen:
 
         # Initialize screen
         pygame.init()
-        self.screen = pygame.display.set_mode(
-            (Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
-        )
+
+        if Resources.FULLSCREEN:
+            self.screen = pygame.display.set_mode(
+                (Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT), pygame.FULLSCREEN
+            )
+        else:
+            self.screen = pygame.display.set_mode(
+                (Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT)
+            )
         pygame.display.set_caption("Pitch")
 
         # Fill background
