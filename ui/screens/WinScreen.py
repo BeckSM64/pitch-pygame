@@ -1,5 +1,6 @@
 import pygame
 import resources.Resources as Resources
+from ui.widgets.Button import Button
 from pygame.locals import *
 
 class WinScreen:
@@ -8,10 +9,39 @@ class WinScreen:
         # Screen width and height
         self.w, self.h = pygame.display.get_surface().get_size()
 
+        # Button list
+        self.buttonList = []
+
+        # Back button
+        self.mainMenuButton = Button(
+            200,
+            50,
+            (Resources.SCREEN_WIDTH / 2) - 100,
+            (Resources.SCREEN_HEIGHT / 2) - 25,
+            (255, 255, 255),
+            (0, 0, 0),
+            "MAIN MENU",
+        )
+
+        # Add buttons to button list
+        self.buttonList.append(self.mainMenuButton)
+
+    def handleInput(self, eventPos):
+        if self.mainMenuButton.isClicked(eventPos):
+            # TODO: Send player back to the main menu
+            pass
+
     def draw(self, game, screen):
         
         # Display the win message
         self.displayWinMessage(game, screen)
+
+        # Draw the main menu button
+        self.mainMenuButton.draw(screen)
+
+        # Check if mouse is hovering over buttons
+        self.mainMenuButton.isHovering(pygame.mouse.get_pos())
+
 
     def displayWinMessage(self, game, screen):
 

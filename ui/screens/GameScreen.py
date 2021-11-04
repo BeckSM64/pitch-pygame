@@ -269,6 +269,10 @@ class GameScreen(Screen):
                                     self.game.players[self.player].playerHand
                                 )
 
+                        # Check if buttons on win screen were clicked and handle input
+                        if self.showWinScreen == True:
+                            self.winScreen.handleInput(event.pos)
+
                 # Check if mouse is hovering over button
                 self.isMouseHoveringOverButtons()
 
