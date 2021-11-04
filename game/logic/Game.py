@@ -2,7 +2,7 @@ from network.ServerData import *
 
 
 class Game:
-    def __init__(self, id, gameName, maxPlayers, gameMode):
+    def __init__(self, id, gameName, maxPlayers, gameMode, winningScore):
 
         # list of player objects
         self.players = []
@@ -18,6 +18,7 @@ class Game:
         self.gameName = gameName
         self.maxPlayers = maxPlayers
         self.gameMode = gameMode
+        self.winningScore = winningScore
 
         # Flag to determine if in bidding stage or not
         self.biddingStage = True
@@ -498,3 +499,40 @@ class Game:
                 # Award points to team that didn't bid
                 self.players[teamOne[0]].score += self.players[teamOne[0]].roundPoints
                 self.players[teamOne[1]].score += self.players[teamOne[1]].roundPoints
+
+    def isGameOver(self):
+
+        # If it's a 3 player game
+        if self.numPlayers == 3:
+            for player in self.players:
+                if player.score >= self.winningScore:
+                    return True
+
+        # If it's a 4 player game
+        elif self.numPlayers == 4:
+            for i in range(2):
+                if (self.players[i].score + self.players[i + 2].score) >= self.winningScore:
+                    return True
+
+        # If get to here, then nobody hit the required score to win
+        return False
+
+    def getWinners(self):
+
+        # List to hold the usernames of the winners
+        winnerList = []
+
+        # If this is a 3 person game
+        if self.numPlayers == 3:
+            for player in self.players:
+                if player.score >= self.winningScore:
+                    winnerList.append(player.username)
+
+        # If this is a 4 person game
+        elif self.numPlayers == 4:
+            for i in range(2):
+                if (self.players[i].score + self.players[i].score) >= self.winningScore:
+                    winnerList.append(self.players[i].username)
+                    winnerList.append(self.players[i + 2].username)
+
+        return winnerList

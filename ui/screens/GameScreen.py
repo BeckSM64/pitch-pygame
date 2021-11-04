@@ -1,8 +1,8 @@
 import pygame
-from pygame.locals import *
 import os
-from resources.Resources import *
 import resources.Resources as Resources
+from pygame.locals import *
+from resources.Resources import *
 from ui.screens.Screen import Screen
 from game.logic.Game import Game
 from game.objects.Card import Card
@@ -16,6 +16,7 @@ from game.objects.PlayerTurnIndicator import PlayerTurnIndicator
 from ui.widgets.Button import Button
 from ui.screens.BidScreen import BidScreen
 from ui.screens.ScoreScreen import ScoreScreen
+from ui.screens.WinScreen import WinScreen
 from game.logic.GameState import GameState
 from ui.widgets.UsernameList import UsernameList
 
@@ -29,6 +30,7 @@ class GameScreen(Screen):
         gameKey=None,
         maxPlayers=None,
         gameMode=None,
+        winningScore=None,
     ):
         Screen.__init__(self)
 
@@ -38,7 +40,7 @@ class GameScreen(Screen):
 
         # Tell the server to create/join the game and return player id
         if isHost:
-            self.player = self.n.getPlayer(f"host/{gameName}/{maxPlayers}/{gameMode}")
+            self.player = self.n.getPlayer(f"host/{gameName}/{maxPlayers}/{gameMode}/{winningScore}")
         else:
             self.player = self.n.getPlayer(f"join/{gameKey}")
 
@@ -127,8 +129,12 @@ class GameScreen(Screen):
             # Score screen
             self.scoreScreen = ScoreScreen()
 
+            # Win Screen
+            self.winScreen = WinScreen()
+
             self.showGameScreen = False
             self.showScoreScreen = False
+            self.showWinScreen = False
             self.gameReady = False
 
     def run(self):
@@ -156,6 +162,7 @@ class GameScreen(Screen):
                 if (
                     self.game.numPlayers >= self.game.maxPlayers
                     and self.showScoreScreen == False
+                    and self.showWinScreen == False
                 ):
                     self.gameReady = True
                     self.showGameScreen = True
@@ -232,12 +239,14 @@ class GameScreen(Screen):
                         if (
                             self.scoreButton.isClicked(event.pos)
                             and self.showGameScreen == True
+                            and self.showWinScreen == False
                         ):
                             self.showGameScreen = False
                             self.showScoreScreen = True
                         elif (
                             self.scoreButton.isClicked(event.pos)
                             and self.showScoreScreen == True
+                            and self.showWinScreen == False
                         ):
                             self.showGameScreen = True
                             self.showScoreScreen = False
@@ -260,14 +269,24 @@ class GameScreen(Screen):
                                     self.game.players[self.player].playerHand
                                 )
 
+                        # Check if buttons on win screen were clicked and handle input
+                        if self.showWinScreen == True:
+                            self.winScreen.handleInput(event.pos)
+
                 # Check if mouse is hovering over button
                 self.isMouseHoveringOverButtons()
+
+            # Check if the game is over
+            if self.game.isGameOver() and self.showWinScreen == False:
+                self.showWinScreen = True
+                self.showGameScreen = False
+                self.showScoreScreen = False
 
             self.draw()
 
     def draw(self):
 
-        if self.showGameScreen == True:
+        if self.showGameScreen == True and self.showWinScreen == False:
 
             # Blit the background of the screen
             self.screen.blit(self.background, (0, 0))
@@ -311,7 +330,7 @@ class GameScreen(Screen):
                 pygame.time.delay(2000)
                 self.n.send("ready")
 
-        if self.showScoreScreen == True:
+        if self.showScoreScreen == True and self.showWinScreen == False:
 
             # Blit everything to the screen
             self.screen.blit(self.background, (0, 0))
@@ -320,6 +339,16 @@ class GameScreen(Screen):
             self.scoreButton.draw(self.screen)
 
             self.scoreScreen.draw(self.game, self.screen)
+
+            pygame.display.flip()
+
+        if self.showWinScreen == True:
+
+            # Blit everything to the screen
+            self.screen.blit(self.background, (0, 0))
+
+            # Draw the win screen
+            self.winScreen.draw(self.game, self.screen)
 
             pygame.display.flip()
 

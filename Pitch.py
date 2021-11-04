@@ -21,6 +21,7 @@ def main():
     isHost = None
     maxPlayers = None
     gameMode = None
+    winningScore = None
 
     while True:
 
@@ -31,7 +32,7 @@ def main():
         # State for new game screen
         if game_state == GameState.NEWGAME:
             game_state = GameScreen(
-                username, isHost, gameName, gameKey, maxPlayers, gameMode
+                username, isHost, gameName, gameKey, maxPlayers, gameMode, winningScore
             ).run()
 
         # State for disconnect screen
@@ -58,6 +59,7 @@ def main():
                 gameKey,
                 maxPlayers,
                 gameMode,
+                winningScore,
             ) = HostScreen().run()
 
         if game_state == GameState.JOIN:

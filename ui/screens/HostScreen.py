@@ -21,7 +21,7 @@ class HostScreen(Screen):
             200,
             50,
             (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) - 25,
+            (Resources.SCREEN_HEIGHT / 2) + 25,
             (255, 255, 255),
             (0, 0, 0),
             "HOST GAME",
@@ -32,7 +32,7 @@ class HostScreen(Screen):
             200,
             50,
             (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) + 30,
+            (Resources.SCREEN_HEIGHT / 2) + 80,
             (255, 255, 255),
             (0, 0, 0),
             "MAIN MENU",
@@ -45,7 +45,7 @@ class HostScreen(Screen):
         # Text box to enter game name
         self.textBox = TextBox(
             (Resources.SCREEN_WIDTH / 2) - 100,
-            (Resources.SCREEN_HEIGHT / 2) - 80,
+            (Resources.SCREEN_HEIGHT / 2) - 30,
             200,
             50,
         )
@@ -68,6 +68,15 @@ class HostScreen(Screen):
         INCREMENTER_Y = 90
         self.numPlayersIncrementer.setPos(INCREMENTER_X, INCREMENTER_Y)
 
+        # Score required to win incrementer
+        scoreOptions = ["11", "21"]
+        self.scoreOptionsIncrementer = Incrementer(scoreOptions)
+        INCREMENTER_X = (Resources.SCREEN_WIDTH / 2) - (
+            self.scoreOptionsIncrementer.incrementerWidth / 2
+        )
+        INCREMENTER_Y = 140
+        self.scoreOptionsIncrementer.setPos(INCREMENTER_X, INCREMENTER_Y)
+
         # Flag to show textbox input error
         self.showError = False
 
@@ -81,7 +90,7 @@ class HostScreen(Screen):
 
                 # Check for quit event
                 if event.type == QUIT:
-                    return GameState.QUIT, None, None, None, None, None
+                    return GameState.QUIT, None, None, None, None, None, None
 
                 # Check for click event
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -99,15 +108,17 @@ class HostScreen(Screen):
                                     None,
                                     int(self.numPlayersIncrementer.activeOption),
                                     self.gameModeIncrementer.activeOption,
+                                    self.scoreOptionsIncrementer.activeOption,
                                 )
 
                         # Check if back button was clicked
                         if self.mainMenuButton.isClicked(event.pos):
-                            return GameState.TITLE, False, None, None, None, None
+                            return GameState.TITLE, False, None, None, None, None, None
 
                         # Handle input for incrementers
                         self.gameModeIncrementer.handleInput(event.pos)
                         self.numPlayersIncrementer.handleInput(event.pos)
+                        self.scoreOptionsIncrementer.handleInput(event.pos)
 
                 # Proceed to game if enter is pressed in the textbox
                 isInputEntered = self.textBox.handle_event(event)
@@ -119,6 +130,7 @@ class HostScreen(Screen):
                         None,
                         int(self.numPlayersIncrementer.activeOption),
                         self.gameModeIncrementer.activeOption,
+                        int(self.scoreOptionsIncrementer.activeOptions),
                     )
                 elif isInputEntered and len(self.textBox.text) == 0:
                     self.showError = True
@@ -140,6 +152,7 @@ class HostScreen(Screen):
         self.textBox.draw(self.screen)
         self.gameModeIncrementer.draw(self.screen)
         self.numPlayersIncrementer.draw(self.screen)
+        self.scoreOptionsIncrementer.draw(self.screen)
         self.displayTitle()
 
         if self.showError:
